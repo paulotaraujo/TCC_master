@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "generator_script": "generate_signal_v6.py",
+  "generated_unix_s": 1778975136.3551972,
+  "comtrade": {
+    "cfg_path": "samples/samples_/faltaMono10%/export.cfg",
+    "bdat_path": "samples/samples_/faltaMono10%/export.bdat",
+    "n_analog": 2,
+    "n_digital": 0,
+    "freq_hz": 60.0,
+    "sample_rate_hz": 1000.0,
+    "time_mult": 1.0,
+    "data_format": "BINARY"
+  },
+  "dac_mapping": {
+    "v_mid": 1.65,
+    "v_amp": 1.55,
+    "dac_vref": 3.3,
+    "dac_max": 4095,
+    "dac_mid_code": 2048,
+    "protocol_channels": {
+      "voltage": "dac_v",
+      "current": "dac_i"
+    }
+  },
+  "comtrade_reference": {
+    "v_nom_peak": 363518.1635064316,
+    "i_nom_peak": 1815.0700196145153,
+    "v_nom_rms": 257046.15849987793,
+    "i_nom_rms": 1283.4483191978236,
+    "v_clip_peak": 1817590.817532158,
+    "i_clip_peak": 18150.700196145153,
+    "v_clip_rms": 1285230.7924993895,
+    "i_clip_rms": 12834.483191978235
+  },
+  "receiver_recommendation": {
+    "channel_map": {
+      "gpio34": "voltage",
+      "gpio35": "current"
+    },
+    "adc_vref": 3.3,
+    "offset_v": 1.65,
+    "offset_i": 1.65,
+    "v_scale_eng_per_volt": 1172639.2371175212,
+    "i_scale_eng_per_volt": 11710.129158803324,
+    "freq_hz": 60.0,
+    "sample_rate_hz": 1000.0
+  }
+}

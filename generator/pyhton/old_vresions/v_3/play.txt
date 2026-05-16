@@ -1,0 +1,17 @@
+python3 generate_signal.py \
+  --cfg samples/sample_2/export.cfg \
+  --bdat samples/sample_2/export.bdat \
+  --port /dev/ttyUSB0 \
+  --baud 921600
+
+  
+  
+  
+  SALVAR SAIDA .CSV
+
+  python3 generate_signal.py \
+  --cfg samples/sample_2/export.cfg \
+  --bdat samples/sample_2/export.bdat \
+  --port /dev/ttyUSB0 \
+  --baud 921600 \
+  --out generator_output.csv

@@ -1,0 +1,14 @@
+python3 comtrade_player_pc.py \
+  --port /dev/ttyUSB0 \
+  --cfg export.cfg \
+  --bdat export.bdat
+
+  
+  
+  
+  SALVAR SAIDA .CSV
+
+  python3 generator.py --port /dev/ttyUSB0 \
+  --cfg samples/sample_2/export.cfg \
+  --data samples/sample_2/export.bdat \
+  --tx-csv tx_saida.csv

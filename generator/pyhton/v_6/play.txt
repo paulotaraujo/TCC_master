@@ -1,0 +1,49 @@
+python3 generate_signal_v6.py \
+  --cfg samples/sample_3/export.cfg \
+  --bdat samples/sample_3/export.bdat \
+  --port /dev/ttyUSB0 \
+  --baud 921600
+
+  
+  
+  
+  SALVAR SAIDA .CSV
+
+  python3 generate_signal.py \
+  --cfg samples/sample_2/export.cfg \
+  --bdat samples/sample_2/export.bdat \
+  --port /dev/ttyUSB0 \
+  --baud 921600 \
+  --out generator_output.csv
+
+
+  A PARTIR DA VERSAO V_6, GERAR ARQUIVO DE CONFIG
+  python3 generate_signal_v6.py \
+    --cfg samples/samples_/faltaMono10%/export.cfg \
+    --bdat samples/samples_/faltaMono10%/export.bdat \
+    --port /dev/ttyUSB0 \
+    --baud 921600 \
+    --receiver-config receiver_config.json
+
+
+
+
+
+
+  RECEPÇÃO
+  python3 read_from_generator_rms_robust.py \
+  --port /dev/ttyUSB1 \
+  --normalize-to-comtrade
+  
+  python3 read_adc_capture_csv.py \
+  --csv adc_capture.csv \
+  --plot --plot-all
+
+  python3 read_adc_capture_csv.py --csv adc_capture.csv --plot --plot-mode adc
+  python3 read_adc_capture_csv.py --csv adc_capture.csv --plot --plot-mode adc_no_offset
+  python3 read_adc_capture_csv.py --csv adc_capture.csv --plot --plot-mode volts
+  python3 read_adc_capture_csv.py --csv adc_capture.csv --plot --plot-mode volts_no_offset
+  python3 read_adc_capture_csv.py --csv adc_capture.csv --plot --plot-mode amplitude_scaled 
+  python3 read_adc_capture_csv.py --csv adc_capture.csv --plot --plot-mode rms_real
+  python3 read_adc_capture_csv.py --csv adc_capture.csv --plot --plot-mode rms_scaled
+
