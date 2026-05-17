@@ -46,4 +46,5 @@ python3 generate_signal_v6.py \
   python3 read_adc_capture_csv.py --csv adc_capture.csv --plot --plot-mode amplitude_scaled 
   python3 read_adc_capture_csv.py --csv adc_capture.csv --plot --plot-mode rms_real
   python3 read_adc_capture_csv.py --csv adc_capture.csv --plot --plot-mode rms_scaled
+  python3 read_adc_capture_csv.py --csv adc_capture.csv --plot --plot-mode rms_scaled_average
 

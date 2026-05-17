@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "generator_script": "generate_signal_v6.py",
-  "generated_unix_s": 1778975136.3551972,
+  "generated_unix_s": 1779040776.1864269,
   "comtrade": {
-    "cfg_path": "samples/samples_/faltaMono10%/export.cfg",
-    "bdat_path": "samples/samples_/faltaMono10%/export.bdat",
+    "cfg_path": "samples/samples_/faltaMono75%/export.cfg",
+    "bdat_path": "samples/samples_/faltaMono75%/export.bdat",
     "n_analog": 2,
     "n_digital": 0,
     "freq_hz": 60.0,
@@ -24,14 +24,14 @@
     }
   },
   "comtrade_reference": {
-    "v_nom_peak": 363518.1635064316,
-    "i_nom_peak": 1815.0700196145153,
-    "v_nom_rms": 257046.15849987793,
-    "i_nom_rms": 1283.4483191978236,
-    "v_clip_peak": 1817590.817532158,
-    "i_clip_peak": 18150.700196145153,
-    "v_clip_rms": 1285230.7924993895,
-    "i_clip_rms": 12834.483191978235
+    "v_nom_peak": 363515.15689854766,
+    "i_nom_peak": 1816.1436103025687,
+    "v_nom_rms": 257044.03250705483,
+    "i_nom_rms": 1284.2074624535649,
+    "v_clip_peak": 1817575.7844927383,
+    "i_clip_peak": 18161.436103025688,
+    "v_clip_rms": 1285220.1625352742,
+    "i_clip_rms": 12842.074624535648
   },
   "receiver_recommendation": {
     "channel_map": {
@@ -41,8 +41,8 @@
     "adc_vref": 3.3,
     "offset_v": 1.65,
     "offset_i": 1.65,
-    "v_scale_eng_per_volt": 1172639.2371175212,
-    "i_scale_eng_per_volt": 11710.129158803324,
+    "v_scale_eng_per_volt": 1172629.5383824117,
+    "i_scale_eng_per_volt": 11717.055550339153,
     "freq_hz": 60.0,
     "sample_rate_hz": 1000.0
   }
