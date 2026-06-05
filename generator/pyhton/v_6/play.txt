@@ -19,8 +19,8 @@ python3 generate_signal_v6.py \
 
   A PARTIR DA VERSAO V_6, GERAR ARQUIVO DE CONFIG
   python3 generate_signal_v6.py \
-    --cfg samples/samples_/faltaMono10%/export.cfg \
-    --bdat samples/samples_/faltaMono10%/export.bdat \
+    --cfg samples/samples_/Matlab_comtrade/01_CC_Trifasico/25%/export.cfg \
+    --bdat samples/samples_/Matlab_comtrade/01_CC_Trifasico/25%/export.bdat \
     --port /dev/ttyUSB0 \
     --baud 921600 \
     --receiver-config receiver_config.json
