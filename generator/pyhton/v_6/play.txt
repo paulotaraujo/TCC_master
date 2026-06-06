@@ -26,14 +26,61 @@ python3 generate_signal_v6.py \
     --receiver-config receiver_config.json
 
 
-
-
-
-
   RECEPÇÃO
   python3 read_from_generator_rms_robust.py \
   --port /dev/ttyUSB1 \
   --normalize-to-comtrade
+
+  PROTEÇAO 50/51 (SOBRECORRENTE)
+  python3 read_from_generator_rms_robust.py \
+  --port /dev/ttyUSB1 \
+  --normalize-to-comtrade \
+  (--i-nominal-rms 1000 \) opcional
+  --over-current 10 20 0.05 (10 corrente de pickup temp, 20 corrente de pickup inst, 0.05 tempo de atuação temp)
+
+  PROTEÇAO 21 (DISTANCIA)
+  python3 read_from_generator_rms_robust.py \
+  --port /dev/ttyUSB1 \
+  --normalize-to-comtrade \
+  (--i-nominal-rms 1000 \) opcional
+  --distance 52.12496 80 120 0.05 (52.12496 disncia ohmica total da linha protegida, 80 percentual, em ohms, da zona de proteção 1, 120 percentual, em ohms, da zona de proteção 2, tempo de atuação da zona de proteção 2)
+
+  PROTEÇAO 21/50/51
+  python3 read_from_generator_rms_robust.py \
+  --port /dev/ttyUSB1 \
+  --normalize-to-comtrade \
+  (--i-nominal-rms 1000 \) opcional
+  --over-current 10 20 0.5 \
+  --distance 10 15 0.5
+
+  PROTEÇAO 27
+  python3 read_from_generator_rms_robust.py \
+  --port /dev/ttyUSB1 \
+  --normalize-to-comtrade \
+  (--v-nominal-rms 254000 \) opcional
+  --under-voltage 90 0.2 \ (90 percentual de tensao minima em relação a nominal para atuação, 0.2 tempo de falta para atuação da proteção)
+
+  PROTEÇAO 59
+  python3 read_from_generator_rms_robust.py \
+  --port /dev/ttyUSB1 \
+  --normalize-to-comtrade \
+  (--v-nominal-rms 254000 \) opcional
+  --over-voltage 110 0.2 \ (110 percentual de tensao minima em relação a nominal para atuação, 0.2 tempo de falta para atuação da proteção)
+
+  COM LOGS
+  python3 read_from_generator_rms_robust.py \
+  --port /dev/ttyUSB1 \
+  --normalize-to-comtrade \
+  --v-nominal-rms 254000
+  --i-nominal-rms 1000 \
+  --over-current 10 20 0.5 \
+  --distance 52.12496 200 0.5 \
+  --under-voltage 90 0.2
+  --over-voltage 110 0.2  
+  --protection-events
+
+
+  PLOTS
   
   python3 read_adc_capture_csv.py \
   --csv adc_capture.csv \
@@ -48,3 +95,6 @@ python3 generate_signal_v6.py \
   python3 read_adc_capture_csv.py --csv adc_capture.csv --plot --plot-mode rms_scaled
   python3 read_adc_capture_csv.py --csv adc_capture.csv --plot --plot-mode rms_scaled_average
 
+  python3 read_adc_capture_csv.py --csv adc_capture.csv --plot --plot-mode over_current
+  python3 read_adc_capture_csv.py --csv adc_capture.csv --plot --plot-mode distance
+  python3 read_adc_capture_csv.py --csv adc_capture.csv --plot --plot-mode voltage
