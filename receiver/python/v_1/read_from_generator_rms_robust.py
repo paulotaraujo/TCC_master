@@ -67,6 +67,31 @@ def auto_outlier_step(amp_peak: float, freq_hz: float, sample_rate_hz: float) ->
     return max(0.8, 6.0 * max_step)
 
 
+def wrap_angle_deg(angle_deg: float) -> float:
+    wrapped = (angle_deg + 180.0) % 360.0 - 180.0
+    if wrapped == -180.0:
+        return 180.0
+    return wrapped
+
+
+def fundamental_phasor_rms(samples: list[float]) -> tuple[float, float]:
+    n = len(samples)
+    if n < 2:
+        return 0.0, 0.0
+
+    re = 0.0
+    im = 0.0
+    for k, sample in enumerate(samples):
+        theta = (2.0 * math.pi * k) / n
+        re += sample * math.cos(theta)
+        im -= sample * math.sin(theta)
+
+    peak_mag = (2.0 / n) * math.hypot(re, im)
+    rms_mag = peak_mag / math.sqrt(2.0)
+    angle_deg = wrap_angle_deg(math.degrees(math.atan2(im, re)))
+    return rms_mag, angle_deg
+
+
 def load_config_file(config_path: Path) -> dict:
     if not config_path.exists():
         raise SystemExit(f"Arquivo de configuração não encontrado: {config_path}")
@@ -206,6 +231,88 @@ def main() -> None:
         ),
     )
     parser.add_argument(
+        "--i-nominal-rms",
+        type=float,
+        default=None,
+        help=(
+            "Corrente nominal RMS para proteções. Se omitida, usa "
+            "comtrade_reference.i_nom_rms do receiver-config.json."
+        ),
+    )
+    parser.add_argument(
+        "--v-nominal-rms",
+        type=float,
+        default=None,
+        help=(
+            "Tensão nominal RMS para proteções. Se omitida, usa "
+            "comtrade_reference.v_nom_rms do receiver-config.json."
+        ),
+    )
+    parser.add_argument(
+        "--over-current",
+        nargs=3,
+        type=float,
+        metavar=("PICKUP_51_PCT", "PICKUP_50_PCT", "DELAY_51_S"),
+        default=None,
+        help=(
+            "Ativa proteção de sobrecorrente 51/50 usando I1 Fourier. "
+            "Ex.: --over-current 10 20 0.5."
+        ),
+    )
+    parser.add_argument(
+        "--distance",
+        nargs=4,
+        type=float,
+        metavar=("LINE_Z_OHM", "Z1_PCT", "Z2_PCT", "DELAY_Z2_S"),
+        default=None,
+        help=(
+            "Ativa proteção de distância 21 por impedância aparente |V1/I1|. "
+            "Ex.: --distance 52.12496 80 120 0.05."
+        ),
+    )
+    parser.add_argument(
+        "--under-voltage",
+        nargs=2,
+        type=float,
+        metavar=("PICKUP_27_PCT", "DELAY_27_S"),
+        default=None,
+        help=(
+            "Ativa proteção de subtensão 27 usando V1 Fourier. "
+            "Ex.: --under-voltage 90 0.2."
+        ),
+    )
+    parser.add_argument(
+        "--over-voltage",
+        nargs=2,
+        type=float,
+        metavar=("PICKUP_59_PCT", "DELAY_59_S"),
+        default=None,
+        help=(
+            "Ativa proteção de sobretensão 59 usando V1 Fourier. "
+            "Ex.: --over-voltage 110 0.2."
+        ),
+    )
+    parser.add_argument(
+        "--distance-min-current",
+        type=float,
+        default=None,
+        help=(
+            "Corrente mínima I1 RMS para avaliar a proteção de distância. "
+            "Se omitida, usa 5%% da corrente nominal quando disponível."
+        ),
+    )
+    parser.add_argument(
+        "--protection-events",
+        action="store_true",
+        help="Imprime eventos de proteção no terminal: pickup, reset e trip.",
+    )
+    parser.add_argument(
+        "--protection-event-interval",
+        type=float,
+        default=0.1,
+        help="Intervalo mínimo entre logs repetitivos de temporização (s).",
+    )
+    parser.add_argument(
         "--print-every",
         type=int,
         default=0,
@@ -280,6 +387,145 @@ def main() -> None:
         cfg_i_nom_rms=cfg_i_nom_rms,
     )
 
+    oc_enabled = args.over_current is not None
+    oc_i_nominal = float(args.i_nominal_rms) if args.i_nominal_rms is not None else cfg_i_nom_rms
+    oc_51_pct = 0.0
+    oc_50_pct = 0.0
+    oc_51_delay_s = 0.0
+    oc_51_pickup = 0.0
+    oc_50_pickup = 0.0
+    oc_51_dropout = 0.0
+
+    if oc_enabled:
+        oc_51_pct, oc_50_pct, oc_51_delay_s = [float(value) for value in args.over_current]
+        if oc_i_nominal is None or oc_i_nominal <= 0.0:
+            raise SystemExit(
+                "Proteção --over-current precisa de corrente nominal: "
+                "use --i-nominal-rms ou informe comtrade_reference.i_nom_rms no config."
+            )
+        if oc_51_pct < 0.0 or oc_50_pct < 0.0:
+            raise SystemExit("Proteção --over-current exige percentuais positivos.")
+        if oc_50_pct <= oc_51_pct:
+            raise SystemExit("Proteção --over-current exige PICKUP_50_PCT maior que PICKUP_51_PCT.")
+        if oc_51_delay_s < 0.0:
+            raise SystemExit("Proteção --over-current exige DELAY_51_S >= 0.")
+
+        oc_51_pickup = oc_i_nominal * (1.0 + oc_51_pct / 100.0)
+        oc_50_pickup = oc_i_nominal * (1.0 + oc_50_pct / 100.0)
+        oc_51_dropout = 0.95 * oc_51_pickup
+        print(
+            "Proteção 50/51 ativa: "
+            f"I_nom={oc_i_nominal:.6f}A "
+            f"pickup_51={oc_51_pickup:.6f}A ({oc_51_pct:.3f}%) "
+            f"delay_51={oc_51_delay_s:.6f}s "
+            f"pickup_50={oc_50_pickup:.6f}A ({oc_50_pct:.3f}%)"
+        )
+    else:
+        print("Proteção 50/51: desativada")
+
+    dist_enabled = args.distance is not None
+    dist_line_z_ohm = 0.0
+    dist_z1_pct = 0.0
+    dist_z2_pct = 0.0
+    dist_z1_ohm = 0.0
+    dist_z2_ohm = 0.0
+    dist_z2_delay_s = 0.0
+    dist_z2_dropout_ohm = 0.0
+    dist_min_current = 0.0
+
+    if dist_enabled:
+        dist_line_z_ohm, dist_z1_pct, dist_z2_pct, dist_z2_delay_s = [
+            float(value) for value in args.distance
+        ]
+        if dist_line_z_ohm <= 0.0:
+            raise SystemExit("Proteção --distance exige LINE_Z_OHM positivo.")
+        if dist_z1_pct <= 0.0 or dist_z2_pct <= 0.0:
+            raise SystemExit("Proteção --distance exige Z1_PCT e Z2_PCT positivos.")
+        if dist_z2_pct <= dist_z1_pct:
+            raise SystemExit("Proteção --distance exige Z2_PCT maior que Z1_PCT.")
+        if dist_z2_delay_s < 0.0:
+            raise SystemExit("Proteção --distance exige DELAY_Z2_S >= 0.")
+
+        dist_z1_ohm = dist_line_z_ohm * (dist_z1_pct / 100.0)
+        dist_z2_ohm = dist_line_z_ohm * (dist_z2_pct / 100.0)
+
+        if args.distance_min_current is not None:
+            dist_min_current = float(args.distance_min_current)
+            if dist_min_current < 0.0:
+                raise SystemExit("--distance-min-current precisa ser >= 0.")
+        elif oc_i_nominal is not None and oc_i_nominal > 0.0:
+            dist_min_current = 0.05 * oc_i_nominal
+        else:
+            dist_min_current = 1e-6
+            print(
+                "⚠️  --distance sem corrente nominal: usando distance_min_current=1e-6. "
+                "Recomenda-se informar --i-nominal-rms ou --distance-min-current."
+            )
+
+        dist_z2_dropout_ohm = 1.05 * dist_z2_ohm
+        print(
+            "Proteção 21 ativa: "
+            f"Zlinha={dist_line_z_ohm:.6f}ohm "
+            f"Z1={dist_z1_ohm:.6f}ohm ({dist_z1_pct:.3f}%) instantânea "
+            f"Z2={dist_z2_ohm:.6f}ohm ({dist_z2_pct:.3f}%) delay={dist_z2_delay_s:.6f}s "
+            f"Imin={dist_min_current:.6f}A"
+        )
+    else:
+        print("Proteção 21: desativada")
+
+    vprot_nominal = float(args.v_nominal_rms) if args.v_nominal_rms is not None else cfg_v_nom_rms
+    uv_enabled = args.under_voltage is not None
+    ov_enabled = args.over_voltage is not None
+    uv_pickup_pct = 0.0
+    ov_pickup_pct = 0.0
+    uv_delay_s = 0.0
+    ov_delay_s = 0.0
+    uv_pickup = 0.0
+    ov_pickup = 0.0
+    uv_dropout = 0.0
+    ov_dropout = 0.0
+
+    if uv_enabled or ov_enabled:
+        if vprot_nominal is None or vprot_nominal <= 0.0:
+            raise SystemExit(
+                "Proteções --under-voltage/--over-voltage precisam de tensão nominal: "
+                "use --v-nominal-rms ou informe comtrade_reference.v_nom_rms no config."
+            )
+
+    if uv_enabled:
+        uv_pickup_pct, uv_delay_s = [float(value) for value in args.under_voltage]
+        if not (0.0 < uv_pickup_pct < 100.0):
+            raise SystemExit("--under-voltage exige PICKUP_27_PCT entre 0 e 100.")
+        if uv_delay_s < 0.0:
+            raise SystemExit("--under-voltage exige DELAY_27_S >= 0.")
+        uv_pickup = vprot_nominal * (uv_pickup_pct / 100.0)
+        uv_dropout = 1.03 * uv_pickup
+        print(
+            "Proteção 27 ativa: "
+            f"V_nom={vprot_nominal:.6f} "
+            f"pickup={uv_pickup:.6f} ({uv_pickup_pct:.3f}%) "
+            f"delay={uv_delay_s:.6f}s dropout={uv_dropout:.6f}"
+        )
+    else:
+        print("Proteção 27: desativada")
+
+    if ov_enabled:
+        ov_pickup_pct, ov_delay_s = [float(value) for value in args.over_voltage]
+        if ov_pickup_pct <= 100.0:
+            raise SystemExit("--over-voltage exige PICKUP_59_PCT maior que 100.")
+        if ov_delay_s < 0.0:
+            raise SystemExit("--over-voltage exige DELAY_59_S >= 0.")
+        ov_pickup = vprot_nominal * (ov_pickup_pct / 100.0)
+        ov_dropout = 0.97 * ov_pickup
+        print(
+            "Proteção 59 ativa: "
+            f"V_nom={vprot_nominal:.6f} "
+            f"pickup={ov_pickup:.6f} ({ov_pickup_pct:.3f}%) "
+            f"delay={ov_delay_s:.6f}s dropout={ov_dropout:.6f}"
+        )
+    else:
+        print("Proteção 59: desativada")
+
     nominal_dt_us = 1_000_000.0 / max(1.0, args.sample_rate)
     out_path = Path(args.out)
 
@@ -290,6 +536,10 @@ def main() -> None:
 
     buf = bytearray()
     t0 = time.perf_counter()
+
+    def protection_log(message: str) -> None:
+        if args.protection_events:
+            print(message, flush=True)
 
     # Estado global de comunicação
     last_seq = None
@@ -318,6 +568,8 @@ def main() -> None:
     cyc_n = 0
     cyc_sum_v2 = 0.0
     cyc_sum_i2 = 0.0
+    cyc_v_samples: list[float] = []
+    cyc_i_samples: list[float] = []
     cyc_flags = 0
 
     # Último RMS válido publicado
@@ -327,12 +579,58 @@ def main() -> None:
     i_rms_raw = 0.0
     f_est = 0.0
     rms_valid = 0
+    v1_mag_raw = 0.0
+    i1_mag_raw = 0.0
+    v1_mag = 0.0
+    i1_mag = 0.0
+    v1_angle_deg = 0.0
+    i1_angle_deg = 0.0
+    vi_angle_deg = 0.0
+    fourier_valid = 0
     last_cycle_quality_flags = 0
     norm_ready = 0
     norm_gain_v = 1.0
     norm_gain_i = 1.0
     prefault_v_raw: list[float] = []
     prefault_i_raw: list[float] = []
+
+    # Estado da proteção de sobrecorrente 50/51.
+    oc_51_timer_s = 0.0
+    oc_51_active = 0
+    oc_50_trip = 0
+    oc_51_trip = 0
+    oc_trip = 0
+    oc_trip_code = "NONE"
+    oc_51_timing_report_s = 0.0
+
+    # Estado da proteção de distância 21.
+    dist_z_mag_ohm = 0.0
+    dist_z_angle_deg = 0.0
+    dist_r_ohm = 0.0
+    dist_x_ohm = 0.0
+    dist_fault_pct = 0.0
+    dist_fault_ohm = 0.0
+    dist_z1_active = 0
+    dist_z2_active = 0
+    dist_z2_timer_s = 0.0
+    dist_z1_trip = 0
+    dist_z2_trip = 0
+    dist_trip = 0
+    dist_trip_code = "NONE"
+    dist_z2_timing_report_s = 0.0
+    breaker_trip_reported = 0
+
+    # Estado das proteções de tensão 27/59.
+    uv_timer_s = 0.0
+    ov_timer_s = 0.0
+    uv_active = 0
+    ov_active = 0
+    uv_trip = 0
+    ov_trip = 0
+    voltage_trip = 0
+    voltage_trip_code = "NONE"
+    uv_timing_report_s = 0.0
+    ov_timing_report_s = 0.0
 
     with out_path.open("w", newline="", encoding="utf-8", buffering=1) as f:
         w = csv.writer(f)
@@ -353,11 +651,62 @@ def main() -> None:
             "i_rms_raw",
             "v_rms",
             "i_rms",
+            "v1_mag_raw",
+            "i1_mag_raw",
+            "v1_mag",
+            "i1_mag",
+            "v1_angle_deg",
+            "i1_angle_deg",
+            "vi_angle_deg",
+            "fourier_valid",
             "f_est_hz",
             "rms_valid",
             "norm_ready",
             "norm_gain_v",
             "norm_gain_i",
+            "oc_enabled",
+            "oc_i_nominal",
+            "oc_51_pickup",
+            "oc_50_pickup",
+            "oc_51_timer_s",
+            "oc_51_active",
+            "oc_50_trip",
+            "oc_51_trip",
+            "oc_trip",
+            "oc_trip_code",
+            "dist_enabled",
+            "dist_line_z_ohm",
+            "dist_z1_pct",
+            "dist_z2_pct",
+            "dist_z1_ohm",
+            "dist_z2_ohm",
+            "dist_min_current",
+            "dist_z_mag_ohm",
+            "dist_z_angle_deg",
+            "dist_r_ohm",
+            "dist_x_ohm",
+            "dist_fault_pct",
+            "dist_fault_ohm",
+            "dist_z1_active",
+            "dist_z2_active",
+            "dist_z2_timer_s",
+            "dist_z1_trip",
+            "dist_z2_trip",
+            "dist_trip",
+            "dist_trip_code",
+            "uv_enabled",
+            "ov_enabled",
+            "v_nominal_rms",
+            "uv_pickup",
+            "ov_pickup",
+            "uv_timer_s",
+            "ov_timer_s",
+            "uv_active",
+            "ov_active",
+            "uv_trip",
+            "ov_trip",
+            "voltage_trip",
+            "voltage_trip_code",
             "cycle_id",
             "cycle_update",
             "quality_flags",
@@ -479,9 +828,15 @@ def main() -> None:
                             local_f = 0.0
                             local_vrms = 0.0
                             local_irms = 0.0
+                            local_v1_mag = 0.0
+                            local_i1_mag = 0.0
+                            local_v1_angle = 0.0
+                            local_i1_angle = 0.0
                         else:
                             local_vrms = math.sqrt(max(0.0, cyc_sum_v2 / cyc_n))
                             local_irms = math.sqrt(max(0.0, cyc_sum_i2 / cyc_n))
+                            local_v1_mag, local_v1_angle = fundamental_phasor_rms(cyc_v_samples)
+                            local_i1_mag, local_i1_angle = fundamental_phasor_rms(cyc_i_samples)
                             local_f = 1_000_000.0 / max(1.0, float(period_us))
                             if not (args.f_min <= local_f <= args.f_max):
                                 local_flags |= FLAG_FREQ_OOR
@@ -493,6 +848,12 @@ def main() -> None:
                         f_est = local_f
                         rms_valid = local_valid
                         last_cycle_quality_flags = local_flags
+                        v1_mag_raw = local_v1_mag
+                        i1_mag_raw = local_i1_mag
+                        v1_angle_deg = local_v1_angle
+                        i1_angle_deg = local_i1_angle
+                        vi_angle_deg = wrap_angle_deg(i1_angle_deg - v1_angle_deg)
+                        fourier_valid = local_valid
 
                         # Normalização para a referência do COMTRADE.
                         if (
@@ -522,12 +883,345 @@ def main() -> None:
                             if norm_ready == 1:
                                 v_rms = v_rms_raw * norm_gain_v
                                 i_rms = i_rms_raw * norm_gain_i
+                                v1_mag = v1_mag_raw * norm_gain_v
+                                i1_mag = i1_mag_raw * norm_gain_i
                             else:
                                 v_rms = v_rms_raw
                                 i_rms = i_rms_raw
+                                v1_mag = v1_mag_raw
+                                i1_mag = i1_mag_raw
                         else:
                             v_rms = v_rms_raw
                             i_rms = i_rms_raw
+                            v1_mag = v1_mag_raw
+                            i1_mag = i1_mag_raw
+
+                        if oc_enabled:
+                            oc_eval_ready = fourier_valid == 1 and (
+                                not args.normalize_to_comtrade or norm_ready == 1
+                            )
+                            cycle_dt_s = period_us / 1_000_000.0
+
+                            if oc_eval_ready:
+                                prev_oc_51_active = oc_51_active
+                                prev_oc_50_trip = oc_50_trip
+                                prev_oc_51_trip = oc_51_trip
+
+                                if i1_mag >= oc_50_pickup:
+                                    oc_50_trip = 1
+                                    oc_trip = 1
+                                    if oc_trip_code == "NONE":
+                                        oc_trip_code = "50"
+                                    if prev_oc_50_trip == 0:
+                                        protection_log(
+                                            "[OC50 TRIP] "
+                                            f"t={dev_t_s:.6f}s I1={i1_mag:.6f}A "
+                                            f"pickup={oc_50_pickup:.6f}A delay=instantaneous"
+                                        )
+
+                                if i1_mag >= oc_51_pickup:
+                                    oc_51_active = 1
+                                    oc_51_timer_s += cycle_dt_s
+                                    if prev_oc_51_active == 0:
+                                        protection_log(
+                                            "[OC51 PICKUP] "
+                                            f"t={dev_t_s:.6f}s I1={i1_mag:.6f}A "
+                                            f"pickup={oc_51_pickup:.6f}A "
+                                            f"timer={oc_51_timer_s:.6f}s delay={oc_51_delay_s:.6f}s"
+                                        )
+                                        oc_51_timing_report_s = oc_51_timer_s
+                                    elif (
+                                        args.protection_events
+                                        and args.protection_event_interval > 0.0
+                                        and oc_51_timer_s - oc_51_timing_report_s
+                                        >= args.protection_event_interval
+                                        and oc_51_trip == 0
+                                    ):
+                                        protection_log(
+                                            "[OC51 TIMING] "
+                                            f"t={dev_t_s:.6f}s I1={i1_mag:.6f}A "
+                                            f"timer={oc_51_timer_s:.6f}/{oc_51_delay_s:.6f}s"
+                                        )
+                                        oc_51_timing_report_s = oc_51_timer_s
+                                    if oc_51_timer_s >= oc_51_delay_s:
+                                        oc_51_trip = 1
+                                        oc_trip = 1
+                                        if oc_trip_code == "NONE":
+                                            oc_trip_code = "51"
+                                        if prev_oc_51_trip == 0:
+                                            protection_log(
+                                                "[OC51 TRIP] "
+                                                f"t={dev_t_s:.6f}s I1={i1_mag:.6f}A "
+                                                f"pickup={oc_51_pickup:.6f}A "
+                                                f"elapsed={oc_51_timer_s:.6f}s"
+                                            )
+                                elif i1_mag < oc_51_dropout:
+                                    if oc_51_active == 1 and oc_51_trip == 0:
+                                        protection_log(
+                                            "[OC51 RESET] "
+                                            f"t={dev_t_s:.6f}s I1={i1_mag:.6f}A "
+                                            f"dropout={oc_51_dropout:.6f}A "
+                                            f"timer_reset={oc_51_timer_s:.6f}s"
+                                        )
+                                    oc_51_active = 0
+                                    oc_51_timer_s = 0.0
+                                    oc_51_timing_report_s = 0.0
+                                else:
+                                    oc_51_active = 0
+                            else:
+                                oc_51_active = 0
+                                oc_51_timer_s = 0.0
+                                oc_51_timing_report_s = 0.0
+
+                        if dist_enabled:
+                            dist_eval_ready = fourier_valid == 1 and (
+                                not args.normalize_to_comtrade or norm_ready == 1
+                            )
+                            cycle_dt_s = period_us / 1_000_000.0
+
+                            if dist_eval_ready and i1_mag > max(1e-12, dist_min_current):
+                                prev_dist_z2_active = dist_z2_active
+                                prev_dist_z1_trip = dist_z1_trip
+                                prev_dist_z2_trip = dist_z2_trip
+
+                                dist_z_mag_ohm = v1_mag / max(1e-12, i1_mag)
+                                dist_z_angle_deg = wrap_angle_deg(v1_angle_deg - i1_angle_deg)
+                                dist_angle_rad = math.radians(dist_z_angle_deg)
+                                dist_r_ohm = dist_z_mag_ohm * math.cos(dist_angle_rad)
+                                dist_x_ohm = dist_z_mag_ohm * math.sin(dist_angle_rad)
+                                dist_fault_ohm = dist_z_mag_ohm
+                                dist_fault_pct = (dist_fault_ohm / dist_line_z_ohm) * 100.0
+
+                                if dist_z_mag_ohm <= dist_z1_ohm:
+                                    dist_z1_active = 1
+                                    dist_z2_active = 0
+                                    dist_z1_trip = 1
+                                    dist_trip = 1
+                                    if dist_trip_code == "NONE":
+                                        dist_trip_code = "21Z1"
+                                    if prev_dist_z1_trip == 0:
+                                        protection_log(
+                                            "[D21Z1 TRIP] "
+                                            f"t={dev_t_s:.6f}s |Z|={dist_z_mag_ohm:.6f}ohm "
+                                            f"R={dist_r_ohm:.6f}ohm X={dist_x_ohm:.6f}ohm "
+                                            f"fault={dist_fault_ohm:.6f}ohm ({dist_fault_pct:.3f}% line) "
+                                            f"I1={i1_mag:.6f}A V1={v1_mag:.6f} "
+                                            f"zone=Z1 reach={dist_z1_ohm:.6f}ohm "
+                                            "delay=instantaneous"
+                                        )
+                                elif dist_z_mag_ohm <= dist_z2_ohm:
+                                    dist_z1_active = 0
+                                    dist_z2_active = 1
+                                    dist_z2_timer_s += cycle_dt_s
+                                    if prev_dist_z2_active == 0 and dist_z2_trip == 0:
+                                        protection_log(
+                                            "[D21Z2 PICKUP] "
+                                            f"t={dev_t_s:.6f}s |Z|={dist_z_mag_ohm:.6f}ohm "
+                                            f"R={dist_r_ohm:.6f}ohm X={dist_x_ohm:.6f}ohm "
+                                            f"fault={dist_fault_ohm:.6f}ohm ({dist_fault_pct:.3f}% line) "
+                                            f"I1={i1_mag:.6f}A V1={v1_mag:.6f} "
+                                            f"timer={dist_z2_timer_s:.6f}s "
+                                            f"delay={dist_z2_delay_s:.6f}s"
+                                        )
+                                        dist_z2_timing_report_s = dist_z2_timer_s
+                                    elif (
+                                        args.protection_events
+                                        and args.protection_event_interval > 0.0
+                                        and dist_z2_timer_s - dist_z2_timing_report_s
+                                        >= args.protection_event_interval
+                                        and dist_z2_trip == 0
+                                    ):
+                                        protection_log(
+                                            "[D21Z2 TIMING] "
+                                            f"t={dev_t_s:.6f}s |Z|={dist_z_mag_ohm:.6f}ohm "
+                                            f"R={dist_r_ohm:.6f}ohm X={dist_x_ohm:.6f}ohm "
+                                            f"fault={dist_fault_ohm:.6f}ohm ({dist_fault_pct:.3f}% line) "
+                                            f"timer={dist_z2_timer_s:.6f}/{dist_z2_delay_s:.6f}s"
+                                        )
+                                        dist_z2_timing_report_s = dist_z2_timer_s
+                                    if dist_z2_timer_s >= dist_z2_delay_s:
+                                        dist_z2_trip = 1
+                                        dist_trip = 1
+                                        if dist_trip_code == "NONE":
+                                            dist_trip_code = "21Z2"
+                                        if prev_dist_z2_trip == 0:
+                                            protection_log(
+                                                "[D21Z2 TRIP] "
+                                                f"t={dev_t_s:.6f}s |Z|={dist_z_mag_ohm:.6f}ohm "
+                                                f"R={dist_r_ohm:.6f}ohm X={dist_x_ohm:.6f}ohm "
+                                                f"fault={dist_fault_ohm:.6f}ohm ({dist_fault_pct:.3f}% line) "
+                                                f"I1={i1_mag:.6f}A V1={v1_mag:.6f} "
+                                                f"elapsed={dist_z2_timer_s:.6f}s"
+                                            )
+                                elif dist_z_mag_ohm > dist_z2_dropout_ohm:
+                                    if dist_z2_active == 1 and dist_z2_trip == 0:
+                                        protection_log(
+                                            "[D21Z2 RESET] "
+                                            f"t={dev_t_s:.6f}s |Z|={dist_z_mag_ohm:.6f}ohm "
+                                            f"fault={dist_fault_ohm:.6f}ohm ({dist_fault_pct:.3f}% line) "
+                                            f"dropout={dist_z2_dropout_ohm:.6f}ohm "
+                                            f"timer_reset={dist_z2_timer_s:.6f}s"
+                                        )
+                                    dist_z1_active = 0
+                                    dist_z2_active = 0
+                                    dist_z2_timer_s = 0.0
+                                    dist_z2_timing_report_s = 0.0
+                                else:
+                                    dist_z1_active = 0
+                                    dist_z2_active = 0
+                            else:
+                                dist_z1_active = 0
+                                dist_z2_active = 0
+                                dist_z2_timer_s = 0.0
+                                dist_z2_timing_report_s = 0.0
+
+                        if uv_enabled or ov_enabled:
+                            voltage_eval_ready = fourier_valid == 1 and (
+                                not args.normalize_to_comtrade or norm_ready == 1
+                            )
+                            cycle_dt_s = period_us / 1_000_000.0
+
+                            if voltage_eval_ready:
+                                if uv_enabled:
+                                    prev_uv_active = uv_active
+                                    prev_uv_trip = uv_trip
+                                    if v1_mag <= uv_pickup:
+                                        uv_active = 1
+                                        uv_timer_s += cycle_dt_s
+                                        if prev_uv_active == 0:
+                                            protection_log(
+                                                "[UV27 PICKUP] "
+                                                f"t={dev_t_s:.6f}s V1={v1_mag:.6f} "
+                                                f"pickup={uv_pickup:.6f} "
+                                                f"timer={uv_timer_s:.6f}s delay={uv_delay_s:.6f}s"
+                                            )
+                                            uv_timing_report_s = uv_timer_s
+                                        elif (
+                                            args.protection_events
+                                            and args.protection_event_interval > 0.0
+                                            and uv_timer_s - uv_timing_report_s
+                                            >= args.protection_event_interval
+                                            and uv_trip == 0
+                                        ):
+                                            protection_log(
+                                                "[UV27 TIMING] "
+                                                f"t={dev_t_s:.6f}s V1={v1_mag:.6f} "
+                                                f"timer={uv_timer_s:.6f}/{uv_delay_s:.6f}s"
+                                            )
+                                            uv_timing_report_s = uv_timer_s
+                                        if uv_timer_s >= uv_delay_s:
+                                            uv_trip = 1
+                                            voltage_trip = 1
+                                            if voltage_trip_code == "NONE":
+                                                voltage_trip_code = "27"
+                                            if prev_uv_trip == 0:
+                                                protection_log(
+                                                    "[UV27 TRIP] "
+                                                    f"t={dev_t_s:.6f}s V1={v1_mag:.6f} "
+                                                    f"pickup={uv_pickup:.6f} "
+                                                    f"elapsed={uv_timer_s:.6f}s"
+                                                )
+                                    elif v1_mag > uv_dropout:
+                                        if uv_active == 1 and uv_trip == 0:
+                                            protection_log(
+                                                "[UV27 RESET] "
+                                                f"t={dev_t_s:.6f}s V1={v1_mag:.6f} "
+                                                f"dropout={uv_dropout:.6f} "
+                                                f"timer_reset={uv_timer_s:.6f}s"
+                                            )
+                                        uv_active = 0
+                                        uv_timer_s = 0.0
+                                        uv_timing_report_s = 0.0
+                                    else:
+                                        uv_active = 0
+
+                                if ov_enabled:
+                                    prev_ov_active = ov_active
+                                    prev_ov_trip = ov_trip
+                                    if v1_mag >= ov_pickup:
+                                        ov_active = 1
+                                        ov_timer_s += cycle_dt_s
+                                        if prev_ov_active == 0:
+                                            protection_log(
+                                                "[OV59 PICKUP] "
+                                                f"t={dev_t_s:.6f}s V1={v1_mag:.6f} "
+                                                f"pickup={ov_pickup:.6f} "
+                                                f"timer={ov_timer_s:.6f}s delay={ov_delay_s:.6f}s"
+                                            )
+                                            ov_timing_report_s = ov_timer_s
+                                        elif (
+                                            args.protection_events
+                                            and args.protection_event_interval > 0.0
+                                            and ov_timer_s - ov_timing_report_s
+                                            >= args.protection_event_interval
+                                            and ov_trip == 0
+                                        ):
+                                            protection_log(
+                                                "[OV59 TIMING] "
+                                                f"t={dev_t_s:.6f}s V1={v1_mag:.6f} "
+                                                f"timer={ov_timer_s:.6f}/{ov_delay_s:.6f}s"
+                                            )
+                                            ov_timing_report_s = ov_timer_s
+                                        if ov_timer_s >= ov_delay_s:
+                                            ov_trip = 1
+                                            voltage_trip = 1
+                                            if voltage_trip_code == "NONE":
+                                                voltage_trip_code = "59"
+                                            if prev_ov_trip == 0:
+                                                protection_log(
+                                                    "[OV59 TRIP] "
+                                                    f"t={dev_t_s:.6f}s V1={v1_mag:.6f} "
+                                                    f"pickup={ov_pickup:.6f} "
+                                                    f"elapsed={ov_timer_s:.6f}s"
+                                                )
+                                    elif v1_mag < ov_dropout:
+                                        if ov_active == 1 and ov_trip == 0:
+                                            protection_log(
+                                                "[OV59 RESET] "
+                                                f"t={dev_t_s:.6f}s V1={v1_mag:.6f} "
+                                                f"dropout={ov_dropout:.6f} "
+                                                f"timer_reset={ov_timer_s:.6f}s"
+                                            )
+                                        ov_active = 0
+                                        ov_timer_s = 0.0
+                                        ov_timing_report_s = 0.0
+                                    else:
+                                        ov_active = 0
+                            else:
+                                uv_active = 0
+                                ov_active = 0
+                                uv_timer_s = 0.0
+                                ov_timer_s = 0.0
+                                uv_timing_report_s = 0.0
+                                ov_timing_report_s = 0.0
+
+                        if (
+                            args.protection_events
+                            and breaker_trip_reported == 0
+                            and (oc_trip == 1 or dist_trip == 1 or voltage_trip == 1)
+                        ):
+                            trip_sources: list[str] = []
+                            if oc_50_trip == 1:
+                                trip_sources.append("50")
+                            if oc_51_trip == 1:
+                                trip_sources.append("51")
+                            if dist_z1_trip == 1:
+                                trip_sources.append("21Z1")
+                            if dist_z2_trip == 1:
+                                trip_sources.append("21Z2")
+                            if uv_trip == 1:
+                                trip_sources.append("27")
+                            if ov_trip == 1:
+                                trip_sources.append("59")
+                            protection_log(
+                                "[BREAKER TRIP] "
+                                f"t={dev_t_s:.6f}s source={';'.join(trip_sources)} "
+                                f"I1={i1_mag:.6f}A V1={v1_mag:.6f} "
+                                f"|Z|={dist_z_mag_ohm:.6f}ohm "
+                                f"R={dist_r_ohm:.6f}ohm X={dist_x_ohm:.6f}ohm "
+                                f"fault={dist_fault_ohm:.6f}ohm ({dist_fault_pct:.3f}% line)"
+                            )
+                            breaker_trip_reported = 1
 
                         cycle_update = 1
                         cycle_id += 1
@@ -537,6 +1231,8 @@ def main() -> None:
                     cyc_n = 0
                     cyc_sum_v2 = 0.0
                     cyc_sum_i2 = 0.0
+                    cyc_v_samples = []
+                    cyc_i_samples = []
                     cyc_flags = 0
 
                 state = new_state
@@ -546,6 +1242,8 @@ def main() -> None:
                     cyc_n += 1
                     cyc_sum_v2 += v_inst * v_inst
                     cyc_sum_i2 += i_inst * i_inst
+                    cyc_v_samples.append(v_inst)
+                    cyc_i_samples.append(i_inst)
 
                 host_t_s = time.perf_counter() - t0
                 dev_t_s = dev_t_us / 1_000_000.0
@@ -567,11 +1265,62 @@ def main() -> None:
                     f"{i_rms_raw:.9f}",
                     f"{v_rms:.9f}",
                     f"{i_rms:.9f}",
+                    f"{v1_mag_raw:.9f}",
+                    f"{i1_mag_raw:.9f}",
+                    f"{v1_mag:.9f}",
+                    f"{i1_mag:.9f}",
+                    f"{v1_angle_deg:.6f}",
+                    f"{i1_angle_deg:.6f}",
+                    f"{vi_angle_deg:.6f}",
+                    fourier_valid,
                     f"{f_est:.6f}",
                     rms_valid,
                     norm_ready,
                     f"{norm_gain_v:.9f}",
                     f"{norm_gain_i:.9f}",
+                    int(oc_enabled),
+                    f"{oc_i_nominal if oc_i_nominal is not None else 0.0:.9f}",
+                    f"{oc_51_pickup:.9f}",
+                    f"{oc_50_pickup:.9f}",
+                    f"{oc_51_timer_s:.9f}",
+                    oc_51_active,
+                    oc_50_trip,
+                    oc_51_trip,
+                    oc_trip,
+                    oc_trip_code,
+                    int(dist_enabled),
+                    f"{dist_line_z_ohm:.9f}",
+                    f"{dist_z1_pct:.9f}",
+                    f"{dist_z2_pct:.9f}",
+                    f"{dist_z1_ohm:.9f}",
+                    f"{dist_z2_ohm:.9f}",
+                    f"{dist_min_current:.9f}",
+                    f"{dist_z_mag_ohm:.9f}",
+                    f"{dist_z_angle_deg:.6f}",
+                    f"{dist_r_ohm:.9f}",
+                    f"{dist_x_ohm:.9f}",
+                    f"{dist_fault_pct:.9f}",
+                    f"{dist_fault_ohm:.9f}",
+                    dist_z1_active,
+                    dist_z2_active,
+                    f"{dist_z2_timer_s:.9f}",
+                    dist_z1_trip,
+                    dist_z2_trip,
+                    dist_trip,
+                    dist_trip_code,
+                    int(uv_enabled),
+                    int(ov_enabled),
+                    f"{vprot_nominal if vprot_nominal is not None else 0.0:.9f}",
+                    f"{uv_pickup:.9f}",
+                    f"{ov_pickup:.9f}",
+                    f"{uv_timer_s:.9f}",
+                    f"{ov_timer_s:.9f}",
+                    uv_active,
+                    ov_active,
+                    uv_trip,
+                    ov_trip,
+                    voltage_trip,
+                    voltage_trip_code,
                     cycle_id,
                     cycle_update,
                     last_cycle_quality_flags,
@@ -590,7 +1339,12 @@ def main() -> None:
                         f"status amostras={sample_count} "
                         f"V={v_inst:.4f} I={i_inst:.4f} "
                         f"Vrms={v_rms:.4f} Irms={i_rms:.4f} "
+                        f"V1={v1_mag:.4f} I1={i1_mag:.4f} "
                         f"f={f_est:.3f}Hz valid={rms_valid} qf={last_cycle_quality_flags} "
+                        f"OC51={oc_51_active}/{oc_51_timer_s:.3f}s "
+                        f"OC50={oc_50_trip} trip={oc_trip_code} "
+                        f"Z={dist_z_mag_ohm:.4f}ohm ({dist_fault_pct:.2f}% line) D21={dist_trip_code} "
+                        f"V27={uv_trip} V59={ov_trip} "
                         f"norm={norm_ready} lost={lost_total} bad={bad_checksum_total} ds={desync_total}"
                     )
                     f.flush()

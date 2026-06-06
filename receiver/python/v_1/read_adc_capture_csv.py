@@ -66,12 +66,30 @@ def main() -> None:
     parser.add_argument("--plot", action="store_true", help="Plotar séries temporais")
     parser.add_argument(
         "--plot-mode",
-        choices=["adc", "adc_no_offset", "volts", "volts_no_offset", "amplitude_scaled", "rms_real", "rms_scaled"],
+        choices=[
+            "adc",
+            "adc_no_offset",
+            "volts",
+            "volts_no_offset",
+            "amplitude_scaled",
+            "rms_real",
+            "rms_scaled",
+            "fourier_raw",
+            "fourier_scaled",
+            "fourier_angle",
+            "fourier_phase",
+            "over_current",
+            "over_current_timer",
+            "distance",
+            "voltage",
+        ],
         default="rms_scaled",
         help=(
             "Modo de plot: adc(0..4095), adc_no_offset, volts(0..3.3V), "
             "volts_no_offset, amplitude_scaled (instante escalonado), "
-            "rms_real(bruto) e rms_scaled(normalizado/escalonado)."
+            "rms_real(bruto), rms_scaled(normalizado/escalonado), "
+            "fourier_raw/fourier_scaled (fundamental RMS), fourier_angle, "
+            "fourier_phase, over_current, over_current_timer, distance e voltage."
         ),
     )
     parser.add_argument(
@@ -119,7 +137,42 @@ def main() -> None:
     print("\n--- TAIL ---")
     print(df.tail(args.tail).to_string(index=False))
 
-    rms_cols = [c for c in ("v_rms_raw", "i_rms_raw", "v_rms", "i_rms") if c in df.columns]
+    rms_cols = [
+        c
+        for c in (
+            "v_rms_raw",
+            "i_rms_raw",
+            "v_rms",
+            "i_rms",
+            "v1_mag_raw",
+            "i1_mag_raw",
+            "v1_mag",
+            "i1_mag",
+            "v1_angle_deg",
+            "i1_angle_deg",
+            "vi_angle_deg",
+            "oc_51_timer_s",
+            "oc_51_active",
+            "oc_50_trip",
+            "oc_51_trip",
+            "oc_trip",
+            "dist_z_mag_ohm",
+            "dist_z_angle_deg",
+            "dist_r_ohm",
+            "dist_x_ohm",
+            "dist_fault_pct",
+            "dist_fault_ohm",
+            "dist_z1_trip",
+            "dist_z2_trip",
+            "dist_trip",
+            "uv_timer_s",
+            "ov_timer_s",
+            "uv_trip",
+            "ov_trip",
+            "voltage_trip",
+        )
+        if c in df.columns
+    ]
     if rms_cols:
         print("\n--- ESTATÍSTICAS RMS ---")
         print(df[rms_cols].describe().to_string())
@@ -131,19 +184,40 @@ def main() -> None:
         base_mode = args.plot_mode
         if base_mode.endswith("_no_offset"):
             base_mode = base_mode.replace("_no_offset", "")
-        rms_mode = base_mode in {"rms_real", "rms_scaled"}
+        rms_mode = base_mode in {
+            "rms_real",
+            "rms_scaled",
+            "fourier_raw",
+            "fourier_scaled",
+            "fourier_angle",
+            "fourier_phase",
+            "over_current",
+            "over_current_timer",
+            "distance",
+            "voltage",
+        }
         amp_mode = base_mode == "amplitude_scaled"
         if rms_mode:
             if "cycle_update" in plot_df.columns:
                 plot_df = plot_df[plot_df["cycle_update"] == 1]
             if not args.plot_all:
-                if "rms_valid" in plot_df.columns:
+                if (
+                    (
+                        base_mode.startswith("fourier")
+                        or base_mode.startswith("over_current")
+                        or base_mode == "distance"
+                        or base_mode == "voltage"
+                    )
+                    and "fourier_valid" in plot_df.columns
+                ):
+                    plot_df = plot_df[plot_df["fourier_valid"] == 1]
+                elif "rms_valid" in plot_df.columns:
                     plot_df = plot_df[plot_df["rms_valid"] == 1]
-                if base_mode == "rms_scaled" and "norm_ready" in plot_df.columns:
+                if base_mode in {"rms_scaled", "fourier_scaled"} and "norm_ready" in plot_df.columns:
                     plot_df = plot_df[plot_df["norm_ready"] == 1]
-                print(f"\nPlot RMS com filtro de qualidade: {len(plot_df)} linhas.")
+                print(f"\nPlot fasorial/RMS com filtro de qualidade: {len(plot_df)} linhas.")
             else:
-                print(f"\nPlot RMS integral (updates): {len(plot_df)} linhas.")
+                print(f"\nPlot fasorial/RMS integral (updates): {len(plot_df)} linhas.")
         else:
             print(f"\nPlot de amostras integrais: {len(plot_df)} linhas.")
             if amp_mode and (not args.plot_all) and ("quality_flags" in plot_df.columns):
@@ -188,6 +262,186 @@ def main() -> None:
 
         gap_s = max(0.0, args.break_gap_ms) / 1000.0
 
+        if base_mode == "over_current":
+            required_cols = ["v1_mag", "i1_mag", "oc_50_trip", "oc_51_trip"]
+            missing_cols = [col for col in required_cols if col not in plot_df.columns]
+            if missing_cols:
+                raise SystemExit(f"CSV sem colunas para plot over_current: {missing_cols}")
+
+            plt.close(fig)
+            fig, (ax_v1, ax_i1, ax_trip) = plt.subplots(3, 1, figsize=(11, 8), sharex=True)
+
+            v1 = plot_df["v1_mag"].to_numpy(dtype=float)
+            i1 = plot_df["i1_mag"].to_numpy(dtype=float)
+            oc50 = plot_df["oc_50_trip"].to_numpy(dtype=float)
+            oc51 = plot_df["oc_51_trip"].to_numpy(dtype=float)
+
+            ax_v1.plot(t, break_large_gaps(t, v1, gap_s), color="#1f77b4", label="V1 Fourier")
+            ax_i1.plot(t, break_large_gaps(t, i1, gap_s), color="#d62728", label="I1 Fourier")
+            ax_trip.step(t, oc50, where="post", color="#ff7f0e", lw=1.6, label="Trip 50")
+            ax_trip.step(t, oc51, where="post", color="#9467bd", lw=1.6, label="Trip 51")
+
+            if "oc_50_pickup" in plot_df.columns:
+                pickup_50 = plot_df["oc_50_pickup"].to_numpy(dtype=float)
+                ax_i1.plot(t, break_large_gaps(t, pickup_50, gap_s), color="#ff7f0e", ls="--", alpha=0.65, label="Pickup 50")
+            if "oc_51_pickup" in plot_df.columns:
+                pickup_51 = plot_df["oc_51_pickup"].to_numpy(dtype=float)
+                ax_i1.plot(t, break_large_gaps(t, pickup_51, gap_s), color="#9467bd", ls="--", alpha=0.65, label="Pickup 51")
+
+            ax_v1.set_title("Proteção de sobrecorrente com fasores de Fourier")
+            ax_v1.set_ylabel("V1 RMS")
+            ax_i1.set_title("Corrente fundamental e pickups")
+            ax_i1.set_ylabel("I1 RMS")
+            ax_trip.set_title("Atuação das funções 50/51")
+            ax_trip.set_ylabel("Trip")
+            ax_trip.set_xlabel(x_label)
+            ax_trip.set_ylim(-0.05, 1.15)
+            ax_trip.set_yticks([0, 1])
+
+            for ax in (ax_v1, ax_i1, ax_trip):
+                ax.grid(True, alpha=0.3)
+                ax.set_xlim(0.0, global_t_max)
+                ax.legend(loc="upper right")
+
+            plt.tight_layout()
+            plt.show()
+            return
+
+        if base_mode == "voltage":
+            required_cols = ["v1_mag", "uv_trip", "ov_trip"]
+            missing_cols = [col for col in required_cols if col not in plot_df.columns]
+            if missing_cols:
+                raise SystemExit(f"CSV sem colunas para plot voltage: {missing_cols}")
+
+            plt.close(fig)
+            fig, (ax_v1, ax_timer, ax_trip) = plt.subplots(3, 1, figsize=(11, 8), sharex=True)
+
+            v1 = plot_df["v1_mag"].to_numpy(dtype=float)
+            uv_trip_arr = plot_df["uv_trip"].to_numpy(dtype=float)
+            ov_trip_arr = plot_df["ov_trip"].to_numpy(dtype=float)
+
+            ax_v1.plot(t, break_large_gaps(t, v1, gap_s), color="#1f77b4", label="V1 Fourier")
+            if "uv_pickup" in plot_df.columns:
+                uv_pickup_arr = plot_df["uv_pickup"].to_numpy(dtype=float)
+                ax_v1.plot(
+                    t,
+                    break_large_gaps(t, uv_pickup_arr, gap_s),
+                    color="#ff7f0e",
+                    ls="--",
+                    alpha=0.75,
+                    label="Pickup 27",
+                )
+            if "ov_pickup" in plot_df.columns:
+                ov_pickup_arr = plot_df["ov_pickup"].to_numpy(dtype=float)
+                ax_v1.plot(
+                    t,
+                    break_large_gaps(t, ov_pickup_arr, gap_s),
+                    color="#9467bd",
+                    ls="--",
+                    alpha=0.75,
+                    label="Pickup 59",
+                )
+
+            if "uv_timer_s" in plot_df.columns:
+                ax_timer.plot(
+                    t,
+                    break_large_gaps(t, plot_df["uv_timer_s"].to_numpy(dtype=float), gap_s),
+                    color="#ff7f0e",
+                    label="Timer 27",
+                )
+            if "ov_timer_s" in plot_df.columns:
+                ax_timer.plot(
+                    t,
+                    break_large_gaps(t, plot_df["ov_timer_s"].to_numpy(dtype=float), gap_s),
+                    color="#9467bd",
+                    label="Timer 59",
+                )
+
+            ax_trip.step(t, uv_trip_arr, where="post", color="#ff7f0e", lw=1.6, label="Trip 27")
+            ax_trip.step(t, ov_trip_arr, where="post", color="#9467bd", lw=1.6, label="Trip 59")
+
+            ax_v1.set_title("Proteção de tensão 27/59")
+            ax_v1.set_ylabel("V1 RMS")
+            ax_timer.set_title("Temporizadores 27/59")
+            ax_timer.set_ylabel("tempo (s)")
+            ax_trip.set_title("Atuação das funções 27/59")
+            ax_trip.set_ylabel("Trip")
+            ax_trip.set_xlabel(x_label)
+            ax_trip.set_ylim(-0.05, 1.15)
+            ax_trip.set_yticks([0, 1])
+
+            for ax in (ax_v1, ax_timer, ax_trip):
+                ax.grid(True, alpha=0.3)
+                ax.set_xlim(0.0, global_t_max)
+                ax.legend(loc="upper right")
+
+            plt.tight_layout()
+            plt.show()
+            return
+
+        if base_mode == "distance":
+            required_cols = ["dist_z_mag_ohm", "dist_z1_ohm", "dist_z2_ohm", "dist_z1_trip", "dist_z2_trip"]
+            missing_cols = [col for col in required_cols if col not in plot_df.columns]
+            if missing_cols:
+                raise SystemExit(f"CSV sem colunas para plot distance: {missing_cols}")
+
+            plt.close(fig)
+            fig = plt.figure(figsize=(11, 8))
+            grid = fig.add_gridspec(3, 1)
+            ax_rx = fig.add_subplot(grid[0, 0])
+            ax_z = fig.add_subplot(grid[1, 0])
+            ax_trip = fig.add_subplot(grid[2, 0], sharex=ax_z)
+
+            z_mag = plot_df["dist_z_mag_ohm"].to_numpy(dtype=float)
+            z1 = plot_df["dist_z1_ohm"].to_numpy(dtype=float)
+            z2 = plot_df["dist_z2_ohm"].to_numpy(dtype=float)
+            z1_trip = plot_df["dist_z1_trip"].to_numpy(dtype=float)
+            z2_trip = plot_df["dist_z2_trip"].to_numpy(dtype=float)
+
+            ax_z.plot(t, break_large_gaps(t, z_mag, gap_s), color="#1f77b4", label="|Z| aparente")
+            ax_z.plot(t, break_large_gaps(t, z1, gap_s), color="#ff7f0e", ls="--", alpha=0.75, label="Zona 1")
+            ax_z.plot(t, break_large_gaps(t, z2, gap_s), color="#9467bd", ls="--", alpha=0.75, label="Zona 2")
+
+            if "dist_r_ohm" in plot_df.columns and "dist_x_ohm" in plot_df.columns:
+                r_ohm = plot_df["dist_r_ohm"].to_numpy(dtype=float)
+                x_ohm = plot_df["dist_x_ohm"].to_numpy(dtype=float)
+                ax_rx.plot(r_ohm, x_ohm, color="#2ca02c", lw=1.0, label="Trajetória R-X")
+                theta = np.linspace(0.0, 2.0 * np.pi, 240)
+                z1_ref = float(np.nanmedian(z1[np.isfinite(z1)])) if np.any(np.isfinite(z1)) else 0.0
+                z2_ref = float(np.nanmedian(z2[np.isfinite(z2)])) if np.any(np.isfinite(z2)) else 0.0
+                if z1_ref > 0.0:
+                    ax_rx.plot(z1_ref * np.cos(theta), z1_ref * np.sin(theta), color="#ff7f0e", ls="--", alpha=0.75, label="Zona 1")
+                if z2_ref > 0.0:
+                    ax_rx.plot(z2_ref * np.cos(theta), z2_ref * np.sin(theta), color="#9467bd", ls="--", alpha=0.75, label="Zona 2")
+                ax_rx.axhline(0.0, color="#888888", lw=0.8, alpha=0.5)
+                ax_rx.axvline(0.0, color="#888888", lw=0.8, alpha=0.5)
+            else:
+                ax_rx.text(0.5, 0.5, "CSV sem dist_r_ohm/dist_x_ohm", transform=ax_rx.transAxes, ha="center")
+
+            ax_trip.step(t, z1_trip, where="post", color="#ff7f0e", lw=1.6, label="Trip 21Z1")
+            ax_trip.step(t, z2_trip, where="post", color="#9467bd", lw=1.6, label="Trip 21Z2")
+
+            ax_z.set_title("Proteção de distância 21")
+            ax_z.set_ylabel("|Z| (ohm)")
+            ax_rx.set_title("Plano R-X")
+            ax_rx.set_xlabel("R (ohm)")
+            ax_rx.set_ylabel("X (ohm)")
+            ax_rx.axis("equal")
+            ax_trip.set_title("Atuação das zonas 21")
+            ax_trip.set_ylabel("Trip")
+            ax_trip.set_xlabel(x_label)
+            ax_trip.set_ylim(-0.05, 1.15)
+            ax_trip.set_yticks([0, 1])
+
+            for ax in (ax_z, ax_rx, ax_trip):
+                ax.grid(True, alpha=0.3)
+                ax.legend(loc="upper right")
+            ax_z.set_xlim(0.0, global_t_max)
+
+            plt.tight_layout()
+            plt.show()
+            return
+
         if base_mode == "adc":
             v_col, i_col = "adc_34", "adc_35"
             v_title, i_title = "Tensão ADC (GPIO34) ao longo do tempo", "Corrente ADC (GPIO35) ao longo do tempo"
@@ -204,6 +458,30 @@ def main() -> None:
             v_col, i_col = "v_rms_raw", "i_rms_raw"
             v_title, i_title = "Tensão RMS real (bruta)", "Corrente RMS real (bruta)"
             v_label, i_label = "V RMS real", "I RMS real"
+        elif base_mode == "fourier_raw":
+            v_col, i_col = "v1_mag_raw", "i1_mag_raw"
+            v_title, i_title = "Tensão fundamental RMS (Fourier bruta)", "Corrente fundamental RMS (Fourier bruta)"
+            v_label, i_label = "V1 RMS bruto", "I1 RMS bruto"
+        elif base_mode == "fourier_scaled":
+            v_col, i_col = "v1_mag", "i1_mag"
+            v_title, i_title = "Tensão fundamental RMS (Fourier escalonada)", "Corrente fundamental RMS (Fourier escalonada)"
+            v_label, i_label = "V1 RMS escalonada", "I1 RMS escalonada"
+        elif base_mode == "fourier_angle":
+            v_col, i_col = "v1_angle_deg", "i1_angle_deg"
+            v_title, i_title = "Ângulo da tensão fundamental", "Ângulo da corrente fundamental"
+            v_label, i_label = "ângulo V1 (graus)", "ângulo I1 (graus)"
+        elif base_mode == "fourier_phase":
+            v_col, i_col = "vi_angle_deg", "vi_angle_deg"
+            v_title, i_title = "Diferença angular I1 - V1", ""
+            v_label, i_label = "I1 - V1 (graus)", ""
+        elif base_mode == "over_current":
+            v_col, i_col = "oc_50_trip", "oc_51_trip"
+            v_title, i_title = "Trip instantâneo 50", "Trip temporizado 51"
+            v_label, i_label = "OC50 trip", "OC51 trip"
+        elif base_mode == "over_current_timer":
+            v_col, i_col = "i1_mag", "oc_51_timer_s"
+            v_title, i_title = "Corrente fundamental usada na proteção", "Temporizador 51"
+            v_label, i_label = "I1 RMS", "tempo 51 (s)"
         else:
             v_col, i_col = "v_rms", "i_rms"
             v_title, i_title = "Tensão RMS escalonada", "Corrente RMS escalonada"
@@ -267,6 +545,13 @@ def main() -> None:
             ax_v.grid(True, alpha=0.3)
             add_background_scale(ax_v, yv, args.plot_bg_scale)
             ax_v.legend()
+            if base_mode == "fourier_phase":
+                ax_i.axis("off")
+                ax_v.set_xlim(0.0, global_t_max)
+                ax_v.set_xlabel(x_label)
+                plt.tight_layout()
+                plt.show()
+                return
         else:
             ax_v.set_title(f"Coluna indisponível no CSV: {v_col}")
 
