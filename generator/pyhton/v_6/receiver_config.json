@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "generator_script": "generate_signal_v6.py",
-  "generated_unix_s": 1780786599.8485081,
+  "generated_unix_s": 1781029312.3910139,
   "comtrade": {
-    "cfg_path": "samples/samples_/Matlab_comtrade/01_CC_Trifasico/25%/export.cfg",
-    "bdat_path": "samples/samples_/Matlab_comtrade/01_CC_Trifasico/25%/export.bdat",
+    "cfg_path": "samples/samples_/Matlab_comtrade/01_CC_Trifasico/25%_inverse/export.cfg",
+    "bdat_path": "samples/samples_/Matlab_comtrade/01_CC_Trifasico/25%_inverse/export.bdat",
     "n_analog": 2,
     "n_digital": 0,
     "freq_hz": 60.0,
@@ -24,14 +24,14 @@
     }
   },
   "comtrade_reference": {
-    "v_nom_peak": 362388.0,
-    "i_nom_peak": 1837.0,
-    "v_nom_rms": 256247.01222063057,
-    "i_nom_rms": 1298.9551570396877,
-    "v_clip_peak": 1811940.0,
-    "i_clip_peak": 18370.0,
-    "v_clip_rms": 1281235.0611031528,
-    "i_clip_rms": 12989.551570396878
+    "v_nom_peak": 436351.4,
+    "i_nom_peak": 398.2,
+    "v_nom_rms": 308547.0339202437,
+    "i_nom_rms": 281.5699202684832,
+    "v_clip_peak": 2181757.0,
+    "i_clip_peak": 3982.0,
+    "v_clip_rms": 1542735.1696012183,
+    "i_clip_rms": 2815.699202684832
   },
   "receiver_recommendation": {
     "channel_map": {
@@ -41,8 +41,8 @@
     "adc_vref": 3.3,
     "offset_v": 1.65,
     "offset_i": 1.65,
-    "v_scale_eng_per_volt": 1168993.5483870967,
-    "i_scale_eng_per_volt": 11851.612903225807,
+    "v_scale_eng_per_volt": 1407585.1612903224,
+    "i_scale_eng_per_volt": 2569.032258064516,
     "freq_hz": 60.0,
     "sample_rate_hz": 1000.0
   }
