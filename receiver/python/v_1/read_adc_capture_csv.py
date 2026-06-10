@@ -407,19 +407,163 @@ def main() -> None:
                 x_ohm = plot_df["dist_x_ohm"].to_numpy(dtype=float)
                 ax_rx.plot(r_ohm, x_ohm, color="#2ca02c", lw=1.0, label="Trajetória R-X")
                 theta = np.linspace(0.0, 2.0 * np.pi, 240)
+
+                def finite_median(col_name: str, fallback: float = 0.0) -> float:
+                    if col_name not in plot_df.columns:
+                        return fallback
+                    values = plot_df[col_name].to_numpy(dtype=float)
+                    finite_values = values[np.isfinite(values)]
+                    if len(finite_values) == 0:
+                        return fallback
+                    return float(np.nanmedian(finite_values))
+
+                def string_mode(col_name: str, fallback: str) -> str:
+                    if col_name not in plot_df.columns:
+                        return fallback
+                    values = plot_df[col_name].dropna().astype(str)
+                    values = values[values != ""]
+                    if values.empty:
+                        return fallback
+                    return str(values.mode().iloc[0])
+
                 z1_ref = float(np.nanmedian(z1[np.isfinite(z1)])) if np.any(np.isfinite(z1)) else 0.0
                 z2_ref = float(np.nanmedian(z2[np.isfinite(z2)])) if np.any(np.isfinite(z2)) else 0.0
-                if z1_ref > 0.0:
-                    ax_rx.plot(z1_ref * np.cos(theta), z1_ref * np.sin(theta), color="#ff7f0e", ls="--", alpha=0.75, label="Zona 1")
-                if z2_ref > 0.0:
-                    ax_rx.plot(z2_ref * np.cos(theta), z2_ref * np.sin(theta), color="#9467bd", ls="--", alpha=0.75, label="Zona 2")
+                z1_center_r = finite_median("dist_z1_center_r_ohm")
+                z1_center_x = finite_median("dist_z1_center_x_ohm")
+                z1_radius = finite_median("dist_z1_radius_ohm", 0.5 * z1_ref)
+                z2_center_r = finite_median("dist_z2_center_r_ohm")
+                z2_center_x = finite_median("dist_z2_center_x_ohm")
+                z2_radius = finite_median("dist_z2_radius_ohm", 0.5 * z2_ref)
+                line_angle_deg = finite_median("dist_line_angle_deg")
+                dir67_angle_deg = finite_median("dir67_angle_deg", line_angle_deg)
+                dir67_window_deg = finite_median("dir67_window_deg", 0.0)
+                dir67_direction = string_mode("dir67_direction", "forward").lower()
+
+                if "dist_z1_radius_ohm" not in plot_df.columns:
+                    z1_center_r = 0.0
+                    z1_center_x = 0.0
+                    z1_radius = z1_ref
+                    z2_center_r = 0.0
+                    z2_center_x = 0.0
+                    z2_radius = z2_ref
+                elif "dist_line_angle_deg" not in plot_df.columns:
+                    line_angle_deg = float(np.degrees(np.arctan2(z2_center_x, z2_center_r)))
+
+                finite_r = r_ohm[np.isfinite(r_ohm)]
+                finite_x = x_ohm[np.isfinite(x_ohm)]
+                traj_reach = 0.0
+                if len(finite_r) and len(finite_x):
+                    traj_reach = float(np.nanpercentile(np.hypot(finite_r, finite_x), 95.0))
+                line_reach = z2_ref if z2_ref > 0.0 else 2.0 * z2_radius
+                direction_reach = max(1.25 * line_reach, 1.05 * traj_reach)
+
+                if "dir67_permit" in plot_df.columns and dir67_window_deg > 0.0 and direction_reach > 0.0:
+                    direction_center_deg = dir67_angle_deg
+                    if dir67_direction == "reverse":
+                        direction_center_deg += 180.0
+                    for idx, bound_deg in enumerate((
+                        direction_center_deg - dir67_window_deg,
+                        direction_center_deg + dir67_window_deg,
+                    )):
+                        bound_rad = np.radians(bound_deg)
+                        ax_rx.plot(
+                            [0.0, direction_reach * np.cos(bound_rad)],
+                            [0.0, direction_reach * np.sin(bound_rad)],
+                            color="#2ca02c",
+                            ls=":",
+                            lw=1.2,
+                            alpha=0.8,
+                            label=f"Limites 67 {dir67_direction}" if idx == 0 else None,
+                        )
+
+                if z1_radius > 0.0:
+                    ax_rx.plot(
+                        z1_center_r + z1_radius * np.cos(theta),
+                        z1_center_x + z1_radius * np.sin(theta),
+                        color="#ff7f0e",
+                        ls="--",
+                        alpha=0.75,
+                        label="Zona 1 MHO",
+                    )
+                if z2_radius > 0.0:
+                    ax_rx.plot(
+                        z2_center_r + z2_radius * np.cos(theta),
+                        z2_center_x + z2_radius * np.sin(theta),
+                        color="#9467bd",
+                        ls="--",
+                        alpha=0.75,
+                        label="Zona 2 MHO",
+                    )
+                if line_reach > 0.0:
+                    line_angle_rad = np.radians(line_angle_deg)
+                    line_r = line_reach * np.cos(line_angle_rad)
+                    line_x = line_reach * np.sin(line_angle_rad)
+                    ax_rx.plot(
+                        [0.0, line_r],
+                        [0.0, line_x],
+                        color="#1f77b4",
+                        ls="-.",
+                        lw=1.2,
+                        alpha=0.85,
+                        label=f"Ângulo linha {line_angle_deg:.2f}°",
+                    )
+                    ax_rx.annotate(
+                        f"{line_angle_deg:.2f}°",
+                        xy=(line_r, line_x),
+                        xytext=(6, 6),
+                        textcoords="offset points",
+                        color="#1f77b4",
+                        fontsize=9,
+                    )
                 ax_rx.axhline(0.0, color="#888888", lw=0.8, alpha=0.5)
                 ax_rx.axvline(0.0, color="#888888", lw=0.8, alpha=0.5)
             else:
                 ax_rx.text(0.5, 0.5, "CSV sem dist_r_ohm/dist_x_ohm", transform=ax_rx.transAxes, ha="center")
 
-            ax_trip.step(t, z1_trip, where="post", color="#ff7f0e", lw=1.6, label="Trip 21Z1")
-            ax_trip.step(t, z2_trip, where="post", color="#9467bd", lw=1.6, label="Trip 21Z2")
+            digital_tracks: list[tuple[str, np.ndarray, str]] = [
+                ("21Z1", z1_trip, "#ff7f0e"),
+                ("21Z2", z2_trip, "#9467bd"),
+            ]
+            if "dir67_permit" in plot_df.columns:
+                digital_tracks.append(
+                    ("67 Permissivo", plot_df["dir67_permit"].to_numpy(dtype=float), "#2ca02c")
+                )
+            if "dir67_block_active" in plot_df.columns:
+                digital_tracks.append(
+                    ("67 Bloqueio", plot_df["dir67_block_active"].to_numpy(dtype=float), "#d62728")
+                )
+
+            track_height = 0.65
+            track_gap = 1.0
+            track_positions = np.arange(len(digital_tracks), dtype=float) * track_gap
+            for track_pos, (track_label, track_values, track_color) in zip(track_positions, digital_tracks):
+                binary_values = np.nan_to_num(track_values, nan=0.0)
+                binary_values = (binary_values > 0.5).astype(float)
+                ax_trip.hlines(
+                    track_pos,
+                    float(np.nanmin(t)) if len(t) else 0.0,
+                    float(np.nanmax(t)) if len(t) else global_t_max,
+                    color="#888888",
+                    lw=0.7,
+                    alpha=0.35,
+                )
+                ax_trip.fill_between(
+                    t,
+                    track_pos,
+                    track_pos + track_height * binary_values,
+                    step="post",
+                    color=track_color,
+                    alpha=0.28,
+                )
+                active_values = np.where(binary_values > 0.5, track_pos + track_height, np.nan)
+                ax_trip.step(
+                    t,
+                    active_values,
+                    where="post",
+                    color=track_color,
+                    lw=1.5,
+                )
+                ax_trip.plot([], [], color=track_color, lw=2.0, label=track_label)
 
             ax_z.set_title("Proteção de distância 21")
             ax_z.set_ylabel("|Z| (ohm)")
@@ -427,11 +571,12 @@ def main() -> None:
             ax_rx.set_xlabel("R (ohm)")
             ax_rx.set_ylabel("X (ohm)")
             ax_rx.axis("equal")
-            ax_trip.set_title("Atuação das zonas 21")
-            ax_trip.set_ylabel("Trip")
+            ax_trip.set_title("Atuação 21/67 em trilhas digitais")
+            ax_trip.set_ylabel("Função")
             ax_trip.set_xlabel(x_label)
-            ax_trip.set_ylim(-0.05, 1.15)
-            ax_trip.set_yticks([0, 1])
+            ax_trip.set_ylim(-0.35, max(1.0, len(digital_tracks) - 1 + track_height + 0.35))
+            ax_trip.set_yticks(track_positions + 0.5 * track_height)
+            ax_trip.set_yticklabels([track_label for track_label, _, _ in digital_tracks])
 
             for ax in (ax_z, ax_rx, ax_trip):
                 ax.grid(True, alpha=0.3)

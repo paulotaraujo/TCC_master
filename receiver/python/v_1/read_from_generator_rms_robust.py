@@ -92,6 +92,39 @@ def fundamental_phasor_rms(samples: list[float]) -> tuple[float, float]:
     return rms_mag, angle_deg
 
 
+def mho_circle(reach_ohm: float, line_angle_deg: float) -> tuple[float, float, float]:
+    angle_rad = math.radians(line_angle_deg)
+    radius_ohm = 0.5 * reach_ohm
+    center_r_ohm = radius_ohm * math.cos(angle_rad)
+    center_x_ohm = radius_ohm * math.sin(angle_rad)
+    return center_r_ohm, center_x_ohm, radius_ohm
+
+
+def mho_operates(r_ohm: float, x_ohm: float, reach_ohm: float, line_angle_deg: float) -> bool:
+    center_r_ohm, center_x_ohm, radius_ohm = mho_circle(reach_ohm, line_angle_deg)
+    dr = r_ohm - center_r_ohm
+    dx = x_ohm - center_x_ohm
+    return (dr * dr + dx * dx) <= (radius_ohm * radius_ohm)
+
+
+def directional_67_operates(
+    measure_angle_deg: float,
+    torque_angle_deg: float,
+    window_deg: float,
+) -> tuple[int, int, float]:
+    forward_reference_deg = wrap_angle_deg(-torque_angle_deg)
+    angle_error_deg = wrap_angle_deg(measure_angle_deg - forward_reference_deg)
+    forward = int(abs(angle_error_deg) <= window_deg)
+    reverse = int(abs(wrap_angle_deg(angle_error_deg - 180.0)) <= window_deg)
+    return forward, reverse, angle_error_deg
+
+
+def directional_67_power_operates(power_w: float, power_min_w: float) -> tuple[int, int]:
+    forward = int(power_w > power_min_w)
+    reverse = int(power_w < -power_min_w)
+    return forward, reverse
+
+
 def load_config_file(config_path: Path) -> dict:
     if not config_path.exists():
         raise SystemExit(f"Arquivo de configuração não encontrado: {config_path}")
@@ -266,8 +299,37 @@ def main() -> None:
         metavar=("LINE_Z_OHM", "Z1_PCT", "Z2_PCT", "DELAY_Z2_S"),
         default=None,
         help=(
-            "Ativa proteção de distância 21 por impedância aparente |V1/I1|. "
+            "Ativa proteção de distância 21 tipo MHO usando impedância aparente V1/I1. "
             "Ex.: --distance 52.12496 80 120 0.05."
+        ),
+    )
+    parser.add_argument(
+        "--distance-line-angle",
+        type=float,
+        default=0.0,
+        help=(
+            "Ângulo da impedância da linha em graus para orientar os círculos MHO. "
+            "Ex.: --distance-line-angle 75."
+        ),
+    )
+    parser.add_argument(
+        "--directional-67",
+        nargs=3,
+        metavar=("DIRECTION", "ANGLE_DEG", "WINDOW_DEG"),
+        default=None,
+        help=(
+            "Ativa proteção direcional 67 como permissivo da 21 usando potência "
+            "monofásica fundamental. ANGLE_DEG/WINDOW_DEG são mantidos para plot/log. "
+            "DIRECTION: forward ou reverse. Ex.: --directional-67 forward 86.636 90."
+        ),
+    )
+    parser.add_argument(
+        "--directional-67-power-min",
+        type=float,
+        default=10000.0,
+        help=(
+            "Potência mínima monofásica fundamental para validar direção da 67 (W). "
+            "Default: 10000 W."
         ),
     )
     parser.add_argument(
@@ -432,6 +494,13 @@ def main() -> None:
     dist_z2_delay_s = 0.0
     dist_z2_dropout_ohm = 0.0
     dist_min_current = 0.0
+    dist_line_angle_deg = float(args.distance_line_angle)
+    dist_z1_center_r_ohm = 0.0
+    dist_z1_center_x_ohm = 0.0
+    dist_z1_radius_ohm = 0.0
+    dist_z2_center_r_ohm = 0.0
+    dist_z2_center_x_ohm = 0.0
+    dist_z2_radius_ohm = 0.0
 
     if dist_enabled:
         dist_line_z_ohm, dist_z1_pct, dist_z2_pct, dist_z2_delay_s = [
@@ -448,6 +517,14 @@ def main() -> None:
 
         dist_z1_ohm = dist_line_z_ohm * (dist_z1_pct / 100.0)
         dist_z2_ohm = dist_line_z_ohm * (dist_z2_pct / 100.0)
+        dist_z1_center_r_ohm, dist_z1_center_x_ohm, dist_z1_radius_ohm = mho_circle(
+            dist_z1_ohm,
+            dist_line_angle_deg,
+        )
+        dist_z2_center_r_ohm, dist_z2_center_x_ohm, dist_z2_radius_ohm = mho_circle(
+            dist_z2_ohm,
+            dist_line_angle_deg,
+        )
 
         if args.distance_min_current is not None:
             dist_min_current = float(args.distance_min_current)
@@ -465,13 +542,51 @@ def main() -> None:
         dist_z2_dropout_ohm = 1.05 * dist_z2_ohm
         print(
             "Proteção 21 ativa: "
+            "tipo=MHO "
             f"Zlinha={dist_line_z_ohm:.6f}ohm "
+            f"angulo_linha={dist_line_angle_deg:.3f}deg "
             f"Z1={dist_z1_ohm:.6f}ohm ({dist_z1_pct:.3f}%) instantânea "
+            f"centro_Z1=({dist_z1_center_r_ohm:.6f},{dist_z1_center_x_ohm:.6f}) "
+            f"raio_Z1={dist_z1_radius_ohm:.6f}ohm "
             f"Z2={dist_z2_ohm:.6f}ohm ({dist_z2_pct:.3f}%) delay={dist_z2_delay_s:.6f}s "
+            f"centro_Z2=({dist_z2_center_r_ohm:.6f},{dist_z2_center_x_ohm:.6f}) "
+            f"raio_Z2={dist_z2_radius_ohm:.6f}ohm "
             f"Imin={dist_min_current:.6f}A"
         )
     else:
         print("Proteção 21: desativada")
+
+    dir67_enabled = args.directional_67 is not None
+    dir67_direction = "forward"
+    dir67_angle_deg = dist_line_angle_deg
+    dir67_window_deg = 90.0
+    dir67_power_min_w = float(args.directional_67_power_min)
+
+    if dir67_enabled:
+        if not dist_enabled:
+            raise SystemExit("Proteção --directional-67 é permissiva da 21 e exige --distance ativo.")
+        dir67_direction = str(args.directional_67[0]).strip().lower()
+        if dir67_direction not in {"forward", "reverse"}:
+            raise SystemExit("--directional-67 exige DIRECTION igual a forward ou reverse.")
+        try:
+            dir67_angle_deg = float(args.directional_67[1])
+            dir67_window_deg = float(args.directional_67[2])
+        except ValueError as exc:
+            raise SystemExit("--directional-67 exige ANGLE_DEG e WINDOW_DEG numéricos.") from exc
+        if not (0.0 < dir67_window_deg <= 180.0):
+            raise SystemExit("--directional-67 exige WINDOW_DEG entre 0 e 180.")
+        if dir67_power_min_w < 0.0:
+            raise SystemExit("--directional-67-power-min precisa ser >= 0.")
+        print(
+            "Proteção 67 ativa como permissivo da 21: "
+            f"direção={dir67_direction} "
+            "modo=potência_mono_fundamental "
+            f"Pmin={dir67_power_min_w:.6f}W "
+            f"angulo_plot={dir67_angle_deg:.3f}deg "
+            f"janela_plot=±{dir67_window_deg:.3f}deg"
+        )
+    else:
+        print("Proteção 67 permissiva: desativada")
 
     vprot_nominal = float(args.v_nominal_rms) if args.v_nominal_rms is not None else cfg_v_nom_rms
     uv_enabled = args.under_voltage is not None
@@ -610,6 +725,8 @@ def main() -> None:
     dist_x_ohm = 0.0
     dist_fault_pct = 0.0
     dist_fault_ohm = 0.0
+    dist_z1_mho_operate = 0
+    dist_z2_mho_operate = 0
     dist_z1_active = 0
     dist_z2_active = 0
     dist_z2_timer_s = 0.0
@@ -618,6 +735,14 @@ def main() -> None:
     dist_trip = 0
     dist_trip_code = "NONE"
     dist_z2_timing_report_s = 0.0
+    dir67_forward = 0
+    dir67_reverse = 0
+    dir67_permit = 0
+    dir67_measure_angle_deg = 0.0
+    dir67_angle_error_deg = 0.0
+    dir67_power_w = 0.0
+    dir67_prefault_power_w = 0.0
+    dir67_block_active = 0
     breaker_trip_reported = 0
 
     # Estado das proteções de tensão 27/59.
@@ -681,12 +806,21 @@ def main() -> None:
             "dist_z1_ohm",
             "dist_z2_ohm",
             "dist_min_current",
+            "dist_line_angle_deg",
+            "dist_z1_center_r_ohm",
+            "dist_z1_center_x_ohm",
+            "dist_z1_radius_ohm",
+            "dist_z2_center_r_ohm",
+            "dist_z2_center_x_ohm",
+            "dist_z2_radius_ohm",
             "dist_z_mag_ohm",
             "dist_z_angle_deg",
             "dist_r_ohm",
             "dist_x_ohm",
             "dist_fault_pct",
             "dist_fault_ohm",
+            "dist_z1_mho_operate",
+            "dist_z2_mho_operate",
             "dist_z1_active",
             "dist_z2_active",
             "dist_z2_timer_s",
@@ -694,6 +828,19 @@ def main() -> None:
             "dist_z2_trip",
             "dist_trip",
             "dist_trip_code",
+            "dir67_enabled",
+            "dir67_direction",
+            "dir67_angle_deg",
+            "dir67_window_deg",
+            "dir67_measure_angle_deg",
+            "dir67_angle_error_deg",
+            "dir67_power_w",
+            "dir67_prefault_power_w",
+            "dir67_power_min_w",
+            "dir67_forward",
+            "dir67_reverse",
+            "dir67_permit",
+            "dir67_block_active",
             "uv_enabled",
             "ov_enabled",
             "v_nominal_rms",
@@ -983,6 +1130,7 @@ def main() -> None:
                                 prev_dist_z2_active = dist_z2_active
                                 prev_dist_z1_trip = dist_z1_trip
                                 prev_dist_z2_trip = dist_z2_trip
+                                prev_dir67_block_active = dir67_block_active
 
                                 dist_z_mag_ohm = v1_mag / max(1e-12, i1_mag)
                                 dist_z_angle_deg = wrap_angle_deg(v1_angle_deg - i1_angle_deg)
@@ -991,8 +1139,80 @@ def main() -> None:
                                 dist_x_ohm = dist_z_mag_ohm * math.sin(dist_angle_rad)
                                 dist_fault_ohm = dist_z_mag_ohm
                                 dist_fault_pct = (dist_fault_ohm / dist_line_z_ohm) * 100.0
+                                dist_z1_mho_operate = int(
+                                    mho_operates(
+                                        dist_r_ohm,
+                                        dist_x_ohm,
+                                        dist_z1_ohm,
+                                        dist_line_angle_deg,
+                                    )
+                                )
+                                dist_z2_mho_operate = int(
+                                    mho_operates(
+                                        dist_r_ohm,
+                                        dist_x_ohm,
+                                        dist_z2_ohm,
+                                        dist_line_angle_deg,
+                                    )
+                                )
+                                dist_z2_dropout_operate = mho_operates(
+                                    dist_r_ohm,
+                                    dist_x_ohm,
+                                    dist_z2_dropout_ohm,
+                                    dist_line_angle_deg,
+                                )
+                                dist_any_mho_operate = (
+                                    dist_z1_mho_operate == 1 or dist_z2_mho_operate == 1
+                                )
+                                if dir67_enabled:
+                                    dir67_measure_angle_deg = wrap_angle_deg(i1_angle_deg - v1_angle_deg)
+                                    dir67_angle_error_deg = 0.0
+                                    dir67_power_w = (
+                                        v1_mag
+                                        * i1_mag
+                                        * math.cos(math.radians(wrap_angle_deg(v1_angle_deg - i1_angle_deg)))
+                                    )
+                                    if not dist_any_mho_operate and abs(dir67_power_w) > dir67_power_min_w:
+                                        dir67_prefault_power_w = dir67_power_w
+                                    dir67_forward, dir67_reverse = directional_67_power_operates(
+                                        dir67_prefault_power_w,
+                                        dir67_power_min_w,
+                                    )
+                                    if dir67_direction == "forward":
+                                        dir67_direction_ok = dir67_forward
+                                    else:
+                                        dir67_direction_ok = dir67_reverse
+                                else:
+                                    dir67_forward = 1
+                                    dir67_reverse = 0
+                                    dir67_direction_ok = 1
+                                    dir67_measure_angle_deg = 0.0
+                                    dir67_angle_error_deg = 0.0
+                                    dir67_power_w = 0.0
+                                dir67_permit = int(dist_any_mho_operate and dir67_direction_ok == 1)
 
-                                if dist_z_mag_ohm <= dist_z1_ohm:
+                                if dist_any_mho_operate and dir67_permit == 0:
+                                    dir67_block_active = 1
+                                    dist_z1_active = 0
+                                    dist_z2_active = 0
+                                    dist_z2_timer_s = 0.0
+                                    dist_z2_timing_report_s = 0.0
+                                    if prev_dir67_block_active == 0:
+                                        protection_log(
+                                            "[D21 BLOCKED BY 67] "
+                                            f"t={dev_t_s:.6f}s |Z|={dist_z_mag_ohm:.6f}ohm "
+                                            f"R={dist_r_ohm:.6f}ohm X={dist_x_ohm:.6f}ohm "
+                                            f"fault={dist_fault_ohm:.6f}ohm ({dist_fault_pct:.3f}% line) "
+                                            f"Z1_mho={dist_z1_mho_operate} Z2_mho={dist_z2_mho_operate} "
+                                            f"dir_set={dir67_direction} "
+                                            f"P67={dir67_power_w:.6f}W "
+                                            f"P67_prefault={dir67_prefault_power_w:.6f}W "
+                                            f"Pmin={dir67_power_min_w:.6f}W "
+                                            f"i_v_angle={dir67_measure_angle_deg:.3f}deg "
+                                            f"forward={dir67_forward} reverse={dir67_reverse}"
+                                        )
+                                elif dist_z1_mho_operate == 1:
+                                    dir67_block_active = 0
                                     dist_z1_active = 1
                                     dist_z2_active = 0
                                     dist_z1_trip = 1
@@ -1006,10 +1226,15 @@ def main() -> None:
                                             f"R={dist_r_ohm:.6f}ohm X={dist_x_ohm:.6f}ohm "
                                             f"fault={dist_fault_ohm:.6f}ohm ({dist_fault_pct:.3f}% line) "
                                             f"I1={i1_mag:.6f}A V1={v1_mag:.6f} "
-                                            f"zone=Z1 reach={dist_z1_ohm:.6f}ohm "
+                                            f"zone=Z1 type=MHO reach={dist_z1_ohm:.6f}ohm "
+                                            f"line_angle={dist_line_angle_deg:.3f}deg "
+                                            f"dir67_permit={dir67_permit} "
+                                            f"center=({dist_z1_center_r_ohm:.6f},{dist_z1_center_x_ohm:.6f}) "
+                                            f"radius={dist_z1_radius_ohm:.6f}ohm "
                                             "delay=instantaneous"
                                         )
-                                elif dist_z_mag_ohm <= dist_z2_ohm:
+                                elif dist_z2_mho_operate == 1:
+                                    dir67_block_active = 0
                                     dist_z1_active = 0
                                     dist_z2_active = 1
                                     dist_z2_timer_s += cycle_dt_s
@@ -1020,6 +1245,11 @@ def main() -> None:
                                             f"R={dist_r_ohm:.6f}ohm X={dist_x_ohm:.6f}ohm "
                                             f"fault={dist_fault_ohm:.6f}ohm ({dist_fault_pct:.3f}% line) "
                                             f"I1={i1_mag:.6f}A V1={v1_mag:.6f} "
+                                            f"zone=Z2 type=MHO reach={dist_z2_ohm:.6f}ohm "
+                                            f"line_angle={dist_line_angle_deg:.3f}deg "
+                                            f"dir67_permit={dir67_permit} "
+                                            f"center=({dist_z2_center_r_ohm:.6f},{dist_z2_center_x_ohm:.6f}) "
+                                            f"radius={dist_z2_radius_ohm:.6f}ohm "
                                             f"timer={dist_z2_timer_s:.6f}s "
                                             f"delay={dist_z2_delay_s:.6f}s"
                                         )
@@ -1036,6 +1266,7 @@ def main() -> None:
                                             f"t={dev_t_s:.6f}s |Z|={dist_z_mag_ohm:.6f}ohm "
                                             f"R={dist_r_ohm:.6f}ohm X={dist_x_ohm:.6f}ohm "
                                             f"fault={dist_fault_ohm:.6f}ohm ({dist_fault_pct:.3f}% line) "
+                                            f"zone=Z2 type=MHO reach={dist_z2_ohm:.6f}ohm "
                                             f"timer={dist_z2_timer_s:.6f}/{dist_z2_delay_s:.6f}s"
                                         )
                                         dist_z2_timing_report_s = dist_z2_timer_s
@@ -1051,25 +1282,37 @@ def main() -> None:
                                                 f"R={dist_r_ohm:.6f}ohm X={dist_x_ohm:.6f}ohm "
                                                 f"fault={dist_fault_ohm:.6f}ohm ({dist_fault_pct:.3f}% line) "
                                                 f"I1={i1_mag:.6f}A V1={v1_mag:.6f} "
+                                                f"zone=Z2 type=MHO reach={dist_z2_ohm:.6f}ohm "
                                                 f"elapsed={dist_z2_timer_s:.6f}s"
                                             )
-                                elif dist_z_mag_ohm > dist_z2_dropout_ohm:
+                                elif not dist_z2_dropout_operate:
                                     if dist_z2_active == 1 and dist_z2_trip == 0:
                                         protection_log(
                                             "[D21Z2 RESET] "
                                             f"t={dev_t_s:.6f}s |Z|={dist_z_mag_ohm:.6f}ohm "
                                             f"fault={dist_fault_ohm:.6f}ohm ({dist_fault_pct:.3f}% line) "
-                                            f"dropout={dist_z2_dropout_ohm:.6f}ohm "
+                                            f"type=MHO dropout_reach={dist_z2_dropout_ohm:.6f}ohm "
                                             f"timer_reset={dist_z2_timer_s:.6f}s"
                                         )
                                     dist_z1_active = 0
                                     dist_z2_active = 0
                                     dist_z2_timer_s = 0.0
                                     dist_z2_timing_report_s = 0.0
+                                    dir67_block_active = 0
                                 else:
                                     dist_z1_active = 0
                                     dist_z2_active = 0
+                                    dir67_block_active = 0
                             else:
+                                dist_z1_mho_operate = 0
+                                dist_z2_mho_operate = 0
+                                dir67_forward = 0
+                                dir67_reverse = 0
+                                dir67_permit = 0
+                                dir67_measure_angle_deg = 0.0
+                                dir67_angle_error_deg = 0.0
+                                dir67_power_w = 0.0
+                                dir67_block_active = 0
                                 dist_z1_active = 0
                                 dist_z2_active = 0
                                 dist_z2_timer_s = 0.0
@@ -1295,12 +1538,21 @@ def main() -> None:
                     f"{dist_z1_ohm:.9f}",
                     f"{dist_z2_ohm:.9f}",
                     f"{dist_min_current:.9f}",
+                    f"{dist_line_angle_deg:.6f}",
+                    f"{dist_z1_center_r_ohm:.9f}",
+                    f"{dist_z1_center_x_ohm:.9f}",
+                    f"{dist_z1_radius_ohm:.9f}",
+                    f"{dist_z2_center_r_ohm:.9f}",
+                    f"{dist_z2_center_x_ohm:.9f}",
+                    f"{dist_z2_radius_ohm:.9f}",
                     f"{dist_z_mag_ohm:.9f}",
                     f"{dist_z_angle_deg:.6f}",
                     f"{dist_r_ohm:.9f}",
                     f"{dist_x_ohm:.9f}",
                     f"{dist_fault_pct:.9f}",
                     f"{dist_fault_ohm:.9f}",
+                    dist_z1_mho_operate,
+                    dist_z2_mho_operate,
                     dist_z1_active,
                     dist_z2_active,
                     f"{dist_z2_timer_s:.9f}",
@@ -1308,6 +1560,19 @@ def main() -> None:
                     dist_z2_trip,
                     dist_trip,
                     dist_trip_code,
+                    int(dir67_enabled),
+                    dir67_direction,
+                    f"{dir67_angle_deg:.6f}",
+                    f"{dir67_window_deg:.6f}",
+                    f"{dir67_measure_angle_deg:.6f}",
+                    f"{dir67_angle_error_deg:.6f}",
+                    f"{dir67_power_w:.9f}",
+                    f"{dir67_prefault_power_w:.9f}",
+                    f"{dir67_power_min_w:.9f}",
+                    dir67_forward,
+                    dir67_reverse,
+                    dir67_permit,
+                    dir67_block_active,
                     int(uv_enabled),
                     int(ov_enabled),
                     f"{vprot_nominal if vprot_nominal is not None else 0.0:.9f}",

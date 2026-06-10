@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "generator_script": "generate_signal_v6.py",
-  "generated_unix_s": 1781029312.3910139,
+  "generated_unix_s": 1781051048.7398722,
   "comtrade": {
     "cfg_path": "samples/samples_/Matlab_comtrade/01_CC_Trifasico/25%_inverse/export.cfg",
     "bdat_path": "samples/samples_/Matlab_comtrade/01_CC_Trifasico/25%_inverse/export.bdat",
