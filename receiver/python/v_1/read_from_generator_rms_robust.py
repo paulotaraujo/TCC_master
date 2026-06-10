@@ -1155,6 +1155,15 @@ def main() -> None:
                                         dist_line_angle_deg,
                                     )
                                 )
+                                dist_z1_mho_operate = int(
+                                    dist_z1_mho_operate == 1
+                                    and dist_z_mag_ohm <= dist_z1_ohm
+                                )
+                                dist_z2_mho_operate = int(
+                                    dist_z2_mho_operate == 1
+                                    and dist_z1_mho_operate == 0
+                                    and dist_z_mag_ohm <= dist_z2_ohm
+                                )
                                 dist_z2_dropout_operate = mho_operates(
                                     dist_r_ohm,
                                     dist_x_ohm,
