@@ -1,8 +1,24 @@
+V_6 - processamento embarcado na ESP32
+
 python3 generate_signal_v6.py \
   --cfg samples/sample_3/export.cfg \
   --bdat samples/sample_3/export.bdat \
   --port /dev/ttyUSB0 \
   --baud 921600
+
+Fluxo:
+  1. Python envia CFG e BDAT para a ESP32.
+  2. ESP32 salva no LittleFS.
+  3. ESP32 processa COMTRADE e gera frames localmente.
+  4. Comandos so ficam liberados depois de READY_PLAYBACK.
+
+Comandos:
+  t  : senoide de teste
+  s  : ciclo pre-falta continuo
+  f  : no modo s, toca COMTRADE completo uma vez
+  p  : toca COMTRADE completo uma vez
+  q  : interrompe e volta para idle
+  x  : encerra o terminal
 
   
   

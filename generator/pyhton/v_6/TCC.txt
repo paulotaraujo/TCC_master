@@ -1,0 +1,46 @@
+chat, meu projeto de tcc eh o seguinte:
+
+
+
+uso duas esp32 para reproduzir arquivos comtrade e receber as amostras da primeira esp32 e simular (emular) relés de proteção de SEP.
+
+
+
+o projeto tem vies academico, com a premissa de que os estudos de sistemas eletricos de potencia em sala de aula sao quase que estritametne teoricos e a facil acessibilidade dos equipamentos utilizados neste projeto viabiliza o contato dos alunos com um sistema real de proteção de sistemas eletricos de potencia. 
+
+
+
+entao o projeto o constituido basicamente pelas partes:
+
+
+
+1) geração/reprodução dos arquivos comtrade:
+
+
+
+simulações de falta de um sistema eletrico de potencia são feitas no simulink, para faltas de curto circuito trifasicos. O simulink gera a oscilografia da simulação atraves de seus blocos. As amostras sao enviadas por workspace do matlab. As amostras entao passam por um script (comtrade_generator.m) que converte essas amostras em comtrade real, gerando os arquivos .cfg e .dat.
+
+
+
+Uma vez esses arquivos gerados, esses arquivos passam por um filtro de, tipo de arquivo, amostragem, apenas um canal de tensao e corrente, etc. Isso eh importante, pois na proxima etapa apenas arquivos validos e com essas caracteristicas serao aceitos.
+
+
+
+convertidos os arquivos e validados, chegou a hora da geração via esp32. Os arquivos contrades sao convertidos em amostras, de amplitude, tempo e controle(?), passando por um script em python (generator_signal_v6.py), que eh o script filtro da seção anterior, onde sao decodificados e tranformados em amostras para serem enviados a esp32 de gereção. O arquivos v_6.ino eh responsavel pela decodificação das amostras na esp32. As amostras sao entao enviadas via protocolo (rever o protocolo) por usb para a esp32 responsavel pela geração/reprodução dos sinais de tensao e corrente do comtrade.
+
+
+
+As amostras sao entao reproduzidas nas portas analogicas da esp32 atraves de um DAC MCP4728, ambos os canais de tensao e corrente, de forma findigna ao arquivo contrade real, salvo caracteristicas limitantes de hardware dos equipamentos usados. Toda a decodificação bem como a forma como as amostras sao separadas (bufferizadas) e reproduzidas nas portas analogicas do sistema de reprodução pordem ser encontrdas no arquivo v_6.ino.
+
+2)recepção/controle da amostras comtrade:
+
+uma vez geradas e reproduzidas as amostras comtrade pela esp32 geradora, agora eh a hora da esp32 receptora entrar em ação. Neste caso, como a esp32 geradora gera sinais analogicos na saida, a esp32 receptora deve receber essas amostras analogicas e atraves de suas portas converter esses sinais analogicos de forma a enviar as leituras para o script de controle. A recepção da esp32 receptora eh feita pelo v_1.ino que gera as amostras recepcionadas e envia para o scritp read_from_generator_rms_robust.py, que eh responsavel por todo o processo de interpretação e algoritmo de controle dos reles, enviados da esp32 para o pc tambem via usb.
+
+As amostras no arquivo python sao tratadas para serem inseridas nos algortimos de proteção. As amostras passam pelo filtro de transformada de fourier (explique por que eh melhor usar fourier do que rms) para entao serem tratadas nos algoritmos de rele de proteção (os algortimos de proteção presentes no arquivo read_from_generator_rms_robust.py
+
+Perceba que para cada tipo de relé, um comando especifico via terminal deve ser usado com suas devidas caracterristicas e parametros daquele rele, igual mente como em um rele real. Reforce tambem o robustez dos scripts de proteção quaanto a interação com outros reles, como port exemplo, o rele direcional(67) junto com o rele 21 (distancia).
+
+Entao, chat, por enquanto esses sao os pontos para começar a escrever meu tcc reforçando pricnipalmente a arquitetura e aplicabilidade do projeto com vies academico.
+
+
+
