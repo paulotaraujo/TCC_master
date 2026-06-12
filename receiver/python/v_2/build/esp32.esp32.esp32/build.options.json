@@ -1,0 +1,9 @@
+{
+  "additionalFiles": "../..",
+  "compiler.optimization_flags": "-Os",
+  "customBuildProperties": "",
+  "fqbn": "esp32:esp32:esp32",
+  "hardwareFolders": "/home/paulo/.arduino15/packages/esp32/hardware/esp32/3.3.8,/home/paulo/.arduino15/packages/esp32/hardware/esp32/3.3.8",
+  "otherLibrariesFolders": "/home/paulo/Arduino/libraries",
+  "sketchLocation": "/home/paulo/Arduino/dev/1_phase/receiver/python/v_2"
+}

@@ -58,7 +58,7 @@ def get_amplitude_scaled(df: pd.DataFrame) -> tuple[np.ndarray | None, np.ndarra
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Leitura rápida do adc_capture.csv (preview, RMS e plot)."
+        description="Leitura rápida do adc_capture.csv (preview, Fourier/RMS e plot)."
     )
     parser.add_argument("--csv", default="adc_capture.csv", help="Caminho do CSV")
     parser.add_argument("--head", type=int, default=10, help="Quantidade de linhas iniciais")
@@ -83,7 +83,7 @@ def main() -> None:
             "distance",
             "voltage",
         ],
-        default="rms_scaled",
+        default="fourier_scaled",
         help=(
             "Modo de plot: adc(0..4095), adc_no_offset, volts(0..3.3V), "
             "volts_no_offset, amplitude_scaled (instante escalonado), "
@@ -174,7 +174,7 @@ def main() -> None:
         if c in df.columns
     ]
     if rms_cols:
-        print("\n--- ESTATÍSTICAS RMS ---")
+        print("\n--- ESTATÍSTICAS FOURIER/RMS ---")
         print(df[rms_cols].describe().to_string())
     else:
         print("\nCSV não possui colunas v_rms/i_rms.")
@@ -428,24 +428,37 @@ def main() -> None:
 
                 z1_ref = float(np.nanmedian(z1[np.isfinite(z1)])) if np.any(np.isfinite(z1)) else 0.0
                 z2_ref = float(np.nanmedian(z2[np.isfinite(z2)])) if np.any(np.isfinite(z2)) else 0.0
-                z1_center_r = finite_median("dist_z1_center_r_ohm")
-                z1_center_x = finite_median("dist_z1_center_x_ohm")
-                z1_radius = finite_median("dist_z1_radius_ohm", 0.5 * z1_ref)
-                z2_center_r = finite_median("dist_z2_center_r_ohm")
-                z2_center_x = finite_median("dist_z2_center_x_ohm")
-                z2_radius = finite_median("dist_z2_radius_ohm", 0.5 * z2_ref)
                 line_angle_deg = finite_median("dist_line_angle_deg")
+                line_angle_rad_for_mho = np.radians(line_angle_deg)
+                z1_radius = finite_median("dist_z1_radius_ohm", 0.5 * z1_ref)
+                z2_radius = finite_median("dist_z2_radius_ohm", 0.5 * z2_ref)
+                z1_center_r = finite_median(
+                    "dist_z1_center_r_ohm",
+                    z1_radius * float(np.cos(line_angle_rad_for_mho)),
+                )
+                z1_center_x = finite_median(
+                    "dist_z1_center_x_ohm",
+                    z1_radius * float(np.sin(line_angle_rad_for_mho)),
+                )
+                z2_center_r = finite_median(
+                    "dist_z2_center_r_ohm",
+                    z2_radius * float(np.cos(line_angle_rad_for_mho)),
+                )
+                z2_center_x = finite_median(
+                    "dist_z2_center_x_ohm",
+                    z2_radius * float(np.sin(line_angle_rad_for_mho)),
+                )
                 dir67_angle_deg = finite_median("dir67_angle_deg", line_angle_deg)
                 dir67_window_deg = finite_median("dir67_window_deg", 0.0)
                 dir67_direction = string_mode("dir67_direction", "forward").lower()
 
                 if "dist_z1_radius_ohm" not in plot_df.columns:
-                    z1_center_r = 0.0
-                    z1_center_x = 0.0
-                    z1_radius = z1_ref
-                    z2_center_r = 0.0
-                    z2_center_x = 0.0
-                    z2_radius = z2_ref
+                    z1_radius = 0.5 * z1_ref
+                    z2_radius = 0.5 * z2_ref
+                    z1_center_r = z1_radius * float(np.cos(line_angle_rad_for_mho))
+                    z1_center_x = z1_radius * float(np.sin(line_angle_rad_for_mho))
+                    z2_center_r = z2_radius * float(np.cos(line_angle_rad_for_mho))
+                    z2_center_x = z2_radius * float(np.sin(line_angle_rad_for_mho))
                 elif "dist_line_angle_deg" not in plot_df.columns:
                     line_angle_deg = float(np.degrees(np.arctan2(z2_center_x, z2_center_r)))
 
