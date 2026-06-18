@@ -1,0 +1,28 @@
+\chapter{Resultados e Discussão}
+
+\section{Descrição dos Testes}
+
+Os testes devem ser realizados com arquivos COMTRADE provenientes de simulações de faltas trifásicas. Para cada ensaio, os sinais originais devem ser comparados com os sinais reproduzidos e posteriormente adquiridos pela ESP32 receptora.
+
+\section{Comparação dos Sinais}
+
+Uma etapa importante da validação consiste em comparar as formas de onda de tensão e corrente do arquivo COMTRADE original com os sinais reproduzidos pelo DAC e adquiridos pela unidade receptora. Essa comparação permite avaliar a fidelidade da reprodução e os efeitos das limitações do hardware.
+
+\begin{figure}[H]
+  \centering
+  \fbox{\parbox{0.85\textwidth}{\centering Inserir gráfico comparando COMTRADE original, sinal reproduzido e sinal recebido.}}
+  \caption{Comparação entre sinais original, reproduzido e recebido}
+  \label{fig:comparacao-sinais}
+\end{figure}
+
+\section{Atuação das Funções de Proteção}
+
+Os algoritmos de proteção devem ser avaliados por meio da variação dos parâmetros de ajuste e da observação da atuação das funções implementadas. Para o relé de sobrecorrente, verifica-se a atuação quando a corrente ultrapassa o valor de pickup. Para a função direcional, avalia-se a relação angular entre tensão e corrente. Para a função de distância, analisa-se a impedância aparente calculada a partir dos fasores.
+
+\section{Aplicabilidade Didática}
+
+A plataforma permite que estudantes visualizem o fluxo completo de um estudo de proteção: simulação da falta, geração do arquivo COMTRADE, reprodução física dos sinais, aquisição das amostras e atuação dos algoritmos de relé. Essa integração torna o processo de aprendizagem mais concreto, pois relaciona conceitos matemáticos e computacionais com sinais efetivamente reproduzidos em bancada.
+
+\section{Limitações}
+
+As principais limitações estão associadas à resolução do DAC, à resolução do ADC da ESP32, ao ruído de medição, à taxa máxima de amostragem, à faixa de tensão dos sinais e ao sincronismo entre geração e recepção. No entanto, essas limitações são compatíveis com a proposta didática do trabalho, que não busca substituir equipamentos comerciais, mas oferecer uma alternativa acessível para ensino e experimentação.

@@ -1,0 +1,144 @@
+\documentclass[
+  12pt,
+  oneside,
+  a4paper,
+  brazil
+]{abntex2}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{siunitx}
+\usepackage{tikz}
+\usepackage{indentfirst}
+\usepackage{hyperref}
+\usepackage{abntex2cite}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric}
+
+\sisetup{
+  output-decimal-marker = {,},
+  per-mode = symbol
+}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  citecolor=black,
+  urlcolor=black,
+  pdfauthor={Seu Nome},
+  pdftitle={Plataforma Didática Embarcada para Reprodução de Arquivos COMTRADE e Emulação de Relés de Proteção}
+}
+
+\setlength{\parindent}{1.25cm}
+\setlength{\parskip}{0.2cm}
+
+% Estilo dos títulos de capítulo no formato:
+% "Capítulo 1" em uma linha e o título do capítulo abaixo.
+\makechapterstyle{capitulo-tcc}{%
+  \renewcommand{\chapnamefont}{\normalfont\huge\bfseries}
+  \renewcommand{\chapnumfont}{\normalfont\huge\bfseries}
+  \renewcommand{\chaptitlefont}{\normalfont\Huge\bfseries}
+  \renewcommand{\printchaptername}{\chapnamefont\chaptername}
+  \renewcommand{\printchapternum}{\chapnumfont\space\thechapter}
+  \renewcommand{\afterchapternum}{\par\vspace{1.6\onelineskip}}
+  \renewcommand{\printchaptertitle}[1]{\chaptitlefont ##1}
+  \setlength{\beforechapskip}{0pt}
+  \setlength{\afterchapskip}{2.5\onelineskip}
+}
+
+\chapterstyle{capitulo-tcc}
+
+\titulo{Plataforma Didática Embarcada para Reprodução de Arquivos COMTRADE e Emulação de Relés de Proteção em Sistemas Elétricos de Potência}
+\autor{Seu Nome}
+\local{Manaus-AM}
+\data{2026}
+\orientador{Prof. Dr. Nome do Orientador}
+\instituicao{%
+  Universidade Federal do Amazonas
+  \par
+  Faculdade de Tecnologia
+  \par
+  Engenharia Elétrica - Eletrotécnica}
+\tipotrabalho{Monografia}
+\preambulo{Monografia apresentada à Coordenação do Curso de Engenharia Elétrica - Eletrotécnica da Universidade Federal do Amazonas, como parte dos requisitos necessários à obtenção do título de Engenheiro Eletricista.}
+
+\begin{document}
+
+\imprimircapa
+\imprimirfolhaderosto
+
+\begin{dedicatoria}
+  \vspace*{\fill}
+  \begin{flushright}
+    Dedico este trabalho aos meus familiares, professores e colegas que contribuíram para minha formação acadêmica e profissional.
+  \end{flushright}
+\end{dedicatoria}
+
+\begin{agradecimentos}
+Agradeço primeiramente a Deus, à minha família, ao meu orientador e aos professores que contribuíram para minha formação. Agradeço também aos colegas que acompanharam o desenvolvimento deste trabalho e contribuíram com discussões, testes e sugestões ao longo do projeto.
+\end{agradecimentos}
+
+\begin{epigrafe}
+  \vspace*{\fill}
+  \begin{flushright}
+    ``A teoria sem a prática vira verbalismo, assim como a prática sem teoria vira ativismo.''
+
+    Paulo Freire
+  \end{flushright}
+\end{epigrafe}
+
+\begin{resumo}
+Este trabalho apresenta o desenvolvimento de uma plataforma didática embarcada para reprodução de arquivos COMTRADE e emulação de funções de proteção aplicadas a sistemas elétricos de potência. A proposta utiliza duas placas ESP32: uma responsável pela geração de sinais analógicos de tensão e corrente, a partir de oscilografias simuladas, e outra responsável pela recepção das amostras e execução dos algoritmos de proteção. As oscilografias são obtidas por meio de simulações de faltas trifásicas no Simulink, convertidas para o padrão COMTRADE e posteriormente processadas para reprodução física por meio de um conversor digital-analógico MCP4728. No sistema receptor, os sinais são amostrados, tratados e utilizados na avaliação de funções de proteção, como sobrecorrente, direcional e distância. A plataforma busca aproximar o ensino teórico de proteção de sistemas elétricos de potência de uma experiência prática, acessível e reconfigurável, permitindo aos estudantes observar a relação entre sinais de falta, processamento fasorial e atuação de relés digitais.
+
+\vspace{\onelineskip}
+
+\noindent
+\textbf{Palavras-chave}: COMTRADE; ESP32; relés de proteção; sistemas elétricos de potência; plataforma didática; proteção digital.
+\end{resumo}
+
+\begin{resumo}[Abstract]
+\begin{otherlanguage*}{english}
+This work presents the development of an embedded educational platform for COMTRADE file playback and emulation of protection functions applied to electric power systems. The proposed platform uses two ESP32 boards: one responsible for generating analog voltage and current signals from simulated oscillographic records, and another responsible for receiving the samples and executing protection algorithms. The oscillographic records are obtained from three-phase fault simulations in Simulink, converted to the COMTRADE standard, and then processed for physical playback through an MCP4728 digital-to-analog converter. In the receiving system, the signals are sampled, processed, and used to evaluate protection functions such as overcurrent, directional, and distance protection. The platform aims to bring the theoretical teaching of power system protection closer to a practical, accessible, and reconfigurable experience, allowing students to observe the relationship between fault signals, phasor processing, and digital relay operation.
+
+\vspace{\onelineskip}
+
+\noindent
+\textbf{Keywords}: COMTRADE; ESP32; protection relays; electric power systems; educational platform; digital protection.
+\end{otherlanguage*}
+\end{resumo}
+
+\pdfbookmark[0]{\listfigurename}{lof}
+\listoffigures*
+\cleardoublepage
+
+\pdfbookmark[0]{\listtablename}{lot}
+\listoftables*
+\cleardoublepage
+
+\pdfbookmark[0]{\contentsname}{toc}
+\tableofcontents*
+\cleardoublepage
+
+\textual
+
+\include{capitulos/01_introducao}
+\include{capitulos/02_fundamentacao}
+\include{capitulos/03_metodologia}
+\include{capitulos/04_implementacao}
+\include{capitulos/05_resultados}
+\include{capitulos/06_conclusao}
+
+\postextual
+
+\bibliographystyle{abntex2-alf}
+\bibliography{referencias}
+
+\appendix
+\include{capitulos/apendice_codigo}
+
+\end{document}

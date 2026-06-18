@@ -14,10 +14,14 @@
 
 static const int ADC_PIN_V = 35;
 static const int ADC_PIN_I = 34;
-static const int RELAY_DIST_BLOCK_PIN = 25;   // IN1: 21/67 blocked by direction.
-static const int RELAY_DIST_ENABLE_PIN = 26;  // IN2: 21/67 permissive / enable zone.
-static const int RELAY_DIST_Z1_PIN = 27;      // IN3: distance zone 1 trip.
-static const int RELAY_DIST_Z2_PIN = 14;      // IN4: distance zone 2 trip.
+
+static const int LED_SYSTEM_READY_PIN = 13;   // D13: firmware ready to receive samples.
+static const int LED_ANY_TRIP_PIN = 12;       // D12: blinks while any trip is latched.
+
+static const int RELAY_DIST_BLOCK_PIN = 14;   // IN1: 21/67 blocked by direction.
+static const int RELAY_DIST_ENABLE_PIN = 27;  // IN2: 21/67 permissive / enable zone.
+static const int RELAY_DIST_Z1_PIN = 26;      // IN3: distance zone 1 trip.
+static const int RELAY_DIST_Z2_PIN = 25;      // IN4: distance zone 2 trip.
 
 static const uint32_t SERIAL_BAUD = 921600;
 static uint32_t SAMPLE_RATE_HZ = 1000;
@@ -71,7 +75,9 @@ static float OV_DELAY_S = 0.2f;
 
 static bool PROTECTION_EVENTS = false;
 static float PROTECTION_EVENT_INTERVAL_S = 0.05f;
-static const bool RELAY_ACTIVE_LOW = true;
+static const bool RELAY_ACTIVE_LOW = false;
+static const uint32_t SYSTEM_READY_LED_BLINK_INTERVAL_MS = 500;
+static const uint32_t TRIP_LED_BLINK_INTERVAL_MS = 500;
 
 static const uint8_t FLAG_ADC_SAT = 1 << 3;
 static const uint8_t FLAG_OUTLIER = 1 << 4;
@@ -93,6 +99,7 @@ struct MhoCircle {
 
 static uint32_t g_seq = 0;
 static bool g_running = false;
+static bool g_systemReady = false;
 
 static float g_vOffset = 1.65f;
 static float g_iOffset = 1.65f;
@@ -272,13 +279,98 @@ static void writeRelay(int pin, bool active) {
 
 static void updateRelayOutputs() {
   bool z1 = g_distZ1Trip != 0;
-  bool z2 = g_distZ2Trip != 0;
+  bool z2 = (g_distZ2Active != 0) || (g_distZ2Trip != 0);
   bool enable = (g_distEnableTrip != 0) || z1 || z2;
 
   writeRelay(RELAY_DIST_BLOCK_PIN, g_distBlockTrip != 0);
   writeRelay(RELAY_DIST_ENABLE_PIN, enable);
   writeRelay(RELAY_DIST_Z1_PIN, z1);
   writeRelay(RELAY_DIST_Z2_PIN, z2);
+}
+
+static void updateSystemReadyLed() {
+  static bool ledState = false;
+  static bool initialized = false;
+  static int8_t writtenState = -1;
+  static uint32_t lastToggleMs = 0;
+
+  if (g_systemReady) {
+    ledState = true;
+    initialized = true;
+    if (writtenState != HIGH) {
+      digitalWrite(LED_SYSTEM_READY_PIN, HIGH);
+      writtenState = HIGH;
+    }
+    return;
+  }
+
+  uint32_t nowMs = millis();
+  if (!initialized) {
+    ledState = true;
+    initialized = true;
+    lastToggleMs = nowMs;
+    if (writtenState != HIGH) {
+      digitalWrite(LED_SYSTEM_READY_PIN, HIGH);
+      writtenState = HIGH;
+    }
+    return;
+  }
+
+  if (nowMs - lastToggleMs >= SYSTEM_READY_LED_BLINK_INTERVAL_MS) {
+    ledState = !ledState;
+    lastToggleMs = nowMs;
+    int8_t nextState = ledState ? HIGH : LOW;
+    if (writtenState != nextState) {
+      digitalWrite(LED_SYSTEM_READY_PIN, nextState);
+      writtenState = nextState;
+    }
+  }
+}
+
+static bool anyTripLatched() {
+  return (g_ocTrip != 0) || (g_oc50Trip != 0) || (g_oc51Trip != 0) ||
+         (g_distTrip != 0) || (g_distZ1Trip != 0) || (g_distZ2Trip != 0) ||
+         (g_uvTrip != 0) || (g_ovTrip != 0);
+}
+
+static void updateTripLed() {
+  static bool ledState = false;
+  static bool wasTripped = false;
+  static int8_t writtenState = -1;
+  static uint32_t lastToggleMs = 0;
+
+  if (!anyTripLatched()) {
+    if (wasTripped || ledState || writtenState != LOW) {
+      ledState = false;
+      wasTripped = false;
+      lastToggleMs = millis();
+      digitalWrite(LED_ANY_TRIP_PIN, LOW);
+      writtenState = LOW;
+    }
+    return;
+  }
+
+  uint32_t nowMs = millis();
+  if (!wasTripped) {
+    ledState = true;
+    wasTripped = true;
+    lastToggleMs = nowMs;
+    if (writtenState != HIGH) {
+      digitalWrite(LED_ANY_TRIP_PIN, HIGH);
+      writtenState = HIGH;
+    }
+    return;
+  }
+
+  if (nowMs - lastToggleMs >= TRIP_LED_BLINK_INTERVAL_MS) {
+    ledState = !ledState;
+    lastToggleMs = nowMs;
+    int8_t nextState = ledState ? HIGH : LOW;
+    if (writtenState != nextState) {
+      digitalWrite(LED_ANY_TRIP_PIN, nextState);
+      writtenState = nextState;
+    }
+  }
 }
 
 static void testRelayOutputs() {
@@ -371,11 +463,18 @@ static void resetTrips() {
   g_ovTrip = 0;
   g_breakerTripReported = 0;
   updateRelayOutputs();
+  updateTripLed();
 }
 
 static void evaluateProtections(float cycleDtS) {
   bool evalReady = g_fourierValid == 1;
   float tS = (float)micros() / 1000000.0f;
+
+  if (g_breakerTripReported != 0) {
+    updateRelayOutputs();
+    return;
+  }
+
   g_distZ1Operate = 0;
   g_distZ2Operate = 0;
 
@@ -1006,9 +1105,13 @@ static void handleSerial() {
     applyRuntimeConfig(key, value);
   } else if (line == "start") {
     g_running = true;
+    g_systemReady = true;
+    updateSystemReadyLed();
     Serial.println("OK start");
   } else if (line == "stop") {
     g_running = false;
+    g_systemReady = false;
+    updateSystemReadyLed();
     Serial.println("OK stop");
   } else if (line == "status") {
     printStatus();
@@ -1027,6 +1130,8 @@ void setup() {
   Serial.setTimeout(50);
   delay(300);
 
+  g_systemReady = false;
+
   analogReadResolution(12);
   analogSetPinAttenuation(ADC_PIN_V, ADC_11db);
   analogSetPinAttenuation(ADC_PIN_I, ADC_11db);
@@ -1035,18 +1140,29 @@ void setup() {
   pinMode(RELAY_DIST_ENABLE_PIN, OUTPUT);
   pinMode(RELAY_DIST_Z1_PIN, OUTPUT);
   pinMode(RELAY_DIST_Z2_PIN, OUTPUT);
+  pinMode(LED_SYSTEM_READY_PIN, OUTPUT);
+  pinMode(LED_ANY_TRIP_PIN, OUTPUT);
+  digitalWrite(RELAY_DIST_BLOCK_PIN, LOW);
+  digitalWrite(RELAY_DIST_ENABLE_PIN, LOW);
+  digitalWrite(RELAY_DIST_Z1_PIN, LOW);
+  digitalWrite(RELAY_DIST_Z2_PIN, LOW);
+  digitalWrite(LED_SYSTEM_READY_PIN, LOW);
+  digitalWrite(LED_ANY_TRIP_PIN, LOW);
   updateRelayOutputs();
+  updateSystemReadyLed();
 
   g_distZ1Circle = mhoCircle(g_distZ1Ohm, DIST_LINE_ANGLE_DEG);
   g_distZ2Circle = mhoCircle(g_distZ2Ohm, DIST_LINE_ANGLE_DEG);
   Serial.printf(
-    "READY_EMBEDDED_RX baud=%lu fs=%lu relays_block_enable_z1_z2=%d,%d,%d,%d active_low=%u v_scale=%.6f i_scale=%.6f\n",
+    "READY_EMBEDDED_RX baud=%lu fs=%lu relays_block_enable_z1_z2=%d,%d,%d,%d led_ready=%d led_any_trip=%d active_low=%u v_scale=%.6f i_scale=%.6f\n",
     (unsigned long)SERIAL_BAUD,
     (unsigned long)SAMPLE_RATE_HZ,
     RELAY_DIST_BLOCK_PIN,
     RELAY_DIST_ENABLE_PIN,
     RELAY_DIST_Z1_PIN,
     RELAY_DIST_Z2_PIN,
+    LED_SYSTEM_READY_PIN,
+    LED_ANY_TRIP_PIN,
     RELAY_ACTIVE_LOW ? 1 : 0,
     V_SCALE_ENG_PER_VOLT,
     I_SCALE_ENG_PER_VOLT
@@ -1057,4 +1173,10 @@ void setup() {
 void loop() {
   handleSerial();
   processSample();
+  if (!g_running) {
+    updateSystemReadyLed();
+  }
+  if (g_ocTrip || g_distTrip || g_uvTrip || g_ovTrip) {
+    updateTripLed();
+  }
 }

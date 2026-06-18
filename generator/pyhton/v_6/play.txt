@@ -141,3 +141,23 @@ Comandos:
   python3 read_adc_capture_csv.py --csv adc_capture.csv --plot --plot-mode over_current
   python3 read_adc_capture_csv.py --csv adc_capture.csv --plot --plot-mode distance
   python3 read_adc_capture_csv.py --csv adc_capture.csv --plot --plot-mode voltage
+
+  SISTEMA embarcado
+
+  GERAÇÃO
+  python3 generate_signal_v6.py \
+  --cfg samples/samples_/Matlab_comtrade/01_CC_Trifasico/90%/export.cfg \
+  --bdat samples/samples_/Matlab_comtrade/01_CC_Trifasico/90%/export.bdat \
+  --port /dev/ttyUSB0 \
+  --baud 921600 \
+  --receiver-config receiver_config.json
+
+  RECEPÇÃO
+  python3 run_embedded_receiver.py \
+  --port /dev/ttyUSB1 \
+  --config /home/paulo/Arduino/dev/1_phase/generator/pyhton/v_6/receiver_config.json \
+  --normalize-to-comtrade \
+  --distance 52.12496 80 120 0.05 \
+  --distance-line-angle 86.636 \
+  --directional-67 forward 86.636 90 \
+  --protection-events
