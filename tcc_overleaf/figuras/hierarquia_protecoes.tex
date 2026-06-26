@@ -1,0 +1,88 @@
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+  >=Latex,
+  line width=0.8pt,
+  func/.style={
+    draw,
+    rounded corners=2pt,
+    align=center,
+    minimum width=4.2cm,
+    minimum height=1.15cm,
+    fill=blue!4,
+    font=\small
+  },
+  logic/.style={
+    draw,
+    logic gate inputs=nn,
+    scale=0.9
+  },
+  final/.style={
+    draw,
+    rounded corners=2pt,
+    align=center,
+    minimum width=3.1cm,
+    minimum height=1.2cm,
+    fill=green!7,
+    font=\small
+  },
+  supervisor/.style={
+    draw,
+    rounded corners=2pt,
+    align=center,
+    minimum width=4.4cm,
+    minimum height=1.35cm,
+    fill=orange!9,
+    font=\small
+  }
+]
+  \node[func] (oc) at (0,4.8)
+    {\textbf{ANSI 50/51}\\
+     $O_I=E_I\land\left[P_{50}\lor(P_{51}\land T_{51})\right]$};
+  \node[func] (dist) at (0,3.2)
+    {\textbf{ANSI 21}\\
+     $O_Z=E_Z\land\left[P_{Z1}\lor(P_{Z2}\land T_{Z2})\right]$};
+  \node[func] (uv) at (0,1.6)
+    {\textbf{ANSI 27}\\
+     $O_{27}=E_{27}\land\left[P_{27i}\lor(P_{27t}\land T_{27})\right]$};
+  \node[func] (ov) at (0,0)
+    {\textbf{ANSI 59}\\
+     $O_{59}=E_{59}\land\left[P_{59i}\lor(P_{59t}\land T_{59})\right]$};
+
+  \node[and gate US,logic] (andoc) at (5.0,4.8) {};
+  \node[and gate US,logic] (anddist) at (5.0,3.2) {};
+  \node[and gate US,logic] (anduv) at (5.0,1.6) {};
+  \node[and gate US,logic] (andov) at (5.0,0) {};
+
+  \draw[->] (oc.east) -- node[above,font=\scriptsize] {$O_I$} (andoc.input 1);
+  \draw[->] (dist.east) -- node[above,font=\scriptsize] {$O_Z$} (anddist.input 1);
+  \draw[->] (uv.east) -- node[above,font=\scriptsize] {$O_{27}$} (anduv.input 1);
+  \draw[->] (ov.east) -- node[above,font=\scriptsize] {$O_{59}$} (andov.input 1);
+
+  \node[or gate US,draw,logic gate inputs=nnnn,scale=1.05] (ortrip) at (8.0,2.4) {};
+  \draw (andoc.output) -- (ortrip.input 1);
+  \draw (anddist.output) -- (ortrip.input 2);
+  \draw (anduv.output) -- (ortrip.input 3);
+  \draw (andov.output) -- (ortrip.input 4);
+
+  \node[final,right=1.1cm of ortrip] (trip)
+    {\textbf{Trip geral retido}\\Evento e LED geral\\até \texttt{resettrip}};
+  \draw[->] (ortrip.output) -- (trip.west);
+
+  \node[supervisor] (sup) at (1.55,-1.75)
+    {\textbf{Supervisão ANSI 67}\\
+     $G_{67}=\overline{E_{67}}\lor P_{67}$\\
+     $B_{67}=E_{67}\land P_{\Sigma}\land\overline{P_{67}}$};
+
+  \coordinate (permitbus) at (4.05,-0.85);
+  \draw[->] (sup.north east) |- node[above,font=\scriptsize,pos=0.75] {permissão $G_{67}$} (permitbus);
+  \draw (permitbus) -- (4.05,4.52);
+  \draw[->] (4.05,4.52) -- (andoc.input 2);
+  \draw[->] (4.05,2.92) -- (anddist.input 2);
+  \draw[->] (4.05,1.32) -- (anduv.input 2);
+  \draw[->] (4.05,-0.28) -- (andov.input 2);
+
+  \node[final,fill=red!5] (block) at (7.8,-1.75)
+    {\textbf{Bloqueio pela 67}\\Registro de evento\\e saída de bloqueio};
+  \draw[->] (sup.east) -- node[above,font=\scriptsize] {$B_{67}$} (block.west);
+\end{tikzpicture}%
+}

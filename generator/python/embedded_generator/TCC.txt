@@ -1,0 +1,25 @@
+NOTA DE ARQUITETURA
+
+Este arquivo era um rascunho anterior a migracao do processamento para as duas
+ESP32. A descricao vigente encontra-se no TCC e nos README dos modulos atuais.
+
+Fluxo implementado:
+
+1. O MATLAB/Simulink gera as oscilografias e o script generate_comtrade.m exporta
+   os arquivos COMTRADE CFG e DAT.
+2. run_embedded_generator.py valida e converte o DAT para BDAT, transmite CFG/BDAT
+   e os metadados para a ESP32 geradora e produz o config.json do ensaio.
+3. embedded_generator.ino armazena o registro no LittleFS e temporiza a reproducao
+   de tensao e corrente pelo DAC MCP4728.
+4. A ESP32 receptora adquire tensao no GPIO35 e corrente no GPIO34.
+5. embedded_receiver.ino executa o processamento critico: conversao de escala,
+   estimacao fasorial por Fourier e funcoes 21, 27, 50, 51, 59 e 67.
+6. run_embedded_receiver.py configura o firmware pelo config.json e exibe estados,
+   eventos e resultados. O computador nao executa o caminho critico da protecao.
+
+Arquivos atuais:
+  generator/python/embedded_generator/run_embedded_generator.py
+  generator/python/embedded_generator/embedded_generator.ino
+  receiver/python/embedded_receiver/run_embedded_receiver.py
+  receiver/python/embedded_receiver/embedded_receiver.ino
+  generator/python/embedded_generator/samples/samples_/Matlab_comtrade/generate_comtrade.m

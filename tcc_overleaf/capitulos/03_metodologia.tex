@@ -23,10 +23,10 @@ A arquitetura do projeto é composta por quatro blocos principais: geração das
   ]
     \node[bloco] (simulink) {Simulink/Matlab\\simulação da falta};
     \node[bloco, right=of simulink] (comtrade) {Arquivos\\COMTRADE};
-    \node[bloco, right=of comtrade] (pcgen) {\texttt{generate\_signal\_v6.py}\\upload e controle};
-    \node[bloco, below=of pcgen] (espgen) {ESP32 geradora\\\texttt{v\_6.ino}};
+    \node[bloco, right=of comtrade] (pcgen) {\texttt{run\_embedded\_generator.py}\\upload e controle};
+    \node[bloco, below=of pcgen] (espgen) {ESP32 geradora\\\texttt{signal\_generator.ino}};
     \node[bloco, left=of espgen] (dac) {DAC MCP4728\\sinais $V$ e $I$};
-    \node[bloco, below=of dac] (esprx) {ESP32 receptora\\\texttt{v\_2.ino}};
+    \node[bloco, below=of dac] (esprx) {ESP32 receptora\\\texttt{embedded\_receiver.ino}};
     \node[bloco, right=of esprx] (pcrx) {\texttt{run\_embedded\_receiver.py}\\configuração};
     \node[bloco, below=of esprx] (prot) {Algoritmos\\27, 59, 50/51, 67, 21};
     \node[bloco, right=of prot] (leds) {LEDs/saídas digitais\\indicação de atuação};
@@ -226,7 +226,7 @@ Os principais critérios considerados são:
   \item formato dos dados aceito pela versão embarcada do gerador.
 \end{itemize}
 
-Na versão atual do projeto, o script \texttt{generate\_signal\_v6.py} atua como interface de upload e controle da ESP32 geradora. Diferentemente das primeiras versões, nas quais o computador realizava maior parte do tratamento das amostras, a versão atual transfere o processamento principal para a ESP32. Assim, o computador envia os arquivos e a placa realiza localmente a interpretação, escala e preparação dos quadros de reprodução.
+Na versão atual do projeto, o script \texttt{run\_embedded\_generator.py} atua como interface de upload e controle da ESP32 geradora. Diferentemente das primeiras versões, nas quais o computador realizava maior parte do tratamento das amostras, a versão atual transfere o processamento principal para a ESP32. Assim, o computador envia os arquivos e a placa realiza localmente a interpretação, escala e preparação dos quadros de reprodução.
 
 \begin{figure}[H]
   \centering
@@ -237,7 +237,7 @@ Na versão atual do projeto, o script \texttt{generate\_signal\_v6.py} atua como
 
 \section{Envio dos dados para a ESP32 geradora}
 
-O envio dos arquivos ocorre por comunicação USB/serial. O script \texttt{generate\_signal\_v6.py} abre a porta serial da ESP32 geradora, aguarda a mensagem de prontidão da placa, envia o arquivo \texttt{.cfg} e o arquivo de dados em blocos e verifica as confirmações de recebimento.
+O envio dos arquivos ocorre por comunicação USB/serial. O script \texttt{run\_embedded\_generator.py} abre a porta serial da ESP32 geradora, aguarda a mensagem de prontidão da placa, envia o arquivo \texttt{.cfg} e o arquivo de dados em blocos e verifica as confirmações de recebimento.
 
 Após o upload, o script solicita o processamento local do registro. A ESP32 geradora interpreta o arquivo de configuração, identifica os canais, calcula os parâmetros de escala e organiza as amostras em estruturas internas de reprodução. Ao final desse processamento, a placa informa que está pronta para reproduzir o evento.
 
@@ -252,7 +252,7 @@ Além disso, o processo gera um arquivo de configuração auxiliar para a ESP32 
 
 \section{Reprodução dos sinais na ESP32 geradora}
 
-A ESP32 geradora utiliza o firmware \texttt{v\_6.ino}. Esse firmware é responsável por armazenar os arquivos recebidos, processar o COMTRADE, construir os quadros de reprodução e comandar o DAC MCP4728. O conversor digital-analógico possui resolução de 12 bits e quatro canais, sendo utilizado para reproduzir os sinais de tensão e corrente em forma analógica \cite{microchip_mcp4728}.
+A ESP32 geradora utiliza o firmware \path{embedded_generator.ino}. Esse firmware é responsável por armazenar os arquivos recebidos, processar o COMTRADE, construir os quadros de reprodução e comandar o DAC MCP4728. O conversor digital-analógico possui resolução de 12 bits e quatro canais, sendo utilizado para reproduzir os sinais de tensão e corrente em forma analógica \cite{microchip_mcp4728}.
 
 Como o DAC trabalha em uma faixa positiva de tensão, os sinais alternados são reproduzidos com um deslocamento em torno de uma tensão média. Dessa forma, uma senoide que originalmente teria valores positivos e negativos é mapeada para uma faixa compatível com o hardware. A Figura \ref{fig:geracao-sinais} ilustra a lógica de reprodução.
 
@@ -296,7 +296,7 @@ O firmware permite diferentes modos de reprodução. O modo de teste gera uma se
 
 \section{Aquisição dos sinais na ESP32 receptora}
 
-Os sinais analógicos reproduzidos pelo DAC são aplicados às entradas analógicas da ESP32 receptora. Essa unidade utiliza o firmware \texttt{v\_2.ino}, responsável por realizar a aquisição dos canais de tensão e corrente, remover o nível médio dos sinais, aplicar os fatores de escala e organizar as amostras para processamento.
+Os sinais analógicos reproduzidos pelo DAC são aplicados às entradas analógicas da ESP32 receptora. Essa unidade utiliza o firmware \path{embedded_receiver.ino}, responsável por realizar a aquisição dos canais de tensão e corrente, remover o nível médio dos sinais, aplicar os fatores de escala e organizar as amostras para processamento.
 
 A recepção é configurada por meio do script \texttt{run\_embedded\_receiver.py}. Esse script envia à ESP32 receptora os parâmetros necessários para o ensaio, incluindo taxa de amostragem, escalas, valores nominais, frequência de referência e ajustes das funções de proteção. Depois da configuração, a aquisição e a análise são executadas de forma embarcada.
 
@@ -395,7 +395,7 @@ Esses indicadores permitem visualizar fisicamente o resultado dos algoritmos de 
 
 \section{Procedimento experimental}
 
-O procedimento experimental segue uma sequência padronizada para garantir repetibilidade dos ensaios. Inicialmente, seleciona-se a oscilografia COMTRADE correspondente à falta a ser analisada. Em seguida, o script \texttt{generate\_signal\_v6.py} envia os arquivos à ESP32 geradora e solicita o processamento local. Após a confirmação de prontidão, a unidade geradora permanece disponível para executar os modos de teste, pré-falta ou reprodução completa.
+O procedimento experimental segue uma sequência padronizada para garantir repetibilidade dos ensaios. Inicialmente, seleciona-se a oscilografia COMTRADE correspondente à falta a ser analisada. Em seguida, o script \texttt{run\_embedded\_generator.py} envia os arquivos à ESP32 geradora e solicita o processamento local. Após a confirmação de prontidão, a unidade geradora permanece disponível para executar os modos de teste, pré-falta ou reprodução completa.
 
 Na sequência, a ESP32 receptora é configurada por meio do script \texttt{run\_embedded\_receiver.py}. São definidos os parâmetros de escala e os ajustes das funções de proteção que serão avaliadas no ensaio. Após a configuração, inicia-se a aquisição embarcada.
 

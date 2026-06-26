@@ -1,15 +1,260 @@
-\chapter{Trechos de Código e Comandos de Execução}
+\chapter{Trechos de Código e Referência Operacional}
+\label{ap:comandos-execucao}
 
-Este apêndice deve reunir trechos representativos dos scripts e firmwares desenvolvidos, bem como exemplos de comandos utilizados durante os ensaios.
+Este apêndice reúne trechos representativos dos algoritmos centrais e os comandos utilizados para transmitir os registros COMTRADE, controlar a reprodução, configurar a unidade receptora e habilitar as funções de proteção. O código integral não é reproduzido no documento para evitar a inclusão de dezenas de páginas sujeitas a evolução durante o desenvolvimento. A versão completa do projeto encontra-se no repositório \url{https://github.com/paulotaraujo/TCC_master} \cite{pereira_tcc_master_2026}.
 
-\section{Geração e Reprodução}
+Nos fragmentos a seguir, comentários com reticências indicam partes omitidas somente para compactação. Os nomes das estruturas e das variáveis foram preservados para permitir sua localização direta nos arquivos \path{embedded_generator.ino} e \path{embedded_receiver.ino}.
 
-Inserir trechos relevantes dos arquivos \texttt{generate\_signal\_v6.py} e \texttt{v\_6.ino}, destacando a leitura dos arquivos COMTRADE, o envio das amostras, a bufferização e a atualização do DAC MCP4728.
+\section{Trechos representativos da implementação}
 
-\section{Recepção e Proteção}
+\subsection{Buffer circular da unidade geradora}
 
-Inserir trechos relevantes dos arquivos \texttt{run\_embedded\_receiver.py} e \texttt{v\_2.ino}, destacando a aquisição das amostras, o processamento pela Transformada de Fourier e a execução das funções de proteção.
+O fragmento seguinte mostra a estrutura de 4096 quadros que desacopla a produção dos dados da atualização temporizada do DAC:
 
-\section{Exemplos de Comandos}
+\begin{verbatim}
+struct FrameRing {
+  Frame items[SAMPLE_BUFFER_CAPACITY];
+  uint16_t head = 0, tail = 0, count = 0;
 
-Inserir exemplos de comandos de execução utilizados para configurar e testar cada função de proteção.
+  bool push(const Frame &frame) {
+    if (count >= SAMPLE_BUFFER_CAPACITY) return false;
+    items[head] = frame;
+    head = (head + 1) % SAMPLE_BUFFER_CAPACITY;
+    count++;
+    return true;
+  }
+
+  bool pop(Frame &out) {
+    if (count == 0) return false;
+    out = items[tail];
+    tail = (tail + 1) % SAMPLE_BUFFER_CAPACITY;
+    count--;
+    return true;
+  }
+};
+\end{verbatim}
+
+\subsection{Temporização e detecção de underflow}
+
+A tarefa do DAC acumula os intervalos relativos em uma referência absoluta. Se a fila estiver vazia, registra underflow e suspende a reprodução até que existam novos quadros:
+
+\begin{verbatim}
+if (!g_pendingValid) {
+  Frame frame;
+  bool got = false;
+  if (xSemaphoreTake(g_ringMutex, pdMS_TO_TICKS(2))) {
+    got = g_frameRing.pop(frame);
+    xSemaphoreGive(g_ringMutex);
+  }
+
+  if (got) {
+    g_pendingFrame = frame;
+    g_pendingValid = true;
+    g_applyAtUs += g_pendingFrame.dt_us;
+  } else {
+    if (!g_underflowActive) g_underflows++;
+    g_underflowActive = true;
+    g_started = false;
+  }
+}
+
+if ((int32_t)(micros() - g_applyAtUs) >= 0) {
+  outputFrame(g_pendingFrame);
+  g_pendingValid = false;
+}
+\end{verbatim}
+
+\subsection{Aquisição e estimação fasorial}
+
+Na receptora, cada canal é obtido pela média de oito conversões. Ao fechamento de um ciclo válido, a DFT fornece os fasores fundamentais e o período entre cruzamentos determina a frequência:
+
+\begin{verbatim}
+uint16_t adcV = readAdcAvg(ADC_PIN_V, N_AVG);
+uint16_t adcI = readAdcAvg(ADC_PIN_I, N_AVG);
+
+// ... conversao, remocao do offset e aplicacao das escalas
+
+if (g_cycleN >= 8) {
+  Phasor v1 = fundamentalPhasorRms(g_cycleV, g_cycleN);
+  Phasor i1 = fundamentalPhasorRms(g_cycleI, g_cycleN);
+  g_v1Mag = v1.mag;
+  g_i1Mag = i1.mag;
+  g_v1Angle = v1.angleDeg;
+  g_i1Angle = i1.angleDeg;
+  g_fEst = 1000000.0f / max(1.0f, (float)periodUs);
+}
+\end{verbatim}
+
+\subsection{Supervisão direcional das proteções}
+
+A permissão da função 67 é calculada uma vez por ciclo e compartilhada pelas funções habilitadas. O trecho evidencia a formação da condição comum de permissão ou bloqueio:
+
+\begin{verbatim}
+bool supervisedPickup = anyMho || oc50PickupNow ||
+                        oc51PickupNow || uvPickupNow ||
+                        ovPickupNow;
+
+g_dir67Power = g_v1Mag * g_i1Mag *
+  cosf((g_v1Angle - g_i1Angle) * PI / 180.0f);
+
+bool forward = g_dir67PrefaultPower > DIR67_POWER_MIN_W;
+bool reverse = g_dir67PrefaultPower < -DIR67_POWER_MIN_W;
+bool dirOk = DIR67_FORWARD ? forward : reverse;
+
+g_dir67Permit =
+  (DIR67_ENABLED && supervisedPickup && dirOk) ? 1 : 0;
+g_dir67BlockActive =
+  (DIR67_ENABLED && supervisedPickup && !dirOk) ? 1 : 0;
+\end{verbatim}
+
+Esses fragmentos documentam a arquitetura algorítmica sem duplicar toda a base de código. As rotinas completas incluem validações, mensagens de diagnóstico, tratamento dos comandos, funções 21, 27, 50, 51 e 59 e atualização das saídas digitais.
+
+\section{Transmissão e reprodução das amostras}
+
+O comando básico da unidade geradora é:
+
+\begin{verbatim}
+cd generator/python/embedded_generator
+python3 run_embedded_generator.py \
+  --cfg samples/sample_3/export.cfg \
+  --bdat samples/sample_3/export.bdat \
+  --port /dev/ttyUSB0 \
+  --baud 921600 \
+  --receiver-config config.json
+\end{verbatim}
+
+\begin{table}[H]
+  \centering
+  \small
+  \caption{Principais argumentos do script de geração.}
+  \begin{tabular}{p{4.8cm}p{8.4cm}}
+    \toprule
+    Argumento & Finalidade \\
+    \midrule
+    \texttt{--cfg ARQUIVO} & Indicar o arquivo de configuração COMTRADE \texttt{.cfg}; obrigatório. \\
+    \texttt{--bdat ARQUIVO} & Indicar o arquivo de dados binário \texttt{.bdat} ou \texttt{.dat}; obrigatório. \\
+    \texttt{--port PORTA} & Selecionar a porta serial da ESP32 geradora; obrigatório. \\
+    \texttt{--baud TAXA} & Definir a taxa serial; o valor padrão da implementação é 921600 baud. \\
+    \texttt{--receiver-config ARQUIVO} & Definir onde será salvo o JSON com escalas, valores nominais e referências para a receptora; o padrão é \texttt{config.json}. \\
+    \texttt{--ready-timeout SEGUNDOS} & Definir o tempo máximo de espera por \texttt{READY\_UPLOAD}; padrão de 12 s. \\
+    \texttt{--process-timeout SEGUNDOS} & Definir o tempo máximo para processamento e \texttt{READY\_PLAYBACK}; padrão de 60 s. \\
+    \texttt{--upload-delay SEGUNDOS} & Inserir uma pausa adicional entre os blocos do upload; padrão igual a zero. \\
+    \texttt{--skip-upload} & Reutilizar os arquivos armazenados na ESP32, enviando apenas \texttt{PROCESS} antes de abrir o terminal. \\
+    \bottomrule
+  \end{tabular}
+  \legend{Fonte: Autoria própria.}
+\end{table}
+
+Após a mensagem \texttt{READY\_PLAYBACK}, os comandos interativos da Tabela \ref{tab:ap-comandos-gerador} controlam a reprodução.
+
+\begin{table}[H]
+  \centering
+  \small
+  \caption{Comandos interativos da unidade geradora.}
+  \label{tab:ap-comandos-gerador}
+  \begin{tabular}{cp{11.5cm}}
+    \toprule
+    Comando & Operação \\
+    \midrule
+    \texttt{t} & Reproduzir uma senoide de teste. \\
+    \texttt{s} & Repetir continuamente o ciclo de pré-falta. \\
+    \texttt{f} & A partir do modo de pré-falta, encadear o COMTRADE completo ao final do ciclo corrente. \\
+    \texttt{p} & Reproduzir diretamente o COMTRADE completo uma vez. \\
+    \texttt{q} & Interromper o modo corrente, limpar o estado de reprodução e retornar a \textit{Idle}/repouso. \\
+    \texttt{x} & Interromper a execução, retornar ao repouso e encerrar o terminal Python. \\
+    \bottomrule
+  \end{tabular}
+  \legend{Fonte: Autoria própria.}
+\end{table}
+
+\section{Configuração e execução da unidade receptora}
+
+O comando a seguir reúne todas as funções de proteção disponíveis. Em cada ensaio devem ser mantidas somente as opções correspondentes às funções que se deseja avaliar.
+
+\begin{verbatim}
+python3 receiver/python/embedded_receiver/run_embedded_receiver.py \
+  --config config.json \
+  --port /dev/ttyUSB1 \
+  --baud 921600 \
+  --v-scale-correction 0.785 \
+  --i-scale-correction 0.780 \
+  --normalize-to-comtrade \
+  --over-current 50 10 0.05 \
+  --distance 52.12496 80 120 0.05 \
+  --distance-line-angle 86.636 \
+  --directional-67 forward \
+  --directional-67-power-min 10000 \
+  --under-voltage 50 10 0.20 \
+  --over-voltage 50 10 0.20 \
+  --protection-events
+\end{verbatim}
+
+\begin{table}[H]
+  \centering
+  \small
+  \caption{Argumentos gerais do script de recepção.}
+  \begin{tabular}{p{5.5cm}p{7.7cm}}
+    \toprule
+    Argumento & Finalidade \\
+    \midrule
+    \texttt{--config ARQUIVO} & Carregar o JSON produzido pela unidade geradora; obrigatório. \\
+    \texttt{--port PORTA} & Selecionar a porta serial da ESP32 receptora; padrão \path{/dev/ttyUSB1}. \\
+    \texttt{--baud TAXA} & Definir a taxa de comunicação serial; padrão de 921600 baud. \\
+    \texttt{--ready-timeout SEGUNDOS} & Definir a espera máxima pela prontidão da receptora; padrão de 5 s. \\
+    \texttt{--v-scale-correction VALOR} & Multiplicar a escala de tensão do JSON por um fator de correção obtido em pré-falta; padrão igual a 1. \\
+    \texttt{--i-scale-correction VALOR} & Multiplicar a escala de corrente do JSON por um fator de correção obtido em pré-falta; padrão igual a 1. \\
+    \texttt{--normalize-to-comtrade} & Ajustar as magnitudes medidas às referências de pré-falta registradas no JSON. \\
+    \texttt{--norm-min-pu VALOR} & Definir a magnitude mínima, em por unidade, aceita durante a normalização; padrão de 0,5 pu. \\
+    \texttt{--protection-events} & Exibir eventos de pickup, retorno, temporização e trip. \\
+    \texttt{--protection-event-interval SEGUNDOS} & Limitar a frequência das mensagens de temporização; padrão de 0,05 s. \\
+    \bottomrule
+  \end{tabular}
+  \legend{Fonte: Autoria própria.}
+\end{table}
+
+\section{Argumentos das funções de proteção}
+
+\begin{table}[H]
+  \centering
+  \small
+  \caption{Argumentos para habilitação e ajuste das proteções.}
+  \begin{tabular}{p{5.5cm}p{7.7cm}}
+    \toprule
+    Argumento & Ordem e significado dos valores \\
+    \midrule
+    \texttt{--over-current A B C} & $A$: acréscimo sobre $I_N$ para a função 50 instantânea; $B$: acréscimo para a função 51 temporizada; $C$: atraso da função 51. Por exemplo, \texttt{50 10 0.05} define 50 em $1{,}50I_N$ e 51 em $1{,}10I_N$ por \SI{0,05}{\second}. \\
+    \texttt{--distance A B C D} & $A$: módulo da impedância total da linha em ohms; $B$: alcance da zona 1 em porcentagem; $C$: alcance da zona 2 em porcentagem; $D$: atraso da zona 2 em segundos. \\
+    \texttt{--distance-line-angle A} & Ângulo da impedância da linha em graus, empregado na característica de distância. \\
+    \texttt{--directional-67 A} & $A$: sentido \texttt{forward} ou \texttt{reverse}, definido pelo sinal permitido da potência ativa de pré-falta. \\
+    \texttt{--directional-67-power-min A} & Módulo mínimo da potência ativa de pré-falta necessário para validar a decisão direcional; padrão de 10000 nas unidades de engenharia do ensaio. \\
+    \texttt{--under-voltage A B C} & $A$: tensão remanescente crítica, em porcentagem de $V_N$, para trip instantâneo; $B$: queda percentual para o estágio temporizado; $C$: atraso. Exemplo: \texttt{50 10 0.20} corresponde a $0{,}50V_N$ instantâneo e $0{,}90V_N$ por \SI{0,20}{\second}. \\
+    \texttt{--over-voltage A B C} & $A$: elevação percentual para trip instantâneo; $B$: elevação para o estágio temporizado; $C$: atraso. Exemplo: \texttt{50 10 0.20} corresponde a $1{,}50V_N$ instantâneo e $1{,}10V_N$ por \SI{0,20}{\second}. \\
+    \bottomrule
+  \end{tabular}
+  \legend{Fonte: Autoria própria.}
+\end{table}
+
+As opções de proteção são independentes e podem ser combinadas. Quando \texttt{--directional-67} é incluída, a permissão direcional supervisiona as demais funções habilitadas no mesmo ensaio. Quando uma opção é omitida, o grupo correspondente é explicitamente desabilitado durante a configuração, evitando a permanência de ajustes de uma execução anterior.
+
+\section{Sequência operacional recomendada}
+
+\begin{enumerate}
+  \item conectar e identificar separadamente as portas seriais das unidades geradora e receptora;
+  \item executar \path{run_embedded_generator.py}, aguardar o processamento e confirmar a criação do \texttt{config.json};
+  \item no terminal da geradora, enviar \texttt{s} e manter a pré-falta contínua;
+  \item executar \path{run_embedded_receiver.py} com o mesmo JSON e com os ajustes desejados;
+  \item verificar, pelo comando \texttt{status}, se $V_1$ e $I_1$ em pré-falta correspondem aos nominais do JSON e, se necessário, repetir o comando da receptora com \texttt{--v-scale-correction} e \texttt{--i-scale-correction};
+  \item enviar \texttt{f} para aplicar o evento completo e acompanhar as mensagens da receptora;
+  \item registrar eventos, trips e mensagens de diagnóstico; e
+  \item usar \texttt{q} para retornar ao repouso ou \texttt{x} para encerrar o terminal da geradora.
+\end{enumerate}
+
+\section{Disponibilidade do projeto completo}
+
+Todos os scripts Python, firmwares Arduino, arquivos de configuração, exemplos COMTRADE e demais recursos do projeto estão disponíveis em:
+
+\begin{center}
+  \url{https://github.com/paulotaraujo/TCC_master}
+\end{center}
+
+O repositório constitui a fonte integral da implementação descrita neste trabalho e deve ser consultado para reprodução, auditoria ou continuidade do desenvolvimento. Para garantir rastreabilidade em versões futuras, recomenda-se registrar no relatório de cada ensaio o \textit{commit} utilizado, além dos arquivos COMTRADE e do JSON correspondente.

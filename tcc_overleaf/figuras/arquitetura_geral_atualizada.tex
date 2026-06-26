@@ -1,0 +1,25 @@
+\documentclass{article}
+\usepackage[paperwidth=1440pt,paperheight=810pt,margin=0pt]{geometry}
+\usepackage{graphicx}
+\usepackage{tikz}
+\pagestyle{empty}
+
+\begin{document}
+\noindent
+\begin{tikzpicture}[remember picture,overlay]
+  \node[anchor=south west,inner sep=0] at (current page.south west)
+    {\includegraphics[width=1440pt,height=810pt]{arquitetura_geral_2.pdf}};
+
+  % Atualização dos identificadores dos firmwares após a consolidação dos nomes.
+  \begin{scope}[shift={(current page.south west)}]
+    \fill[white] (425pt,187pt) rectangle (550pt,203pt);
+    \node[font=\sffamily\fontsize{9}{10}\selectfont] at (487.5pt,195pt)
+      {signal\_generator.ino};
+
+    \fill[white] (752pt,194pt) rectangle (888pt,211pt);
+    \node[font=\sffamily\fontsize{9}{10}\selectfont] at (820pt,202pt)
+      {embedded\_receiver.ino};
+  \end{scope}
+\end{tikzpicture}
+\null
+\end{document}

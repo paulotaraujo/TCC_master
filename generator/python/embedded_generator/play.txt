@@ -1,0 +1,43 @@
+PLATAFORMA EMBARCADA — COMANDOS DE REFERENCIA
+
+1. Enviar o COMTRADE para a ESP32 geradora
+
+python3 run_embedded_generator.py \
+  --cfg samples/samples_/Matlab_comtrade/01_CC_Trifasico/25%/export.cfg \
+  --bdat samples/samples_/Matlab_comtrade/01_CC_Trifasico/25%/export.bdat \
+  --port /dev/ttyUSB0 \
+  --baud 921600 \
+  --receiver-config config.json
+
+Comandos interativos da geradora:
+  t  senoide de teste
+  s  pre-falta continua
+  f  COMTRADE completo a partir da pre-falta
+  p  COMTRADE completo
+  q  retorno a Idle/repouso
+  x  encerra o terminal
+
+2. Configurar e acompanhar a ESP32 receptora
+
+python3 ../../../receiver/python/embedded_receiver/run_embedded_receiver.py \
+  --port /dev/ttyUSB1 \
+  --config config.json \
+  --normalize-to-comtrade \
+  --over-current 50 10 0.05 \
+  --distance 52.12496 80 120 0.05 \
+  --distance-line-angle 86.636 \
+  --directional-67 forward \
+  --directional-67-power-min 10000 \
+  --under-voltage 50 10 0.20 \
+  --over-voltage 50 10 0.20 \
+  --protection-events
+
+Observacoes:
+  - Em --over-current, a ordem e: 50 instantanea, 51 temporizada, atraso.
+  - Em --under-voltage e --over-voltage, a ordem e: estagio instantaneo,
+    estagio temporizado, atraso.
+  - --directional-67 aceita somente forward ou reverse. O firmware determina a
+    direcao pelo sinal da potencia ativa de pre-falta; o limiar minimo e definido
+    por --directional-67-power-min.
+  - O caminho do config.json deve apontar para o arquivo produzido no mesmo ensaio.
+  - Consulte o Apendice A do TCC e o README da receptora para os demais comandos.

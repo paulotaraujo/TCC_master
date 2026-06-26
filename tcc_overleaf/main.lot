@@ -1,0 +1,20 @@
+\babel@toc {brazil}{}\relax 
+\contentsline {table}{\numberline {1}{\ignorespaces Parâmetros por unidade de comprimento da linha de transmissão de \SI {500}{\kilo \volt }.}}{22}{table.3.1}%
+\contentsline {table}{\numberline {2}{\ignorespaces Parâmetros do gerador equivalente G1 na condição de 1 SIL.}}{22}{table.3.2}%
+\contentsline {table}{\numberline {3}{\ignorespaces Parâmetros das fontes equivalentes no terminal remoto.}}{23}{table.3.3}%
+\contentsline {table}{\numberline {4}{\ignorespaces Parâmetros dos transformadores empregados no modelo.}}{23}{table.3.4}%
+\contentsline {table}{\numberline {5}{\ignorespaces Estratégia de geração dos cenários de validação.}}{25}{table.3.5}%
+\contentsline {table}{\numberline {6}{\ignorespaces Principais componentes da plataforma.}}{40}{table.4.6}%
+\contentsline {table}{\numberline {7}{\ignorespaces Configuração computacional e placas empregadas na plataforma.}}{42}{table.4.7}%
+\contentsline {table}{\numberline {8}{\ignorespaces Conexões da unidade geradora.}}{42}{table.4.8}%
+\contentsline {table}{\numberline {9}{\ignorespaces Pinagem implementada na ESP32 receptora.}}{44}{table.4.9}%
+\contentsline {table}{\numberline {10}{\ignorespaces Arquivos principais e responsabilidades efetivamente implementadas.}}{45}{table.4.10}%
+\contentsline {table}{\numberline {11}{\ignorespaces Bibliotecas e dependências adotadas na implementação.}}{46}{table.4.11}%
+\contentsline {table}{\numberline {12}{\ignorespaces Sequência do protocolo de upload.}}{48}{table.4.12}%
+\contentsline {table}{\numberline {13}{\ignorespaces Comandos interativos da unidade geradora.}}{49}{table.4.13}%
+\contentsline {table}{\numberline {14}{\ignorespaces Tarefas FreeRTOS da ESP32 geradora.}}{52}{table.4.14}%
+\contentsline {table}{\numberline {15}{\ignorespaces Comandos principais do firmware receptor.}}{62}{table.4.15}%
+\contentsline {table}{\numberline {16}{\ignorespaces Principais argumentos do script de geração.}}{78}{table.A.16}%
+\contentsline {table}{\numberline {17}{\ignorespaces Comandos interativos da unidade geradora.}}{78}{table.A.17}%
+\contentsline {table}{\numberline {18}{\ignorespaces Argumentos gerais do script de recepção.}}{80}{table.A.18}%
+\contentsline {table}{\numberline {19}{\ignorespaces Argumentos para habilitação e ajuste das proteções.}}{81}{table.A.19}%

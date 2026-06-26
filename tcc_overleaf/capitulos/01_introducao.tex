@@ -10,7 +10,7 @@ Diante dessa limitação, torna-se relevante o desenvolvimento de ferramentas di
 
 Neste trabalho, propõe-se uma plataforma didática embarcada para reprodução de arquivos COMTRADE e emulação de funções de relés de proteção aplicadas a sistemas elétricos de potência. O padrão COMTRADE é amplamente utilizado para armazenamento e intercâmbio de registros oscilográficos, permitindo representar sinais provenientes de simulações ou medições reais \cite{ieee_comtrade,iec_60255_24_2013}. No projeto desenvolvido, as oscilografias são obtidas a partir de simulações de faltas trifásicas realizadas no Simulink, convertidas para arquivos COMTRADE e posteriormente reproduzidas por uma ESP32 geradora com auxílio de um conversor digital-analógico MCP4728 \cite{espressif_esp32,microchip_mcp4728}.
 
-A plataforma é constituída basicamente por duas unidades ESP32. A primeira unidade é responsável pela geração e reprodução dos sinais analógicos de tensão e corrente a partir das amostras provenientes dos arquivos COMTRADE. A segunda unidade realiza a recepção dos sinais reproduzidos, a aquisição das amostras e a execução dos algoritmos de proteção. Nas versões mais recentes do projeto, o sistema passou a ter maior grau de embarcamento, com a comunicação, a reprodução, a recepção e os algoritmos de proteção concentrados nas ESP32, enquanto os scripts em computador atuam principalmente na preparação dos dados, configuração, supervisão e interface de execução.
+A plataforma é constituída basicamente por duas unidades ESP32. A primeira unidade armazena e interpreta o registro COMTRADE e reproduz um canal de tensão e um de corrente por meio do MCP4728. A segunda adquire esses dois sinais e executa os algoritmos de proteção. O caminho de tempo crítico --- formação e temporização dos quadros, aquisição, estimação fasorial e decisão das proteções --- permanece nas ESP32; os scripts no computador transferem os arquivos, geram ou leem o 	exttt{config.json}, enviam os ajustes e supervisionam a comunicação serial.
 
 Do ponto de vista acadêmico, a principal contribuição deste trabalho está na construção de uma plataforma acessível, reconfigurável e orientada ao ensino, capaz de permitir que estudantes observem a relação entre uma falta simulada, a oscilografia correspondente, a reprodução física dos sinais e a resposta dos algoritmos de proteção. Dessa forma, busca-se complementar o ensino teórico de proteção de sistemas elétricos de potência com uma ferramenta prática, de baixo custo e compatível com a realidade de laboratórios didáticos, reforçando a importância de experiências laboratoriais no processo de formação em engenharia \cite{feisel2005laboratory,ferris2013protectionlab}.
 
@@ -25,15 +25,15 @@ Desenvolver uma plataforma didática embarcada, baseada em microcontroladores ES
 Para alcançar o objetivo geral, foram definidos os seguintes objetivos específicos:
 
 \begin{itemize}
-  \item realizar simulações de faltas trifásicas em um sistema elétrico de potência no ambiente Simulink/Matlab;
-  \item exportar as amostras de tensão e corrente obtidas nas simulações para o ambiente de processamento do Matlab;
+  \item realizar simulações de faltas trifásicas em um sistema elétrico de potência no ambiente MATLAB/Simulink;
+  \item exportar as amostras de tensão e corrente obtidas nas simulações para o \textit{workspace} do MATLAB;
   \item converter as amostras simuladas para o padrão COMTRADE, gerando os arquivos \texttt{.cfg} e \texttt{.dat};
   \item validar os arquivos COMTRADE quanto ao tipo de arquivo, número de canais, taxa de amostragem e compatibilidade com a plataforma desenvolvida;
   \item desenvolver o sistema embarcado de geração dos sinais analógicos de tensão e corrente utilizando ESP32 e conversor digital-analógico MCP4728;
   \item implementar a comunicação entre o computador e a ESP32 geradora para envio, organização e reprodução das amostras;
   \item desenvolver o sistema embarcado de recepção dos sinais analógicos reproduzidos pela unidade geradora;
   \item processar as amostras recebidas para extração de grandezas utilizadas pelos algoritmos de proteção;
-  \item implementar funções de proteção, como sobrecorrente, direcional e distância, conforme os recursos disponíveis na plataforma;
+  \item implementar as funções de subtensão (27), sobretensão (59), sobrecorrente instantânea e temporizada (50/51), distância (21) e supervisão direcional (67);
   \item permitir a configuração dos algoritmos de proteção por meio de comandos e parâmetros de ajuste, aproximando a operação do sistema da lógica de configuração de relés reais;
   \item avaliar a resposta da plataforma diante das oscilografias de falta reproduzidas;
   \item analisar a aplicabilidade do sistema como ferramenta didática para o ensino de proteção de sistemas elétricos de potência.

@@ -1,6 +1,6 @@
 \chapter{Conceitos Fundamentais de Sistemas Elétricos de Potência}
 
-Este capítulo apresenta os conceitos fundamentais utilizados no desenvolvimento da plataforma proposta. Inicialmente, são abordadas noções gerais sobre sistemas elétricos de potência, com destaque para as grandezas elétricas utilizadas no projeto. Em seguida, são discutidos os curtos-circuitos em sistemas elétricos, os princípios da proteção, as funções de relés implementadas ou previstas na plataforma, o padrão COMTRADE e os fundamentos de processamento digital de sinais aplicados a relés digitais.
+Este capítulo apresenta os conceitos fundamentais utilizados no desenvolvimento da plataforma proposta. Inicialmente, são abordadas noções gerais sobre sistemas elétricos de potência, com destaque para as grandezas elétricas utilizadas no projeto. Em seguida, são discutidos os curtos-circuitos em sistemas elétricos, os princípios da proteção, as funções de relés implementadas na plataforma, o padrão COMTRADE e os fundamentos de processamento digital de sinais aplicados a relés digitais.
 
 A fundamentação teórica apresentada neste capítulo tem como objetivo estabelecer a base necessária para compreender a arquitetura do sistema desenvolvido, no qual sinais de tensão e corrente provenientes de simulações são reproduzidos em bancada e utilizados para avaliação de algoritmos de proteção.
 
@@ -10,6 +10,8 @@ Um sistema elétrico de potência pode ser entendido como o conjunto de instala�
 
 \begin{figure}[H]
   \centering
+  \caption{Diagrama básico de um sistema elétrico de potência}
+  \label{fig:diagrama-sep}
   \begin{tikzpicture}[
     node distance=1.35cm,
     bloco/.style={draw, rounded corners, align=center, minimum width=2.45cm, minimum height=1.05cm},
@@ -28,8 +30,6 @@ Um sistema elétrico de potência pode ser entendido como o conjunto de instala�
     \draw[seta] (sub) -- (dist);
     \draw[seta] (dist) -- node[below]{\small consumo} (carga);
   \end{tikzpicture}
-  \caption{Diagrama básico de um sistema elétrico de potência}
-  \label{fig:diagrama-sep}
 \end{figure}
 
 A operação desses sistemas exige o equilíbrio contínuo entre geração e carga, além da manutenção de grandezas como tensão, corrente, frequência e potência dentro de limites adequados. Alterações bruscas de carga, falhas em equipamentos, descargas atmosféricas, curtos-circuitos e manobras podem provocar perturbações que afetam a estabilidade, a segurança e a continuidade do fornecimento de energia elétrica \cite{kundur1994power,glover2017power}.
@@ -84,6 +84,8 @@ As faltas trifásicas são classificadas como simétricas, pois, idealmente, pre
 
 \begin{figure}[H]
   \centering
+  \caption{Representação simplificada de uma falta trifásica em um sistema elétrico}
+  \label{fig:falta-trifasica}
   \begin{tikzpicture}[
     escala/.style={font=\small},
     linha/.style={thick},
@@ -111,8 +113,6 @@ As faltas trifásicas são classificadas como simétricas, pois, idealmente, pre
 
     \draw[-{Latex[length=2.5mm]}, thick] (1.2,1.45) -- node[above]{\small $I_{cc}$} (3.7,1.45);
   \end{tikzpicture}
-  \caption{Representação simplificada de uma falta trifásica em um sistema elétrico}
-  \label{fig:falta-trifasica}
 \end{figure}
 
 Para uma falta trifásica, a análise pode ser feita por fase, utilizando o equivalente de Thévenin visto do ponto de falta. A corrente de curto-circuito trifásico é dada por:
@@ -181,27 +181,29 @@ Uma forma usual de parametrização é definir o ajuste em valor por unidade:
   \label{eq:vpu}
 \end{equation}
 
-\noindent Assim, a condição de atuação por subtensão pode ser representada por:
+\noindent Em uma proteção com dois estágios, as condições podem ser representadas por:
 
 \begin{equation}
-  V_{pu} \leq V_{27,\text{pickup}}.
+  V_{pu} \leq V_{27,i}\quad\text{(instantânea)},\qquad
+  V_{pu} \leq V_{27,t}\ \text{por}\ t\geq T_{27}\quad\text{(temporizada)}.
   \label{eq:subtensao}
 \end{equation}
 
-Em aplicações digitais, essa condição normalmente é associada a uma temporização para evitar atuações indevidas durante transitórios rápidos. No contexto deste trabalho, a função de subtensão pode ser utilizada para observar o afundamento de tensão causado pela falta trifásica e verificar se o algoritmo identifica corretamente a permanência da tensão abaixo do limite configurado.
+O estágio temporizado responde a uma subtensão moderada persistente, enquanto o estágio instantâneo é reservado a uma tensão remanescente mais baixa e, portanto, mais crítica. O pickup é identificado assim que um ciclo fasorial válido cruza o limiar; a temporização condiciona o trip, não a detecção da condição.
 
 \subsection{Relé de sobretensão}
 
 O relé de sobretensão, identificado pelo número ANSI 59, atua quando a tensão medida excede um valor de ajuste. Essa função é aplicada na proteção de equipamentos contra elevações anormais de tensão, que podem ocorrer em rejeição de carga, manobras, falhas de regulação ou sobretensões temporárias.
 
-Utilizando a mesma representação em por unidade da Equação \ref{eq:vpu}, a condição de atuação por sobretensão pode ser expressa por:
+Utilizando a mesma representação em por unidade da Equação \ref{eq:vpu}, os dois estágios podem ser expressos por:
 
 \begin{equation}
-  V_{pu} \geq V_{59,\text{pickup}}.
+  V_{pu} \geq V_{59,i}\quad\text{(instantânea)},\qquad
+  V_{pu} \geq V_{59,t}\ \text{por}\ t\geq T_{59}\quad\text{(temporizada)}.
   \label{eq:sobretensao}
 \end{equation}
 
-Em uma plataforma didática, essa função permite demonstrar como limites de tensão são definidos e como a alteração dos parâmetros de ajuste modifica a decisão do relé. Em estudos de falta trifásica, sua aplicação pode ser observada principalmente em situações de recuperação pós-falta, rejeição de carga ou cenários simulados com elevação de tensão.
+O estágio temporizado responde a uma elevação moderada e persistente, enquanto o estágio instantâneo atua diante de uma sobretensão mais severa. Em uma plataforma didática, essa separação permite comparar a influência conjunta da magnitude e do tempo sobre a decisão do relé.
 
 \subsection{Relé de sobrecorrente}
 
@@ -320,11 +322,11 @@ Nesse contexto, a Transformada Discreta de Fourier é amplamente empregada em re
   \label{eq:dft-fundamental}
 \end{equation}
 
-\noindent A partir desse coeficiente, obtêm-se a magnitude e o ângulo do fasor:
+\noindent A partir desse coeficiente, obtêm-se a amplitude de pico e o ângulo da componente fundamental. Para expressar o fasor em valor eficaz, como ocorre no firmware receptor, a magnitude deve ser dividida por $\sqrt{2}$:
 
 \begin{align}
-  |X_1| &= \sqrt{\operatorname{Re}(X_1)^2 + \operatorname{Im}(X_1)^2}, \label{eq:magnitude-fasor}\\
-  \theta_X &= \tan^{-1}\left(\frac{\operatorname{Im}(X_1)}{\operatorname{Re}(X_1)}\right). \label{eq:angulo-fasor}
+  |\bar{X}_1|_{\mathrm{rms}} &= \frac{1}{\sqrt{2}}\sqrt{\operatorname{Re}(X_1)^2 + \operatorname{Im}(X_1)^2}, \label{eq:magnitude-fasor}\\
+  \theta_X &= \operatorname{atan2}\!\left(\operatorname{Im}(X_1),\operatorname{Re}(X_1)\right). \label{eq:angulo-fasor}
 \end{align}
 
 No projeto desenvolvido, esse processamento permite que as amostras recebidas pela ESP32 receptora sejam convertidas em grandezas úteis aos algoritmos de proteção. Assim, a plataforma não apenas reproduz formas de onda, mas também demonstra o processo de aquisição, filtragem, estimação fasorial e decisão lógica característico de relés digitais.

@@ -1,0 +1,52 @@
+{
+  "schema_version": 2,
+  "generator_script": "run_embedded_generator.py",
+  "processing_side": "esp32",
+  "generated_unix_s": 1782438796.3433151,
+  "comtrade": {
+    "cfg_path": "samples/samples_/Matlab_comtrade/01_CC_Trifasico/Sobrecorrente/20%/export.cfg",
+    "bdat_path": "samples/samples_/Matlab_comtrade/01_CC_Trifasico/Sobrecorrente/20%/export.bdat",
+    "n_analog": 2,
+    "n_digital": 0,
+    "freq_hz": 60.0,
+    "sample_rate_hz": 1000.0,
+    "records": 2001,
+    "rec_size": 12,
+    "ts64": false,
+    "data_format": "BINARY"
+  },
+  "dac_mapping": {
+    "v_mid": 1.65,
+    "v_amp": 1.55,
+    "dac_vref": 3.3,
+    "dac_max": 4095,
+    "dac_mid_code": 2048,
+    "protocol_channels": {
+      "voltage": "dac_v",
+      "current": "dac_i"
+    }
+  },
+  "comtrade_reference": {
+    "v_nom_peak": 362383.1875,
+    "i_nom_peak": 1836.800049,
+    "v_nom_rms": 256243.609375,
+    "i_nom_rms": 1298.813843,
+    "v_clip_peak": 1811916.0,
+    "i_clip_peak": 18368.0,
+    "v_clip_rms": 1281218.0905404044,
+    "i_clip_rms": 12988.137356834504
+  },
+  "receiver_recommendation": {
+    "channel_map": {
+      "gpio35": "voltage",
+      "gpio34": "current"
+    },
+    "adc_vref": 3.3,
+    "offset_v": 1.65,
+    "offset_i": 1.65,
+    "v_scale_eng_per_volt": 1168978.064516129,
+    "i_scale_eng_per_volt": 11850.322580645161,
+    "freq_hz": 60.0,
+    "sample_rate_hz": 1000.0
+  }
+}

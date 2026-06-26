@@ -1,0 +1,17 @@
+\babel@toc {brazil}{}\relax 
+\contentsline {figure}{\numberline {1}{\ignorespaces Diagrama básico de um sistema elétrico de potência}}{7}{figure.2.1}%
+\contentsline {figure}{\numberline {2}{\ignorespaces Representação simplificada de uma falta trifásica em um sistema elétrico}}{9}{figure.2.2}%
+\contentsline {figure}{\numberline {3}{\ignorespaces Arquitetura funcional da plataforma didática proposta.}}{20}{figure.3.3}%
+\contentsline {figure}{\numberline {4}{\ignorespaces Modelo do sistema elétrico implementado no Simulink.}}{22}{figure.3.4}%
+\contentsline {figure}{\numberline {5}{\ignorespaces Tensões trifásicas obtidas na simulação.}}{24}{figure.3.5}%
+\contentsline {figure}{\numberline {6}{\ignorespaces Correntes trifásicas obtidas na simulação.}}{24}{figure.3.6}%
+\contentsline {figure}{\numberline {7}{\ignorespaces Transferência e processamento do registro COMTRADE na unidade geradora.}}{27}{figure.3.7}%
+\contentsline {figure}{\numberline {8}{\ignorespaces ESP32 geradora e conversor digital-analógico MCP4728.}}{29}{figure.3.8}%
+\contentsline {figure}{\numberline {9}{\ignorespaces Configuração e inicialização da unidade receptora.}}{30}{figure.3.9}%
+\contentsline {figure}{\numberline {10}{\ignorespaces Unidade embarcada de aquisição, processamento e proteção.}}{31}{figure.3.10}%
+\contentsline {figure}{\numberline {11}{\ignorespaces Painel de indicação dos estados de proteção.}}{33}{figure.3.11}%
+\contentsline {figure}{\numberline {12}{\ignorespaces Bancada experimental utilizada na execução dos ensaios.}}{35}{figure.3.12}%
+\contentsline {figure}{\numberline {13}{\ignorespaces Montagem completa da plataforma, com geração, conversão, aquisição e sinalização.}}{36}{figure.3.13}%
+\contentsline {figure}{\numberline {14}{\ignorespaces Diagrama simplificado da implementação, destacando os principais blocos funcionais.}}{39}{figure.4.14}%
+\contentsline {figure}{\numberline {15}{\ignorespaces Máquina de estados simplificada da reprodução.}}{52}{figure.4.15}%
+\contentsline {figure}{\numberline {16}{\ignorespaces Hierarquia lógica de execução e supervisão das funções de proteção.}}{60}{figure.4.16}%
