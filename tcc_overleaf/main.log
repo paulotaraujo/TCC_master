@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.6.20)  25 JUN 2026 23:18
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.6.20)  27 JUN 2026 11:10
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1377,8 +1377,8 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.iii}) ha
 s been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.281   \item[UART]
-                    \textit{Universal Asynchronous Receiver-Transmitter}
+l.280   \item[RMSE]
+                    \textit{Root Mean Square Error} --- raiz do erro quadrá...
 [3
 
 
@@ -1387,13 +1387,13 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.iv}) has
  been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.283 \end{siglas}
+l.287 \end{siglas}
                    [4]
 pdfTeX warning (ext4): destination with the same identifier (name{page.v}) has 
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.309   \item[$L_{32}$]
+l.313   \item[$L_{32}$]
                         Comprimento, em bytes, de um registro COMTRADE biná...
 [5
 
@@ -1463,7 +1463,7 @@ l.151
 
 pdfTeX warning: pdflatex (file ./figuras/arquitetura_geral_v3.pdf): PDF inclusi
 on: found PDF version <1.7>, but at most version <1.5> allowed
-<figuras/arquitetura_geral_v3.pdf, id=554, 1445.4pt x 813.0375pt>
+<figuras/arquitetura_geral_v3.pdf, id=568, 1445.4pt x 813.0375pt>
 File: figuras/arquitetura_geral_v3.pdf Graphic file (type pdf)
 <use figuras/arquitetura_geral_v3.pdf>
 Package pdftex.def Info: figuras/arquitetura_geral_v3.pdf  used on input line 2
@@ -1477,7 +1477,7 @@ has been already used, duplicate ignored
 l.40   \item r
               eprodução analógica de tensão e corrente pelo DAC MCP4728; <.
 /figuras/arquitetura_geral_v3.pdf>]
-<figuras/modelo_simulink.png, id=642, 1269.74374pt x 497.86pt>
+<figuras/modelo_simulink.png, id=656, 1269.74374pt x 497.86pt>
 File: figuras/modelo_simulink.png Graphic file (type png)
 <use figuras/modelo_simulink.png>
 Package pdftex.def Info: figuras/modelo_simulink.png  used on input line 60.
@@ -1501,7 +1501,7 @@ as been already used, duplicate ignored
                                                   \__shipout_drop_firstpage_...
 l.116 
        <./figuras/modelo_simulink.png>]
-<figuras/simulink_tensao.pdf, id=666, 796.9775pt x 398.48875pt>
+<figuras/simulink_tensao.pdf, id=680, 796.9775pt x 398.48875pt>
 File: figuras/simulink_tensao.pdf Graphic file (type pdf)
 <use figuras/simulink_tensao.pdf>
 Package pdftex.def Info: figuras/simulink_tensao.pdf  used on input line 143.
@@ -1519,7 +1519,7 @@ as been already used, duplicate ignored
                                                   \__shipout_drop_firstpage_...
 l.146 
       ]
-<figuras/simulink_corrente.pdf, id=671, 796.9775pt x 398.48875pt>
+<figuras/simulink_corrente.pdf, id=685, 796.9775pt x 398.48875pt>
 File: figuras/simulink_corrente.pdf Graphic file (type pdf)
 <use figuras/simulink_corrente.pdf>
 Package pdftex.def Info: figuras/simulink_corrente.pdf  used on input line 151.
@@ -1545,7 +1545,7 @@ as been already used, duplicate ignored
                                                   \__shipout_drop_firstpage_...
 l.190   \item a
                s unidades e os coeficientes de conversão dos canais;]
-<figuras/terminal_geração.png, id=729, 697.60625pt x 256.96pt>
+<figuras/terminal_geração.png, id=743, 697.60625pt x 256.96pt>
 File: figuras/terminal_geração.png Graphic file (type png)
 <use figuras/terminal_geração.png>
 Package pdftex.def Info: figuras/terminal_geração.png  used on input line 208
@@ -1559,7 +1559,7 @@ has been already used, duplicate ignored
                                                   \__shipout_drop_firstpage_...
 l.226 
        <./figuras/terminal_geração.png>] [28]
-<figuras/esp32_geradora.jpg, id=747, 1940.24875pt x 1616.0375pt>
+<figuras/esp32_geradora.jpg, id=761, 1940.24875pt x 1616.0375pt>
 File: figuras/esp32_geradora.jpg Graphic file (type jpg)
 <use figuras/esp32_geradora.jpg>
 Package pdftex.def Info: figuras/esp32_geradora.jpg  used on input line 249.
@@ -1571,13 +1571,13 @@ has been already used, duplicate ignored
                                                   \__shipout_drop_firstpage_...
 l.256 
        <./figuras/esp32_geradora.jpg>]
-<figuras/terminal_recepção.png, id=753, 656.4525pt x 194.7275pt>
+<figuras/terminal_recepção.png, id=767, 656.4525pt x 194.7275pt>
 File: figuras/terminal_recepção.png Graphic file (type png)
 <use figuras/terminal_recepção.png>
 Package pdftex.def Info: figuras/terminal_recepção.png  used on input line 26
 1.
 (pdftex.def)             Requested size: 432.24861pt x 128.22043pt.
-<figuras/esp32_receptora.jpg, id=754, 2768.3425pt x 1810.765pt>
+<figuras/esp32_receptora.jpg, id=768, 2768.3425pt x 1810.765pt>
 File: figuras/esp32_receptora.jpg Graphic file (type jpg)
 <use figuras/esp32_receptora.jpg>
 Package pdftex.def Info: figuras/esp32_receptora.jpg  used on input line 271.
@@ -1596,7 +1596,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{figure.3.10})
 l.286   \item \textbf
                      {ANSI 50}: sobrecorrente instantânea; <./figuras/esp32_re
 ceptora.jpg>] [32]
-<figuras/painel_leds.jpg, id=770, 1391.1975pt x 776.9025pt>
+<figuras/painel_leds.jpg, id=784, 1391.1975pt x 776.9025pt>
 File: figuras/painel_leds.jpg Graphic file (type jpg)
 <use figuras/painel_leds.jpg>
 Package pdftex.def Info: figuras/painel_leds.jpg  used on input line 306.
@@ -1609,13 +1609,13 @@ pdfTeX warning (ext4): destination with the same identifier (name{figure.3.11})
 l.319   \item e
                xecutar a senoide de teste para verificar continuidade, polar...
  <./figuras/painel_leds.jpg>]
-<figuras/bancada_testes.jpg, id=780, 2002.48125pt x 3780.1225pt>
+<figuras/bancada_testes.jpg, id=794, 2002.48125pt x 3780.1225pt>
 File: figuras/bancada_testes.jpg Graphic file (type jpg)
 <use figuras/bancada_testes.jpg>
 Package pdftex.def Info: figuras/bancada_testes.jpg  used on input line 336.
 (pdftex.def)             Requested size: 327.60056pt x 618.38675pt.
  [34]
-<figuras/sistema_completo.jpg, id=795, 1964.33875pt x 2348.775pt>
+<figuras/sistema_completo.jpg, id=809, 1964.33875pt x 2348.775pt>
 File: figuras/sistema_completo.jpg Graphic file (type jpg)
 <use figuras/sistema_completo.jpg>
 Package pdftex.def Info: figuras/sistema_completo.jpg  used on input line 344.
@@ -1645,7 +1645,7 @@ l.353
 
 pdfTeX warning: pdflatex (file ./figuras/diagrama_simplificado.pdf): PDF inclus
 ion: found PDF version <1.7>, but at most version <1.5> allowed
-<figuras/diagrama_simplificado.pdf, id=815, 1445.4pt x 813.0375pt>
+<figuras/diagrama_simplificado.pdf, id=829, 1445.4pt x 813.0375pt>
 File: figuras/diagrama_simplificado.pdf Graphic file (type pdf)
 <use figuras/diagrama_simplificado.pdf>
 Package pdftex.def Info: figuras/diagrama_simplificado.pdf  used on input line 
@@ -1751,7 +1751,7 @@ l.303 O
 
 pdfTeX warning: pdflatex (file ./figuras/maquina_de_estado_v2.pdf): PDF inclusi
 on: found PDF version <1.7>, but at most version <1.5> allowed
-<figuras/maquina_de_estado_v2.pdf, id=914, 1445.4pt x 813.0375pt>
+<figuras/maquina_de_estado_v2.pdf, id=928, 1445.4pt x 813.0375pt>
 File: figuras/maquina_de_estado_v2.pdf Graphic file (type pdf)
 <use figuras/maquina_de_estado_v2.pdf>
 Package pdftex.def Info: figuras/maquina_de_estado_v2.pdf  used on input line 3
@@ -1791,33 +1791,99 @@ l.640 cd generator/python/embedded_generator
 [68]
 \openout2 = `capitulos/05_resultados.aux'.
 
- (./capitulos/05_resultados.tex) [69
+ (./capitulos/05_resultados.tex [69
 
 
 
 
 ]
+<figuras/resultados_tensao_inst.pdf, id=1065, 595.22375pt x 367.3725pt>
+File: figuras/resultados_tensao_inst.pdf Graphic file (type pdf)
+<use figuras/resultados_tensao_inst.pdf>
+Package pdftex.def Info: figuras/resultados_tensao_inst.pdf  used on input line
+ 20.
+(pdftex.def)             Requested size: 418.59917pt x 258.35858pt.
+ [70]
+<figuras/resultados_corrente_inst.pdf, id=1070, 573.14125pt x 383.4325pt>
+File: figuras/resultados_corrente_inst.pdf Graphic file (type pdf)
+<use figuras/resultados_corrente_inst.pdf>
+Package pdftex.def Info: figuras/resultados_corrente_inst.pdf  used on input li
+ne 28.
+(pdftex.def)             Requested size: 418.59917pt x 280.04967pt.
+ [71
+pdfTeX warning (ext4): destination with the same identifier (name{figure.5.17})
+ has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.33 
+     
+pdfTeX warning (ext4): destination with the same identifier (name{figure.5.18})
+ has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.33 
+      <./figuras/resultados_tensao_inst.pdf> <./figuras/resultados_corrente_ins
+t.pdf>] [72]
+<figuras/resultados_tensao_fdt.pdf, id=1133, 594.22pt x 377.41pt>
+File: figuras/resultados_tensao_fdt.pdf Graphic file (type pdf)
+<use figuras/resultados_tensao_fdt.pdf>
+Package pdftex.def Info: figuras/resultados_tensao_fdt.pdf  used on input line 
+82.
+(pdftex.def)             Requested size: 418.59917pt x 265.87828pt.
+ [73
+pdfTeX warning (ext4): destination with the same identifier (name{table.5.16}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.85 
+     ]
+<figuras/resultados_corrente_fdt.pdf, id=1139, 601.24625pt x 376.40625pt>
+File: figuras/resultados_corrente_fdt.pdf Graphic file (type pdf)
+<use figuras/resultados_corrente_fdt.pdf>
+Package pdftex.def Info: figuras/resultados_corrente_fdt.pdf  used on input lin
+e 90.
+(pdftex.def)             Requested size: 418.59917pt x 262.06967pt.
+ [74
+pdfTeX warning (ext4): destination with the same identifier (name{figure.5.19})
+ has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.95 
+     
+pdfTeX warning (ext4): destination with the same identifier (name{figure.5.20})
+ has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.95 
+      <./figuras/resultados_tensao_fdt.pdf> <./figuras/resultados_corrente_fdt.
+pdf>]) [75
+pdfTeX warning (ext4): destination with the same identifier (name{table.5.17}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.367 \include{capitulos/05_resultados}
+                                       ] [76]
 \openout2 = `capitulos/06_conclusao.aux'.
 
  (./capitulos/06_conclusao.tex
-[70
+[77
 
 
 
 
-]) [71] (./main.bbl
+]) [78] (./main.bbl
 bibitemlist
-[72
+[79
 
 
 
-]) [73]
+]) [80]
 \openout2 = `capitulos/apendice_codigo.aux'.
 
- (./capitulos/apendice_codigo.tex [74
+ (./capitulos/apendice_codigo.tex [81
 
 
-] [75] [76] [77]
+] [82] [83] [84]
 Underfull \hbox (badness 10000) in paragraph at lines 138--138
 []|\T1/lmtt/m/n/10.95 --receiver-config
  []
@@ -1832,14 +1898,14 @@ Underfull \hbox (badness 10000) in paragraph at lines 140--140
 []|\T1/lmtt/m/n/10.95 --process-timeout
  []
 
-[78
-pdfTeX warning (ext4): destination with the same identifier (name{table.A.16}) 
+[85
+pdfTeX warning (ext4): destination with the same identifier (name{table.A.18}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.174 \begin{verbatim}
                       
-pdfTeX warning (ext4): destination with the same identifier (name{table.A.17}) 
+pdfTeX warning (ext4): destination with the same identifier (name{table.A.19}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
@@ -1849,20 +1915,20 @@ Underfull \hbox (badness 10000) in paragraph at lines 209--209
 []|\T1/lmtt/m/n/10.95 --protection-event-interval
  []
 
-[79] [80
-pdfTeX warning (ext4): destination with the same identifier (name{table.A.18}) 
+[86] [87
+pdfTeX warning (ext4): destination with the same identifier (name{table.A.20}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.236 
-      ] [81
-pdfTeX warning (ext4): destination with the same identifier (name{table.A.19}) 
+      ] [88
+pdfTeX warning (ext4): destination with the same identifier (name{table.A.21}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.244   \item n
                o terminal da geradora, enviar \texttt{s} e manter a pré-fal...
-]) [82]
+]) [89]
 \tf@lof=\write5
 \openout5 = `main.lof'.
 
@@ -1882,11 +1948,11 @@ L3 programming layer <2020/03/25>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 36065 strings out of 474222
- 722067 string characters out of 5748733
+ 36131 strings out of 474222
+ 723893 string characters out of 5748733
  1941975 words of memory out of 5000000
- 57056 multiletter control sequences out of 15000+600000
- 654203 words of font info for 241 fonts, out of 8000000 for 9000
+ 57096 multiletter control sequences out of 15000+600000
+ 654603 words of font info for 245 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  99i,14n,107p,1208b,1155s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texmf/fonts/type1/public/lm/lmbx10.pfb></usr/share/texmf/fonts/ty
@@ -1903,10 +1969,10 @@ ic/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy8.pfb></usr/share/
 texmf/fonts/type1/public/lm/lmtt10.pfb></usr/share/texmf/fonts/type1/public/lm/
 lmtt12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/m
 sam10.pfb>
-Output written on main.pdf (100 pages, 12501382 bytes).
+Output written on main.pdf (107 pages, 12730650 bytes).
 PDF statistics:
- 1621 PDF objects out of 1728 (max. 8388607)
- 1388 compressed objects within 14 object streams
- 354 named destinations out of 1000 (max. 500000)
- 57261 words of extra memory for PDF output out of 61914 (max. 10000000)
+ 1781 PDF objects out of 2073 (max. 8388607)
+ 1531 compressed objects within 16 object streams
+ 372 named destinations out of 1000 (max. 500000)
+ 57289 words of extra memory for PDF output out of 61914 (max. 10000000)
 
