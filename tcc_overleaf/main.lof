@@ -19,3 +19,17 @@
 \contentsline {figure}{\numberline {18}{\ignorespaces Comparação temporal das amostras instantâneas de corrente.}}{71}{figure.5.18}%
 \contentsline {figure}{\numberline {19}{\ignorespaces Comparação dos valores de tensão obtidos por FDT.}}{74}{figure.5.19}%
 \contentsline {figure}{\numberline {20}{\ignorespaces Comparação dos valores de corrente obtidos por FDT.}}{74}{figure.5.20}%
+\contentsline {figure}{\numberline {21}{\ignorespaces Resposta temporizada da função 51 para sobrecorrente de 20\%.}}{78}{figure.5.21}%
+\contentsline {figure}{\numberline {22}{\ignorespaces Trecho do terminal da ESP32 receptora para a sobrecorrente temporizada.}}{78}{figure.5.22}%
+\contentsline {figure}{\numberline {23}{\ignorespaces Resposta instantânea da função 50 para sobrecorrente de 50\%.}}{79}{figure.5.23}%
+\contentsline {figure}{\numberline {24}{\ignorespaces Trecho do terminal da ESP32 receptora para a sobrecorrente instantânea.}}{80}{figure.5.24}%
+\contentsline {figure}{\numberline {25}{\ignorespaces Resposta temporizada da função 59 para sobretensão de 15\%.}}{81}{figure.5.25}%
+\contentsline {figure}{\numberline {26}{\ignorespaces Trecho do terminal da ESP32 receptora para a sobretensão temporizada.}}{81}{figure.5.26}%
+\contentsline {figure}{\numberline {27}{\ignorespaces Resposta instantânea da função 59 para sobretensão de 50\%.}}{82}{figure.5.27}%
+\contentsline {figure}{\numberline {28}{\ignorespaces Trecho do terminal da ESP32 receptora para a sobretensão instantânea.}}{82}{figure.5.28}%
+\contentsline {figure}{\numberline {29}{\ignorespaces Resposta temporizada da função 27 para subtensão de 30\%.}}{84}{figure.5.29}%
+\contentsline {figure}{\numberline {30}{\ignorespaces Trecho do terminal da ESP32 receptora para a subtensão temporizada.}}{84}{figure.5.30}%
+\contentsline {figure}{\numberline {31}{\ignorespaces Resposta instantânea da função 27 para subtensão de 50\%.}}{85}{figure.5.31}%
+\contentsline {figure}{\numberline {32}{\ignorespaces Trecho do terminal da ESP32 receptora para a subtensão instantânea.}}{85}{figure.5.32}%
+\contentsline {figure}{\numberline {33}{\ignorespaces Indicação física de atuação instantânea e temporizada no painel.}}{87}{figure.5.33}%
+\contentsline {figure}{\numberline {34}{\ignorespaces Indicação física de atuação com supervisão 67 e de bloqueio direcional.}}{87}{figure.5.34}%

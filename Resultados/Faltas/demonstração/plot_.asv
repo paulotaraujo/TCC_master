@@ -1,0 +1,494 @@
+%% plot_comparacao_tensao_corrente_final_artigo.m
+% Sobrepoe tensao e corrente a partir de tres formatos:
+%   1) COMTRADE binario: export.cfg + export.bdat
+%   2) CSV: trimmed_trifasico_oscilografia_10.csv
+%   3) MAT: trifasico_oscilografia_10.mat
+%
+% Esta versao tambem alinha automaticamente o CSV no tempo em relacao ao MAT
+% por minimizacao do erro RMS, permitindo deslocamento fracionario de amostra.
+%
+% Saidas:
+%   figuras_comparacao_alinhado/sobreposicao_tensao.png/.pdf
+%   figuras_comparacao_alinhado/sobreposicao_corrente.png/.pdf
+
+clear; clc; close all;
+
+%% ===================== CONFIGURACAO =====================
+arquivo_cfg  = 'export.cfg';
+arquivo_bdat = 'export.bdat';
+arquivo_csv  = 'trimmed_trifasico_oscilografia_10.csv';
+arquivo_mat  = 'trifasico_oscilografia_10.mat';
+
+Tfinal = 2.0;           % s
+Nesperado = 2001;       % 0:0.001:2.000
+t_ref = linspace(0,Tfinal,Nesperado).';
+
+% Colunas instantaneas do CSV
+col_csv_tempo = 'host_t_s';
+col_csv_v = 'v_inst';
+col_csv_i = 'i_inst';
+
+% Igual ao read_adc_capture_csv.py no modo amplitude_scaled:
+% usa v_inst/i_inst multiplicados por norm_gain_v/norm_gain_i, quando existirem.
+aplicar_norm_gain_csv = true;
+
+% Canais COMTRADE conforme o CFG: normalmente 1 = Va, 2 = Ia
+canal_bdat_v = 1;
+canal_bdat_i = 2;
+
+% Canais dentro das variaveis MAT selecionadas.
+% Se Vin_saida e Iin_saida forem timeseries de 1 canal, deixe ambos = 1.
+canal_mat_v = 1;
+canal_mat_i = 1;
+
+normalizar_amplitude = false;
+salvar_figuras = true;
+pasta_saida = 'figuras_comparacao_alinhado';
+
+% Alinhamento automatico do CSV
+% O atraso calculado pela tensao sera aplicado tambem na corrente,
+% pois ambos vieram da mesma aquisicao/reproducao.
+alinhar_csv = true;
+janela_alinhamento = [0 2.0];      % use [0 0.05] para alinhar apenas o inicio
+limite_deslocamento = 2e-3;        % procura deslocamentos de ate +/-2 ms
+metodo_interp = 'pchip';           % 'linear', 'pchip' ou 'makima'
+
+%% ===================== LEITURA DO CSV =====================
+Tcsv = readtable(arquivo_csv, 'VariableNamingRule','preserve');
+
+if ismember(col_csv_tempo, Tcsv.Properties.VariableNames)
+    t_csv = Tcsv.(col_csv_tempo);
+elseif ismember('dev_t_s', Tcsv.Properties.VariableNames)
+    t_csv = Tcsv.dev_t_s;
+elseif ismember('host_t_s', Tcsv.Properties.VariableNames)
+    t_csv = Tcsv.host_t_s;
+else
+    t_csv = t_ref(1:height(Tcsv));
+end
+
+checar_coluna(Tcsv, col_csv_v, arquivo_csv);
+checar_coluna(Tcsv, col_csv_i, arquivo_csv);
+
+v_csv = Tcsv.(col_csv_v);
+i_csv = Tcsv.(col_csv_i);
+
+% Aplica o mesmo escalonamento usado no script Python read_adc_capture_csv.py
+% para o modo amplitude_scaled. Sem isso, o MATLAB plota v_inst/i_inst
+% crus e a amplitude do CSV pode ficar ligeiramente diferente.
+if aplicar_norm_gain_csv
+    if ismember('norm_gain_v', Tcsv.Properties.VariableNames)
+        v_csv = v_csv .* Tcsv.norm_gain_v;
+        fprintf('CSV: aplicado norm_gain_v em %s.\n', col_csv_v);
+    else
+        fprintf('CSV: coluna norm_gain_v nao encontrada; usando %s sem ganho extra.\n', col_csv_v);
+    end
+
+    if ismember('norm_gain_i', Tcsv.Properties.VariableNames)
+        i_csv = i_csv .* Tcsv.norm_gain_i;
+        fprintf('CSV: aplicado norm_gain_i em %s.\n', col_csv_i);
+    else
+        fprintf('CSV: coluna norm_gain_i nao encontrada; usando %s sem ganho extra.\n', col_csv_i);
+    end
+end
+
+%% ===================== LEITURA DO COMTRADE BDAT/CFG =====================
+cfg = ler_cfg_comtrade(arquivo_cfg);
+[t_bdat, Y_bdat, nomes_bdat, unidades_bdat] = ler_bdat_comtrade(arquivo_bdat, cfg);
+
+v_bdat = Y_bdat(:,canal_bdat_v);
+i_bdat = Y_bdat(:,canal_bdat_i);
+
+nome_bdat_v = nomes_bdat{canal_bdat_v};
+nome_bdat_i = nomes_bdat{canal_bdat_i};
+unid_bdat_v = unidades_bdat{canal_bdat_v};
+unid_bdat_i = unidades_bdat{canal_bdat_i};
+
+%% ===================== LEITURA DO MAT =====================
+S = load(arquivo_mat);
+
+[t_mat_v, v_mat, nome_mat_v] = extrair_sinal_mat(S, 'tensao', canal_mat_v, Tfinal);
+[t_mat_i, i_mat, nome_mat_i] = extrair_sinal_mat(S, 'corrente', canal_mat_i, Tfinal);
+
+%% ===================== CORRECAO DO TEMPO PARA 0 A 2 s =====================
+% Os arquivos representam o mesmo recorte de 2001 amostras.
+if numel(t_csv)    == Nesperado, t_csv    = t_ref; end
+if numel(t_bdat)   == Nesperado, t_bdat   = t_ref; end
+if numel(t_mat_v)  == Nesperado, t_mat_v  = t_ref; end
+if numel(t_mat_i)  == Nesperado, t_mat_i  = t_ref; end
+
+%% ===================== INTERPOLACAO PARA EIXO COMUM =====================
+% Primeiro, coloca MAT e COMTRADE no eixo de referencia.
+v_bdat_i = interp1(t_bdat(:),  v_bdat(:),  t_ref, metodo_interp, 'extrap');
+i_bdat_i = interp1(t_bdat(:),  i_bdat(:),  t_ref, metodo_interp, 'extrap');
+v_mat_i  = interp1(t_mat_v(:), v_mat(:),   t_ref, metodo_interp, 'extrap');
+i_mat_i  = interp1(t_mat_i(:), i_mat(:),   t_ref, metodo_interp, 'extrap');
+
+% Depois, alinha o CSV no tempo usando a tensao do MAT como referencia.
+% delta_csv > 0 significa que o CSV foi deslocado para a direita no grafico.
+delta_csv = 0;
+if alinhar_csv
+    delta_csv = estimar_deslocamento_fracionario(t_csv(:), v_csv(:), t_ref, v_mat_i(:), ...
+        janela_alinhamento, limite_deslocamento, metodo_interp);
+end
+
+t_csv_alinhado = t_csv(:) + delta_csv;
+v_csv_i  = interp1(t_csv_alinhado, v_csv(:), t_ref, metodo_interp, 'extrap');
+i_csv_i  = interp1(t_csv_alinhado, i_csv(:), t_ref, metodo_interp, 'extrap');
+
+if normalizar_amplitude
+    v_csv_i  = normaliza(v_csv_i);   i_csv_i  = normaliza(i_csv_i);
+    v_bdat_i = normaliza(v_bdat_i);  i_bdat_i = normaliza(i_bdat_i);
+    v_mat_i  = normaliza(v_mat_i);   i_mat_i  = normaliza(i_mat_i);
+    ylabel_v = 'Amplitude normalizada';
+    ylabel_i = 'Amplitude normalizada';
+else
+    ylabel_v = sprintf('Tensao Normalizada (%s)', unid_bdat_v);
+    ylabel_i = sprintf('Corrente Normalizada (%s)', unid_bdat_i);
+end
+
+%% ===================== PLOTS =====================
+if salvar_figuras && ~exist(pasta_saida,'dir')
+    mkdir(pasta_saida);
+end
+
+plotar_sobreposto(t_ref, v_mat_i, v_csv_i, v_bdat_i, ...
+    'Comparação das amostras instantâneas de tensão', ylabel_v, ...
+    'Tensão de referência do Simulink', ...
+    'Tensão adquirida pela ESP32 receptora', ...
+    'Tensão do arquivo COMTRADE', ...
+    pasta_saida, 'sobreposicao_tensao', salvar_figuras);
+
+plotar_sobreposto(t_ref, i_mat_i, i_csv_i, i_bdat_i, ...
+    'Comparação das amostras instantâneas de corrente', ylabel_i, ...
+    'Corrente de referência do Simulink', ...
+    'Corrente adquirida pela ESP32 receptora', ...
+    'Corrente do arquivo COMTRADE', ...
+    pasta_saida, 'sobreposicao_corrente', salvar_figuras);
+
+%% ===================== RESUMO NUMERICO =====================
+fprintf('\nAlinhamento automatico do CSV:\n');
+fprintf('  Deslocamento aplicado ao tempo do CSV: %.9f s = %.3f ms\n', delta_csv, delta_csv*1e3);
+fprintf('  Regra usada: t_csv_alinhado = t_csv + deslocamento\n');
+
+fprintf('\nVariaveis MAT usadas:\n');
+fprintf('  Tensao  : %s, canal %d\n', nome_mat_v, canal_mat_v);
+fprintf('  Corrente: %s, canal %d\n', nome_mat_i, canal_mat_i);
+
+fprintf('\nResumo da comparacao usando o MAT como referencia:\n');
+resumo_erro('Tensao CSV  x MAT', v_csv_i,  v_mat_i);
+resumo_erro('Tensao BDAT x MAT', v_bdat_i, v_mat_i);
+resumo_erro('Corrente CSV  x MAT', i_csv_i,  i_mat_i);
+resumo_erro('Corrente BDAT x MAT', i_bdat_i, i_mat_i);
+
+fprintf('\nCanais COMTRADE lidos do CFG:\n');
+for k = 1:numel(nomes_bdat)
+    fprintf('  Canal %d: %s [%s], a = %.12g, b = %.12g\n', ...
+        k, nomes_bdat{k}, unidades_bdat{k}, cfg.analog(k).a, cfg.analog(k).b);
+end
+
+%% ===================== FUNCOES LOCAIS =====================
+function checar_coluna(T, col, arquivo)
+    if ~ismember(col, T.Properties.VariableNames)
+        error('A coluna "%s" nao existe em %s. Colunas disponiveis:\n%s', ...
+            col, arquivo, strjoin(T.Properties.VariableNames, ', '));
+    end
+end
+
+function [t, y, nome_usado] = extrair_sinal_mat(S, tipo, canal, Tfinal)
+    nomes = fieldnames(S);
+    nomes = nomes(~startsWith(nomes,'__'));
+
+    if strcmpi(tipo,'tensao')
+        prioridade = {'Vin_saida','Vin','Vout_saida','Vout','Va','Vabc','tensao','tensoes','voltage','voltage_out','v_inst','v'};
+        palavras_boas = {'vin','vout','tens','volt','va','vabc'};
+        palavras_ruins = {'iin','iout','corr','current','ia','iabc'};
+    else
+        prioridade = {'Iin_saida','Iin','Iout_saida','Iout','Ia','Iabc','corrente','correntes','current','current_out','i_inst','i'};
+        palavras_boas = {'iin','iout','corr','current','ia','iabc'};
+        palavras_ruins = {'vin','vout','tens','volt','va','vabc'};
+    end
+
+    candidatos = [intersect(prioridade, nomes, 'stable'); setdiff(nomes, prioridade, 'stable')];
+
+    melhorScore = -Inf;
+    melhor = struct('t',[],'D',[],'nome','');
+
+    for k = 1:numel(candidatos)
+        nome = candidatos{k};
+        v = S.(nome);
+        [ok, t0, D0] = tentar_extrair_matriz(v, Tfinal);
+        if ~ok || isempty(D0) || size(D0,1) < 10
+            continue;
+        end
+
+        nlow = lower(nome);
+        score = 0;
+        if any(strcmp(nome, prioridade)), score = score + 100; end
+        for p = 1:numel(palavras_boas)
+            if contains(nlow, palavras_boas{p}), score = score + 10; end
+        end
+        for p = 1:numel(palavras_ruins)
+            if contains(nlow, palavras_ruins{p}), score = score - 50; end
+        end
+
+        if score > melhorScore
+            melhorScore = score;
+            melhor.t = t0;
+            melhor.D = D0;
+            melhor.nome = nome;
+        end
+    end
+
+    if isempty(melhor.D)
+        disp('Variaveis encontradas no MAT:');
+        disp(nomes);
+        error('Nao consegui encontrar uma variavel de %s no arquivo MAT.', tipo);
+    end
+
+    if canal > size(melhor.D,2)
+        error('A variavel MAT "%s" foi selecionada para %s, mas possui apenas %d canal(is). Canal solicitado: %d.', ...
+            melhor.nome, tipo, size(melhor.D,2), canal);
+    end
+
+    t = melhor.t(:);
+    y = melhor.D(:,canal);
+    nome_usado = melhor.nome;
+end
+
+function [ok, t, D] = tentar_extrair_matriz(v, Tfinal)
+    ok = false; t = []; D = [];
+
+    if isa(v, 'timeseries')
+        t = v.Time(:);
+        D = organizar_matriz(squeeze(v.Data));
+        ok = true;
+        return;
+    end
+
+    if isstruct(v)
+        if all(isfield(v, {'Time','Data'}))
+            t = v.Time(:);
+            D = organizar_matriz(squeeze(v.Data));
+            ok = true;
+            return;
+        end
+        if isfield(v, 'time') && isfield(v, 'signals')
+            t = v.time(:);
+            D = organizar_matriz(v.signals.values);
+            ok = true;
+            return;
+        end
+        if isfield(v, 'Values') && isa(v.Values, 'timeseries')
+            t = v.Values.Time(:);
+            D = organizar_matriz(squeeze(v.Values.Data));
+            ok = true;
+            return;
+        end
+    end
+
+    if isnumeric(v) && numel(v) > 10
+        v = squeeze(v);
+        if ismatrix(v)
+            if size(v,2) >= 2 && is_monotonic_time(v(:,1))
+                t = v(:,1);
+                D = v(:,2:end);
+            else
+                D = organizar_matriz(v);
+                t = linspace(0,Tfinal,size(D,1)).';
+            end
+            ok = true;
+        end
+    end
+end
+
+function tf = is_monotonic_time(x)
+    x = x(:);
+    tf = numel(x) > 3 && all(diff(x) > 0) && x(1) >= 0;
+end
+
+function D = organizar_matriz(D)
+    D = squeeze(D);
+    if isvector(D)
+        D = D(:);
+        return;
+    end
+    if size(D,1) < size(D,2)
+        D = D.';
+    end
+end
+
+function cfg = ler_cfg_comtrade(arquivo_cfg)
+    linhas = readlines(arquivo_cfg);
+    linhas = strip(linhas);
+    linhas(linhas == '') = [];
+
+    partes = split(linhas(2), ',');
+    nA = str2double(erase(partes(2),'A'));
+    nD = str2double(erase(partes(3),'D'));
+
+    analog = struct('idx',{},'name',{},'unit',{},'a',{},'b',{});
+    for k = 1:nA
+        p = split(linhas(2+k), ',');
+        analog(k).idx  = str2double(p(1));
+        analog(k).name = char(p(2));
+        analog(k).unit = char(p(5));
+        analog(k).a    = str2double(p(6));
+        analog(k).b    = str2double(p(7));
+    end
+
+    idx_freq = 2 + nA + nD + 1;
+    freq = str2double(linhas(idx_freq));
+
+    idx_nrates = idx_freq + 1;
+    nrates = str2double(linhas(idx_nrates));
+
+    idx_rate = idx_nrates + 1;
+    p_rate = split(linhas(idx_rate), ',');
+    fs = str2double(p_rate(1));
+    nsamp = str2double(p_rate(2));
+
+    cfg.nA = nA;
+    cfg.nD = nD;
+    cfg.analog = analog;
+    cfg.freq = freq;
+    cfg.nrates = nrates;
+    cfg.fs = fs;
+    cfg.nsamp = nsamp;
+end
+
+function [t, Y, nomes, unidades] = ler_bdat_comtrade(arquivo_bdat, cfg)
+    fid = fopen(arquivo_bdat, 'rb', 'ieee-le');
+    if fid < 0
+        error('Nao foi possivel abrir o arquivo BDAT: %s', arquivo_bdat);
+    end
+
+    nWordsDig = ceil(cfg.nD/16);
+    bytesPorRegistro = 4 + 4 + 2*cfg.nA + 2*nWordsDig;
+
+    fseek(fid, 0, 'eof');
+    nbytes = ftell(fid);
+    frewind(fid);
+
+    nreg = floor(nbytes / bytesPorRegistro);
+    if nreg < 1
+        fclose(fid);
+        error('BDAT vazio ou bytes por registro incompativel.');
+    end
+
+    t_us = zeros(nreg,1);
+    rawA = zeros(nreg,cfg.nA);
+
+    for r = 1:nreg
+        fread(fid, 1, 'int32=>double');
+        t_us(r) = fread(fid, 1, 'int32=>double');
+        rawA(r,:) = fread(fid, cfg.nA, 'int16=>double').';
+        if nWordsDig > 0
+            fread(fid, nWordsDig, 'uint16=>double');
+        end
+    end
+    fclose(fid);
+
+    t = t_us * 1e-6;
+    if all(t == 0) || any(diff(t) <= 0)
+        t = (0:nreg-1).' / cfg.fs;
+    end
+
+    Y = zeros(size(rawA));
+    nomes = cell(1,cfg.nA);
+    unidades = cell(1,cfg.nA);
+    for k = 1:cfg.nA
+        Y(:,k) = cfg.analog(k).a .* rawA(:,k) + cfg.analog(k).b;
+        nomes{k} = cfg.analog(k).name;
+        unidades{k} = cfg.analog(k).unit;
+    end
+end
+
+function y = normaliza(x)
+    x = x(:);
+    x = x - mean(x, 'omitnan');
+    m = max(abs(x), [], 'omitnan');
+    if m > 0
+        y = x/m;
+    else
+        y = x;
+    end
+end
+
+function plotar_sobreposto(t, y_mat, y_csv, y_bdat, titulo, ylabel_txt, leg_mat, leg_csv, leg_bdat, pasta, nome, salvar)
+    fig = figure('Color','w', 'Units','centimeters', 'Position',[2 2 18 10]);
+    hold on;
+
+    % Ordem visual e da legenda: Simulink -> COMTRADE -> ESP32 receptora.
+    h_mat = plot(t, y_mat, 'b-', 'LineWidth', 0.70);
+    h_bdat = plot(t, y_bdat, ':', 'Color', [0.93 0.69 0.13], 'LineWidth', 1.00);
+    h_csv = plot(t, y_csv, 'r--', 'LineWidth', 1.00);
+
+    grid on;
+    box on;
+
+    xlabel('Tempo (s)', 'FontName','Times New Roman', 'FontSize',12);
+    ylabel(ylabel_txt, 'FontName','Times New Roman', 'FontSize',12, 'Interpreter','none');
+    title(titulo, 'FontName','Times New Roman', 'FontSize',13, 'FontWeight','bold', 'Interpreter','none');
+
+    legend([h_mat h_bdat h_csv], {leg_mat, leg_bdat, leg_csv}, ...
+        'Location','best', ...
+        'FontName','Times New Roman', ...
+        'FontSize',11, ...
+        'Interpreter','none', ...
+        'Box','on');
+
+    xlim([t(1) t(end)]);
+
+    set(gca, ...
+        'FontName','Times New Roman', ...
+        'FontSize',11, ...
+        'LineWidth',1);
+
+    if salvar
+        exportgraphics(fig, fullfile(pasta, [nome '.png']), 'Resolution',600);
+        exportgraphics(fig, fullfile(pasta, [nome '.pdf']), 'ContentType','vector');
+    end
+end
+
+function delta_otimo = estimar_deslocamento_fracionario(t_csv, y_csv, t_ref, y_ref, janela, limite, metodo)
+    % Encontra o deslocamento temporal que minimiza o erro RMS entre CSV e referencia.
+    % O tempo corrigido sera: t_csv_corrigido = t_csv + delta_otimo.
+
+    t_csv = t_csv(:);
+    y_csv = y_csv(:);
+    t_ref = t_ref(:);
+    y_ref = y_ref(:);
+
+    idx = t_ref >= janela(1) & t_ref <= janela(2) & isfinite(y_ref);
+    tr = t_ref(idx);
+    yr = y_ref(idx);
+
+    % Remove offset DC para o alinhamento depender principalmente da fase.
+    yr0 = yr - mean(yr, 'omitnan');
+
+    function e = obj(delta)
+        yc = interp1(t_csv + delta, y_csv, tr, metodo, NaN);
+        valido = isfinite(yc) & isfinite(yr0);
+        if nnz(valido) < 20
+            e = Inf;
+            return;
+        end
+        yc0 = yc(valido) - mean(yc(valido), 'omitnan');
+        yrv = yr0(valido);
+
+        % Ajuste de ganho somente para estimar fase/tempo, sem alterar o plot final.
+        g = (yc0(:)'*yrv(:)) / max(yc0(:)'*yc0(:), eps);
+        erro = g*yc0(:) - yrv(:);
+        e = sqrt(mean(erro.^2, 'omitnan'));
+    end
+
+    delta_otimo = fminbnd(@obj, -limite, limite);
+end
+
+function resumo_erro(nome, y, yref)
+    erro = y(:) - yref(:);
+    rmse = sqrt(mean(erro.^2, 'omitnan'));
+    mae  = mean(abs(erro), 'omitnan');
+    emax = max(abs(erro), [], 'omitnan');
+    fprintf('  %-22s | RMSE = %.6g | MAE = %.6g | Max = %.6g\n', nome, rmse, mae, emax);
+end

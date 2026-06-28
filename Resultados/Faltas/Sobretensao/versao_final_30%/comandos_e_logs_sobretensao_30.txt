@@ -1,0 +1,165 @@
+GERAÇÃO
+
+(base) paulo@paulo-A70-HYB:~/Arduino/dev/1_phase/generator/python/embedded_generator$ python3 run_embedded_generator.py   --cfg samples/samples_/Matlab_comtrade/OverVoltage/30%/export.cfg   --bdat samples/samples_/Matlab_comtrade/OverVoltage/30%/export.bdat   --port /dev/ttyUSB0   --baud 921600   --receiver-config config.json
+[ESP32] 
+[ESP32] READY_UPLOAD baud=921600 fs_total=1441792 fs_used=32768 i2c_hz=1000000
+Enviando CFG: samples/samples_/Matlab_comtrade/OverVoltage/30%/export.cfg (177 bytes)
+[ESP32] READY_RECEIVE CFG 177
+[ESP32] RX 177
+  ... 177/177 bytes
+[ESP32] OK CFG bytes=177
+Enviando BDAT: samples/samples_/Matlab_comtrade/OverVoltage/30%/export.bdat (24012 bytes)
+[ESP32] READY_RECEIVE BDAT 24012
+[ESP32] RX 256
+  ... 256/24012 bytes
+[ESP32] RX 512
+[ESP32] RX 768
+[ESP32] RX 1024
+[ESP32] RX 1280
+[ESP32] RX 1536
+[ESP32] RX 1792
+[ESP32] RX 2048
+[ESP32] RX 2304
+[ESP32] RX 2560
+[ESP32] RX 2816
+[ESP32] RX 3072
+[ESP32] RX 3328
+[ESP32] RX 3584
+[ESP32] RX 3840
+[ESP32] RX 4096
+[ESP32] RX 4352
+[ESP32] RX 4608
+[ESP32] RX 4864
+[ESP32] RX 5120
+[ESP32] RX 5376
+[ESP32] RX 5632
+[ESP32] RX 5888
+[ESP32] RX 6144
+[ESP32] RX 6400
+[ESP32] RX 6656
+[ESP32] RX 6912
+[ESP32] RX 7168
+[ESP32] RX 7424
+[ESP32] RX 7680
+[ESP32] RX 7936
+[ESP32] RX 8192
+[ESP32] RX 8448
+[ESP32] RX 8704
+[ESP32] RX 8960
+[ESP32] RX 9216
+[ESP32] RX 9472
+[ESP32] RX 9728
+[ESP32] RX 9984
+[ESP32] RX 10240
+[ESP32] RX 10496
+[ESP32] RX 10752
+[ESP32] RX 11008
+[ESP32] RX 11264
+[ESP32] RX 11520
+[ESP32] RX 11776
+[ESP32] RX 12032
+[ESP32] RX 12288
+[ESP32] RX 12544
+[ESP32] RX 12800
+[ESP32] RX 13056
+[ESP32] RX 13312
+[ESP32] RX 13568
+[ESP32] RX 13824
+[ESP32] RX 14080
+[ESP32] RX 14336
+  ... 14336/24012 bytes
+[ESP32] RX 14592
+[ESP32] RX 14848
+[ESP32] RX 15104
+[ESP32] RX 15360
+[ESP32] RX 15616
+[ESP32] RX 15872
+[ESP32] RX 16128
+[ESP32] RX 16384
+[ESP32] RX 16640
+[ESP32] RX 16896
+[ESP32] RX 17152
+[ESP32] RX 17408
+[ESP32] RX 17664
+[ESP32] RX 17920
+[ESP32] RX 18176
+[ESP32] RX 18432
+[ESP32] RX 18688
+[ESP32] RX 18944
+[ESP32] RX 19200
+[ESP32] RX 19456
+[ESP32] RX 19712
+[ESP32] RX 19968
+[ESP32] RX 20224
+[ESP32] RX 20480
+[ESP32] RX 20736
+[ESP32] RX 20992
+[ESP32] RX 21248
+[ESP32] RX 21504
+[ESP32] RX 21760
+[ESP32] RX 22016
+[ESP32] RX 22272
+[ESP32] RX 22528
+[ESP32] RX 22784
+[ESP32] RX 23040
+[ESP32] RX 23296
+[ESP32] RX 23552
+[ESP32] RX 23808
+[ESP32] RX 24012
+[ESP32] OK BDAT bytes=24012
+Solicitando processamento local na ESP32...
+[ESP32] STATUS PROCESSING
+[ESP32] STATUS CFG nA=2 nD=0 fs=1000.00 f=60.00 records=2001 recSize=12 ts64=0
+[ESP32] STATUS SCALE vNom=362390.000000 iNom=1836.800049 vNomRms=256248.437500 iNomRms=1298.813843 vClip=1811950.000000 iClip=18368.000000
+[ESP32] STATUS INTERP name=full original=2001 expanded=4065
+[ESP32] STATUS INTERP name=prefault original=18 expanded=34
+[ESP32] READY_PLAYBACK samples=4065 prefault=34 test=16 free_heap=198876
+Receiver config salvo em: config.json
+Comandos liberados:
+  t  : senoide de teste
+  s  : ciclo pre-falta continuo
+  f  : no modo s, toca COMTRADE completo uma vez
+  p  : toca COMTRADE completo uma vez
+  q  : interrompe e volta para idle
+  x  : encerra este terminal
+> s
+> [ESP32] ACK cmd=s
+[ESP32] MODE PREF_LOOP
+[ESP32] PLAY_START name=prefault_cycle count=34
+f
+> [ESP32] ACK cmd=f
+[ESP32] PLAY_CHAIN name=full_once start=1 count=4064
+[ESP32] PLAY_DONE name=full_once
+q
+> [ESP32] ACK cmd=q
+[ESP32] IDLE
+x
+[ESP32] ACK cmd=x
+(base) paulo@paulo-A70-HYB:~/Arduino/dev/1_phase/generator/python/embedded_generator$  
+
+RECEPÇÃO
+
+(base) paulo@paulo-A70-HYB:~/Arduino/dev/1_phase/receiver/python/embedded_receiver$ python3 run_embedded_receiver.py   --port /dev/ttyUSB1   --config /home/paulo/Arduino/dev/1_phase/generator/python/embedded_generator/config.json   --auto-scale-calibrate   --over-voltage 40 10 0.1   --protection-events
+[ESP32] p=12 active_low=0 v_scale=1168993.500000 i_scale=11851.613281
+[ESP32] Commands:
+[ESP32] h/help       show commands
+[ESP32] cfg k v      set runtime config value
+[ESP32] start        resume sampling/protection
+[ESP32] stop         pause sampling/protection
+[ESP32] status       print current state
+[ESP32] resettrip    clear latched trips and relay outputs
+[ESP32] testrelays   pulse block/enable/z1/z2 relay outputs
+Auto-calibração: aplicando configuração sem trips...
+Auto-calibração: medindo pré-falta. Mantenha a geradora em modo 's'.
+Auto-calibração concluída: V1_med=319029.562V alvo=256248.438V fator_v=0.803212; I1_med=1647.045898A alvo=1298.813843A fator_i=0.788572.
+Correções efetivas: --v-scale-correction 0.803212 --i-scale-correction 0.788572
+Aplicando configuração na ESP32...
+Configuração aplicada (22 parâmetros).
+Leitura/proteção em execução. Pressione Ctrl+C para parar.
+[OV59 PICKUP] t=19.893032s V1=312239.281250 timed=281873.281250 instant=358747.812500 delay=0.100000s
+[OV59 TIMED TRIP] t=19.993032s V1=309659.000000 pickup=281873.281250 elapsed=0.116002s
+[BREAKER TRIP] t=19.993032s source=59 I1=1422.688599A V1=309659.000000 |Z|=0.000000ohm R=0.000000ohm X=0.000000ohm fault=0.000000ohm 0.000%line
+^C
+Interrupção recebida. Parando ESP32...
+Recepção encerrada. Trips permanecem retidos até resettrip ou reinício da ESP32.
+(base) paulo@paulo-A70-HYB:~/Arduino/dev/1_phase/receiver/python/embedded_receiver$
