@@ -179,6 +179,7 @@ python3 receiver/python/embedded_receiver/run_embedded_receiver.py \
   --v-scale-correction 0.785 \
   --i-scale-correction 0.780 \
   --normalize-to-comtrade \
+  --auto-scale-calibrate \
   --over-current 50 10 0.05 \
   --distance 52.12496 80 120 0.05 \
   --distance-line-angle 86.636 \
@@ -204,6 +205,9 @@ python3 receiver/python/embedded_receiver/run_embedded_receiver.py \
     \texttt{--v-scale-correction VALOR} & Multiplicar a escala de tensão do JSON por um fator de correção obtido em pré-falta; padrão igual a 1. \\
     \texttt{--i-scale-correction VALOR} & Multiplicar a escala de corrente do JSON por um fator de correção obtido em pré-falta; padrão igual a 1. \\
     \texttt{--normalize-to-comtrade} & Ajustar as magnitudes medidas às referências de pré-falta registradas no JSON. \\
+    \texttt{--auto-scale-calibrate} & Medir tensão e corrente em pré-falta antes de armar as proteções e ajustar automaticamente as escalas enviadas à ESP32; a geradora deve estar reproduzindo o modo de pré-falta. \\
+    \texttt{--auto-scale-seconds SEGUNDOS} & Definir a duração da medição usada pela auto-calibração; padrão de 2 s. \\
+    \texttt{--auto-scale-settle SEGUNDOS} & Definir o intervalo inicial ignorado na auto-calibração para estabilização dos sinais; padrão de 0,5 s. \\
     \texttt{--norm-min-pu VALOR} & Definir a magnitude mínima, em por unidade, aceita durante a normalização; padrão de 0,5 pu. \\
     \texttt{--protection-events} & Exibir eventos de pickup, retorno, temporização e trip. \\
     \texttt{--protection-event-interval SEGUNDOS} & Limitar a frequência das mensagens de temporização; padrão de 0,05 s. \\
