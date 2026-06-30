@@ -574,18 +574,6 @@ A função 67 foi implementada como supervisão permissiva comum às funções 2
 
 em que $\operatorname{op}_F$ representa o atendimento dos critérios próprios da função, $E_{67}$ indica que a supervisão direcional está habilitada e $G_{67}$ representa a permissão direcional. Dessa forma, a proteção opera normalmente quando a função 67 está desabilitada; quando a supervisão está ativa, a ausência de permissão bloqueia a atuação, mesmo que o pickup da função supervisionada tenha ocorrido.
 
-A Figura \ref{fig:hierarquia-protecoes} sintetiza a hierarquia lógica implementada. Cada função é habilitada e ajustada de forma independente, formando sua própria condição de operação antes da supervisão direcional. A saída $G_{67}$ é aplicada igualmente às quatro ramificações; portanto, as portas AND não estabelecem prioridade entre as proteções, mas condicionam individualmente cada trip à filosofia direcional selecionada. A porta OR representa apenas a agregação dos trips já autorizados.
-
-\begin{figure}[H]
-  \centering
-  \caption{Hierarquia lógica de execução e supervisão das funções de proteção.}
-  \label{fig:hierarquia-protecoes}
-  \input{figuras/hierarquia_protecoes.tex}
-  \legend{Fonte: Autoria própria, com base na lógica implementada no firmware receptor.}
-\end{figure}
-
-Na Figura \ref{fig:hierarquia-protecoes}, $E_F$ representa a habilitação individual da função $F$, $P_F$ representa seu pickup e $T_F$ indica o atendimento da temporização correspondente. Nas funções 27 e 59, os índices $i$ e $t$ distinguem, respectivamente, os pickups dos estágios instantâneo e temporizado: os estágios críticos dispensam $T_F$, enquanto os estágios moderados exigem o atraso configurado. Para a função 21, $P_{Z1}$ corresponde à zona 1 instantânea e $P_{Z2}\land T_{Z2}$ à zona 2 temporizada. O termo $P_{\Sigma}$ indica a existência de ao menos um pickup supervisionado, enquanto $G_{67}$ representa a concordância entre o sentido medido e o sentido configurado. Após a supervisão, os trips autorizados são retidos e classificados em duas saídas físicas: instantânea no GPIO26 e temporizada no GPIO25, conforme a Tabela \ref{tab:pinagem-receptora}.
-
 O critério direcional disponível no firmware estima a potência ativa por
 
 \begin{equation}

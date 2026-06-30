@@ -1,0 +1,39 @@
+Relatório de comparação - Proteção de distância 21
+Gerado em: 2026-06-29 22:56:24
+
+Arquivos usados:
+  MAT referência: /home/paulo/Arduino/dev/1_phase/Resultados/Faltas/Distancia/75%/faseA_fourier_75.mat
+  CSV ESP32     : /home/paulo/Arduino/dev/1_phase/Resultados/Faltas/Distancia/75%/trimmed_distance_75_embedded.csv
+  Figura 21 PNG : distancia_75pct_protecao_21.png
+  Figura 21 PDF : distancia_75pct_protecao_21.pdf
+  Figura R-X PNG: distancia_75pct_plano_rx.png
+  Figura R-X PDF: distancia_75pct_plano_rx.pdf
+  Métricas CSV  : distancia_75pct_metricas_impedancia.csv
+
+Parâmetros gerais:
+  Caso = 75%
+  Tfinal = 2 s
+  Nref = 2001 amostras
+  Método de interpolação = pchip
+  Coluna de tempo CSV = host_t_s
+  Suavizar CSV = 1
+  Janela de média móvel CSV = 5 amostras
+  Plotar todos os ciclos = 1
+
+Variáveis MAT usadas:
+  Tensão  : Vin, canal 1
+  Corrente: Iin, canal 1
+
+Proteção 21/67:
+  Impedância de pickup instantânea 21Z1 = 46.912464 ohm
+  Impedância de pickup temporizada 21Z2 = 62.549952 ohm
+  Primeiro trip 21Z1 = 0.516000000 s
+  Primeiro trip 21Z2 = NaN s
+  Primeiro bloqueio 67 = NaN s
+
+Erro percentual da impedância FDT entre Simulink e ESP32 receptora:
+  MAE                   = 6.44305 ohm
+  RMSE                  = 24.0587 ohm
+  MaxAbs                = 203.238 ohm
+  Erro relativo ao pico = 9.871039 %
+  NRMSE                 = 11.652441 %
