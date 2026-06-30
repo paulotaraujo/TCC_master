@@ -358,7 +358,7 @@ O erro FDT no ensaio temporizado de 30\% foi de \SI{9,400}{\percent} de NRMSE, e
 
 \subsection{Proteção de distância 21}
 
-Os ensaios da proteção de distância foram realizados com curto-circuito trifásico franco aplicado em diferentes posições da linha de transmissão. Foram levantados seis cenários: faltas diretas em 10\%, 25\%, 50\%, 75\% e 90\% do comprimento da linha, além de um caso reverso em 25\% com inversão do fluxo de potência para avaliação do bloqueio pela supervisão 67. Como os casos de 10\%, 25\%, 50\% e 75\% apresentaram o mesmo padrão de resposta, isto é, atuação instantânea da zona 1, esta seção detalha apenas o caso de 10\% como representante desse grupo. O caso de 90\% é apresentado separadamente por caracterizar atuação temporizada da zona 2. O caso reverso em 25\%, relacionado ao bloqueio por 67, permanece indicado ao final da subseção, mas será detalhado posteriormente, após a consolidação completa de suas formas de onda, plano $R$--$X$ e métricas de validação.
+Os ensaios da proteção de distância foram realizados com curto-circuito trifásico franco aplicado em diferentes posições da linha de transmissão. Foram levantados seis cenários: faltas diretas em 10\%, 25\%, 50\%, 75\% e 90\% do comprimento da linha, além de um caso reverso em 25\% com inversão do fluxo de potência para avaliação do bloqueio pela supervisão 67. Como os casos de 10\%, 25\%, 50\% e 75\% apresentaram o mesmo padrão de resposta, isto é, atuação instantânea da zona 1, esta seção detalha apenas o caso de 10\% como representante desse grupo. O caso de 90\% é apresentado separadamente por caracterizar atuação temporizada da zona 2, enquanto o caso reverso em 25\% é utilizado para demonstrar a não atuação da função 21 quando a supervisão direcional identifica sentido oposto ao configurado.
 
 Na configuração adotada, a impedância da linha foi ajustada em \SI{52,1250}{\ohm}, com ângulo de \SI{86,636}{\degree}. A zona 1 foi configurada para 80\% do alcance da linha, correspondendo a \SI{41,7000}{\ohm}, e a zona 2 para 120\%, correspondendo a \SI{62,5500}{\ohm}. A temporização da zona 2 foi configurada em \SI{0,05}{\second}. A atuação da função 21 foi realizada com supervisão direcional da função 67, mantida em direção direta nos ensaios diretos. Assim, a decisão de abertura depende simultaneamente da entrada da impedância aparente na característica de distância e da permissão direcional associada ao sentido do fluxo de potência.
 
@@ -451,7 +451,48 @@ O terminal da Figura \ref{fig:log-distancia-z2} confirma a atuação temporizada
   \legend{Fonte: Autoria própria.}
 \end{figure}
 
-O cenário reverso em 25\% foi executado com o gerador G2 em configuração forte, buscando inverter o fluxo de potência e sensibilizar a supervisão direcional 67. A execução já indicou bloqueio da função de distância pela supervisão direcional, com condição mho de zona 1 verdadeira e indicação de potência reversa. Entretanto, como a representação gráfica e a validação quantitativa desse caso ainda não foram finalizadas, sua discussão completa fica em aberto para a próxima revisão desta seção.
+O cenário reverso em 25\% foi executado com o gerador G2 em configuração forte, de modo a inverter o fluxo de potência no ponto de medição. A falta trifásica foi aplicada a \SI{47,5}{\kilo\metre} do terminal analisado, mantendo os demais parâmetros do sistema conforme a metodologia. A Figura \ref{fig:distancia-25-reverso-fdt} mostra que a impedância aparente cai para uma região compatível com a zona 1 durante a falta; entretanto, diferentemente dos casos diretos, o sinal de bloqueio da função 67 é ativado e os sinais de trip 21Z1 e 21Z2 permanecem inativos. A comparação da impedância por FDT, considerando a curva equivalente da ESP32 receptora, apresentou NRMSE de \SI{15,222}{\percent}.
+
+\begin{figure}[H]
+  \centering
+  \caption{Resposta da proteção de distância para falta reversa em 25\% da linha.}
+  \label{fig:distancia-25-reverso-fdt}
+  \includegraphics[width=0.92\textwidth]{figuras/distancia_25_reverso_fdt.pdf}
+  \legend{Fonte: Autoria própria.}
+\end{figure}
+
+O plano $R$--$X$ da Figura \ref{fig:distancia-25-reverso-rx} complementa essa análise. A trajetória da impedância aparente indica condição de falta associada ao sentido reverso em relação ao ajuste \textit{forward} da proteção. Assim, mesmo havendo sensibilização da característica mho de zona 1, a lógica final de abertura não é autorizada, pois a função 67 identifica potência no sentido oposto ao permissivo. Esse resultado confirma a seletividade direcional prevista para a função 21 supervisionada pela 67.
+
+\begin{figure}[H]
+  \centering
+  \caption{Trajetória no plano $R$--$X$ para a falta reversa em 25\% da linha.}
+  \label{fig:distancia-25-reverso-rx}
+  \includegraphics[width=0.82\textwidth]{figuras/distancia_25_reverso_rx.pdf}
+  \legend{Fonte: Autoria própria.}
+\end{figure}
+
+O log da Figura \ref{fig:log-distancia-67-bloqueio} evidencia a decisão tomada pela ESP32 receptora. A impedância estimada foi de $|Z|=\SI{15,1945}{\ohm}$, equivalente a aproximadamente 27,150\% da linha, com a condição \texttt{Z1\_mho=1}. Contudo, a supervisão direcional foi configurada em \texttt{forward} e a avaliação indicou \texttt{forward=0} e \texttt{reverse=1}. Por isso, o firmware registrou \texttt{[D21 BLOCKED BY 67]} em vez de emitir \texttt{[D21Z1 TRIP]}, mantendo a atuação bloqueada.
+
+\begin{figure}[H]
+  \centering
+  \caption{Trecho do terminal da ESP32 receptora para bloqueio direcional da função 21.}
+  \label{fig:log-distancia-67-bloqueio}
+  \begingroup
+  \setlength{\fboxsep}{6pt}
+  \colorbox{black}{%
+    \begin{minipage}{0.90\textwidth}
+      \color{white}\scriptsize\ttfamily
+      Distância 25\% reverso - bloqueio pela 67\\
+      {[D21 BLOCKED BY 67]} t=21.4010s |Z|=15.1945ohm\\
+      \hspace*{1.8em}R=4.6340ohm X=14.4706ohm fault=27.150\%line\\
+      \hspace*{1.8em}Z1\_mho=1 Z2\_mho=0 dir\_set=forward\\
+      \hspace*{1.8em}P67=21.7374MW P67\_prefault=-83.0641MW\\
+      \hspace*{1.8em}forward=0 reverse=1
+    \end{minipage}
+  }
+  \endgroup
+  \legend{Fonte: Autoria própria.}
+\end{figure}
 
 \begin{table}[H]
   \centering
@@ -470,6 +511,7 @@ O cenário reverso em 25\% foi executado com o gerador G2 em configuração fort
     27 inst. & Subtensão 50\% & \SI{0,5088}{\second} & \SI{0,5082}{\second} & instantâneo & \SI{9,308}{\percent} \\
     21/Z1 & Distância 10\% & -- & \SI{0,5330}{\second} & instantâneo & \SI{12,121}{\percent} \\
     21/Z2 & Distância 90\% & -- & \SI{0,5660}{\second} & \SI{51,00}{\milli\second} & \SI{13,057}{\percent} \\
+    21/67 & Distância 25\% reverso & -- & bloqueado & -- & \SI{15,222}{\percent} \\
     \bottomrule
   \end{tabular}
   \legend{Fonte: Autoria própria.}
@@ -497,7 +539,7 @@ No padrão instantâneo da Figura \ref{fig:reles-instantaneo-temporizado}, enqua
   \legend{Fonte: Autoria própria.}
 \end{figure}
 
-A Figura \ref{fig:reles-supervisao-67} registra os estados físicos relacionados à supervisão direcional 67. Esses estados são relevantes para os ensaios com permissivo ou bloqueio direcional, pois permitem distinguir visualmente uma atuação autorizada de uma condição bloqueada pela lógica de direção. Na proteção de distância, essa distinção é especialmente importante porque a característica mho pode indicar falta dentro da zona, mas a atuação final depende da permissão direcional quando a supervisão 67 está habilitada. Assim, as atuações 21/Z1 e 21/Z2 em sentido direto correspondem às indicações físicas de trip com 67 habilitada, enquanto o caso reverso em 25\% corresponde ao estado de bloqueio direcional, ainda mantido em aberto na análise quantitativa.
+A Figura \ref{fig:reles-supervisao-67} registra os estados físicos relacionados à supervisão direcional 67. Esses estados são relevantes para os ensaios com permissivo ou bloqueio direcional, pois permitem distinguir visualmente uma atuação autorizada de uma condição bloqueada pela lógica de direção. Na proteção de distância, essa distinção é especialmente importante porque a característica mho pode indicar falta dentro da zona, mas a atuação final depende da permissão direcional quando a supervisão 67 está habilitada. Assim, as atuações 21/Z1 e 21/Z2 em sentido direto correspondem às indicações físicas de trip com 67 habilitada, enquanto o caso reverso em 25\% corresponde ao estado de bloqueio direcional.
 
 \begin{figure}[H]
   \centering
@@ -532,4 +574,4 @@ A análise dos resultados deve considerar algumas limitações da bancada. A pri
 
 A segunda limitação é a interpretação temporal das atuações. Os gráficos usam o eixo do registro COMTRADE, enquanto os logs apresentam o tempo de execução do receptor. Assim, os timestamps de serviço são adequados para confirmar a ordem dos eventos, mas a comparação de tempos de pickup e trip deve considerar o alinhamento com o eixo temporal da simulação.
 
-Por fim, os ensaios apresentados nesta versão do capítulo cobrem 50/51, 59, 27 e os casos diretos da função 21. O cenário reverso de bloqueio por 67 ainda será incorporado com gráficos e validação quantitativa completos para fechar o conjunto de proteções previsto na implementação.
+Por fim, os ensaios apresentados nesta versão do capítulo cobrem 50/51, 59, 27, os casos diretos da função 21 e o bloqueio direcional da função 21 pela supervisão 67. Portanto, o conjunto de resultados contempla tanto as atuações instantâneas e temporizadas quanto uma condição de não atuação deliberada, necessária para demonstrar seletividade em faltas reversas.

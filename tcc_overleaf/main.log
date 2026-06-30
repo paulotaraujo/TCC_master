@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.6.20)  30 JUN 2026 14:41
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.6.20)  30 JUN 2026 18:13
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1430,7 +1430,7 @@ Package microtype Info: Loading generic protrusion settings for font family
 \openout2 = `capitulos/02_fundamentacao.aux'.
 
  (./capitulos/02_fundamentacao.tex
-<figuras/sistema_eletrico_potencia.pdf, id=515, 413.545pt x 154.5775pt>
+<figuras/sistema_eletrico_potencia.pdf, id=522, 413.545pt x 154.5775pt>
 File: figuras/sistema_eletrico_potencia.pdf Graphic file (type pdf)
 <use figuras/sistema_eletrico_potencia.pdf>
 Package pdftex.def Info: figuras/sistema_eletrico_potencia.pdf  used on input l
@@ -1448,7 +1448,7 @@ has been already used, duplicate ignored
                                                   \__shipout_drop_firstpage_...
 l.41 \end{align}
                  <./figuras/sistema_eletrico_potencia.pdf>] [8]
-<figuras/SEP_falta.pdf, id=555, 413.545pt x 116.435pt>
+<figuras/SEP_falta.pdf, id=562, 413.545pt x 116.435pt>
 File: figuras/SEP_falta.pdf Graphic file (type pdf)
 <use figuras/SEP_falta.pdf>
 Package pdftex.def Info: figuras/SEP_falta.pdf  used on input line 73.
@@ -1473,7 +1473,7 @@ l.103 \end{equation}
 
 pdfTeX warning: pdflatex (file ./figuras/arquitetura_geral_v3.pdf): PDF inclusi
 on: found PDF version <1.7>, but at most version <1.5> allowed
-<figuras/arquitetura_geral_v3.pdf, id=648, 1445.4pt x 813.0375pt>
+<figuras/arquitetura_geral_v3.pdf, id=655, 1445.4pt x 813.0375pt>
 File: figuras/arquitetura_geral_v3.pdf Graphic file (type pdf)
 <use figuras/arquitetura_geral_v3.pdf>
 Package pdftex.def Info: figuras/arquitetura_geral_v3.pdf  used on input line 2
@@ -1487,7 +1487,7 @@ has been already used, duplicate ignored
 l.40   \item r
               eprodução analógica de tensão e corrente pelo DAC MCP4728; <.
 /figuras/arquitetura_geral_v3.pdf>]
-<figuras/modelo_simulink.png, id=734, 1269.74374pt x 497.86pt>
+<figuras/modelo_simulink.png, id=741, 1269.74374pt x 497.86pt>
 File: figuras/modelo_simulink.png Graphic file (type png)
 <use figuras/modelo_simulink.png>
 Package pdftex.def Info: figuras/modelo_simulink.png  used on input line 60.
@@ -1514,7 +1514,7 @@ as been already used, duplicate ignored
                                                   \__shipout_drop_firstpage_...
 l.116 
        <./figuras/modelo_simulink.png>]
-<figuras/simulink_tensao.pdf, id=760, 796.9775pt x 398.48875pt>
+<figuras/simulink_tensao.pdf, id=767, 796.9775pt x 398.48875pt>
 File: figuras/simulink_tensao.pdf Graphic file (type pdf)
 <use figuras/simulink_tensao.pdf>
 Package pdftex.def Info: figuras/simulink_tensao.pdf  used on input line 143.
@@ -1532,7 +1532,7 @@ as been already used, duplicate ignored
                                                   \__shipout_drop_firstpage_...
 l.146 
       ]
-<figuras/simulink_corrente.pdf, id=765, 796.9775pt x 398.48875pt>
+<figuras/simulink_corrente.pdf, id=772, 796.9775pt x 398.48875pt>
 File: figuras/simulink_corrente.pdf Graphic file (type pdf)
 <use figuras/simulink_corrente.pdf>
 Package pdftex.def Info: figuras/simulink_corrente.pdf  used on input line 151.
@@ -1558,7 +1558,7 @@ as been already used, duplicate ignored
                                                   \__shipout_drop_firstpage_...
 l.190   \item a
                s unidades e os coeficientes de conversão dos canais;]
-<figuras/terminal_geração.png, id=824, 697.60625pt x 256.96pt>
+<figuras/terminal_geração.png, id=831, 697.60625pt x 256.96pt>
 File: figuras/terminal_geração.png Graphic file (type png)
 <use figuras/terminal_geração.png>
 Package pdftex.def Info: figuras/terminal_geração.png  used on input line 208
@@ -1572,7 +1572,7 @@ has been already used, duplicate ignored
                                                   \__shipout_drop_firstpage_...
 l.226 
        <./figuras/terminal_geração.png>] [28]
-<figuras/esp32_geradora.png, id=841, 1421.31pt x 1115.16624pt>
+<figuras/esp32_geradora.png, id=848, 1421.31pt x 1115.16624pt>
 File: figuras/esp32_geradora.png Graphic file (type png)
 <use figuras/esp32_geradora.png>
 Package pdftex.def Info: figuras/esp32_geradora.png  used on input line 249.
@@ -1584,13 +1584,13 @@ has been already used, duplicate ignored
                                                   \__shipout_drop_firstpage_...
 l.256 
        <./figuras/esp32_geradora.png (PNG copy)>]
-<figuras/terminal_recepção.png, id=847, 656.4525pt x 194.7275pt>
+<figuras/terminal_recepção.png, id=854, 656.4525pt x 194.7275pt>
 File: figuras/terminal_recepção.png Graphic file (type png)
 <use figuras/terminal_recepção.png>
 Package pdftex.def Info: figuras/terminal_recepção.png  used on input line 26
 1.
 (pdftex.def)             Requested size: 432.24861pt x 128.22043pt.
-<figuras/esp32_receptora.png, id=848, 1653.17625pt x 958.58125pt>
+<figuras/esp32_receptora.png, id=855, 1653.17625pt x 958.58125pt>
 File: figuras/esp32_receptora.png Graphic file (type png)
 <use figuras/esp32_receptora.png>
 Package pdftex.def Info: figuras/esp32_receptora.png  used on input line 271.
@@ -1609,7 +1609,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{figure.3.10})
 l.287   \item \textbf
                      {ANSI 51}: sobrecorrente de tempo definido, com pickup ...
  <./figuras/esp32_receptora.png (PNG copy)>] [32]
-<figuras/painel_leds.png, id=864, 1658.195pt x 955.57pt>
+<figuras/painel_leds.png, id=871, 1658.195pt x 955.57pt>
 File: figuras/painel_leds.png Graphic file (type png)
 <use figuras/painel_leds.png>
 Package pdftex.def Info: figuras/painel_leds.png  used on input line 306.
@@ -1622,13 +1622,13 @@ pdfTeX warning (ext4): destination with the same identifier (name{figure.3.11})
 l.320   \item i
                niciar a reprodução em pré-falta contínua na geradora; <./fi
 guras/painel_leds.png (PNG copy)>]
-<figuras/bancada_testes.jpg, id=875, 2002.48125pt x 3780.1225pt>
+<figuras/bancada_testes.jpg, id=882, 2002.48125pt x 3780.1225pt>
 File: figuras/bancada_testes.jpg Graphic file (type jpg)
 <use figuras/bancada_testes.jpg>
 Package pdftex.def Info: figuras/bancada_testes.jpg  used on input line 336.
 (pdftex.def)             Requested size: 327.60056pt x 618.38675pt.
  [34]
-<figuras/bancada_board.png, id=889, 1122.1925pt x 1412.27625pt>
+<figuras/bancada_board.png, id=897, 1122.1925pt x 1412.27625pt>
 File: figuras/bancada_board.png Graphic file (type png)
 <use figuras/bancada_board.png>
 Package pdftex.def Info: figuras/bancada_board.png  used on input line 344.
@@ -1658,7 +1658,7 @@ l.353
 
 pdfTeX warning: pdflatex (file ./figuras/diagrama_simplificado.pdf): PDF inclus
 ion: found PDF version <1.7>, but at most version <1.5> allowed
-<figuras/diagrama_simplificado.pdf, id=910, 1445.4pt x 813.0375pt>
+<figuras/diagrama_simplificado.pdf, id=917, 1445.4pt x 813.0375pt>
 File: figuras/diagrama_simplificado.pdf Graphic file (type pdf)
 <use figuras/diagrama_simplificado.pdf>
 Package pdftex.def Info: figuras/diagrama_simplificado.pdf  used on input line 
@@ -1764,7 +1764,7 @@ l.303 O
 
 pdfTeX warning: pdflatex (file ./figuras/maquina_de_estado_v2.pdf): PDF inclusi
 on: found PDF version <1.7>, but at most version <1.5> allowed
-<figuras/maquina_de_estado_v2.pdf, id=1009, 1445.4pt x 813.0375pt>
+<figuras/maquina_de_estado_v2.pdf, id=1016, 1445.4pt x 813.0375pt>
 File: figuras/maquina_de_estado_v2.pdf Graphic file (type pdf)
 <use figuras/maquina_de_estado_v2.pdf>
 Package pdftex.def Info: figuras/maquina_de_estado_v2.pdf  used on input line 3
@@ -1798,7 +1798,7 @@ l.626
 
 
 ]
-<figuras/resultados_tensao_inst.pdf, id=1135, 595.22375pt x 367.3725pt>
+<figuras/resultados_tensao_inst.pdf, id=1142, 595.22375pt x 367.3725pt>
 File: figuras/resultados_tensao_inst.pdf Graphic file (type pdf)
 <use figuras/resultados_tensao_inst.pdf>
 Package pdftex.def Info: figuras/resultados_tensao_inst.pdf  used on input line
@@ -1806,7 +1806,7 @@ Package pdftex.def Info: figuras/resultados_tensao_inst.pdf  used on input line
 (pdftex.def)             Requested size: 418.59917pt x 258.35858pt.
 
 [69]
-<figuras/resultados_corrente_inst.pdf, id=1140, 573.14125pt x 383.4325pt>
+<figuras/resultados_corrente_inst.pdf, id=1147, 573.14125pt x 383.4325pt>
 File: figuras/resultados_corrente_inst.pdf Graphic file (type pdf)
 <use figuras/resultados_corrente_inst.pdf>
 Package pdftex.def Info: figuras/resultados_corrente_inst.pdf  used on input li
@@ -1826,7 +1826,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{figure.5.17})
 l.33 
       <./figuras/resultados_tensao_inst.pdf> <./figuras/resultados_corrente_ins
 t.pdf>] [71]
-<figuras/resultados_tensao_fdt.pdf, id=1203, 594.22pt x 377.41pt>
+<figuras/resultados_tensao_fdt.pdf, id=1211, 594.22pt x 377.41pt>
 File: figuras/resultados_tensao_fdt.pdf Graphic file (type pdf)
 <use figuras/resultados_tensao_fdt.pdf>
 Package pdftex.def Info: figuras/resultados_tensao_fdt.pdf  used on input line 
@@ -1839,7 +1839,7 @@ has been already used, duplicate ignored
                                                   \__shipout_drop_firstpage_...
 l.85 
      ]
-<figuras/resultados_corrente_fdt.pdf, id=1210, 601.24625pt x 376.40625pt>
+<figuras/resultados_corrente_fdt.pdf, id=1217, 601.24625pt x 376.40625pt>
 File: figuras/resultados_corrente_fdt.pdf Graphic file (type pdf)
 <use figuras/resultados_corrente_fdt.pdf>
 Package pdftex.def Info: figuras/resultados_corrente_fdt.pdf  used on input lin
@@ -1876,7 +1876,7 @@ has been already used, duplicate ignored
                                                   \__shipout_drop_firstpage_...
 l.153 
       ]
-<figuras/sobrecorrente_20_temporizada.pdf, id=1275, 602.25pt x 436.63126pt>
+<figuras/sobrecorrente_20_temporizada.pdf, id=1282, 602.25pt x 436.63126pt>
 File: figuras/sobrecorrente_20_temporizada.pdf Graphic file (type pdf)
 <use figuras/sobrecorrente_20_temporizada.pdf>
 Package pdftex.def Info: figuras/sobrecorrente_20_temporizada.pdf  used on inpu
@@ -1895,7 +1895,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{figure.5.21})
                                                   \__shipout_drop_firstpage_...
 l.187 
        <./figuras/sobrecorrente_20_temporizada.pdf>]
-<figuras/sobrecorrente_50_instantanea.pdf, id=1327, 603.25375pt x 435.6275pt>
+<figuras/sobrecorrente_50_instantanea.pdf, id=1334, 603.25375pt x 435.6275pt>
 File: figuras/sobrecorrente_50_instantanea.pdf Graphic file (type pdf)
 <use figuras/sobrecorrente_50_instantanea.pdf>
 Package pdftex.def Info: figuras/sobrecorrente_50_instantanea.pdf  used on inpu
@@ -1908,7 +1908,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{figure.5.22})
                                                   \__shipout_drop_firstpage_...
 l.216 
        <./figuras/sobrecorrente_50_instantanea.pdf>]
-<figuras/sobretensao_15_temporizada.pdf, id=1370, 525.965pt x 408.52625pt>
+<figuras/sobretensao_15_temporizada.pdf, id=1377, 525.965pt x 408.52625pt>
 File: figuras/sobretensao_15_temporizada.pdf Graphic file (type pdf)
 <use figuras/sobretensao_15_temporizada.pdf>
 Package pdftex.def Info: figuras/sobretensao_15_temporizada.pdf  used on input 
@@ -1933,7 +1933,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{figure.5.25})
                                                   \__shipout_drop_firstpage_...
 l.256 
        <./figuras/sobretensao_15_temporizada.pdf>]
-<figuras/sobretensao_50_instantanea.pdf, id=1428, 594.22pt x 432.61626pt>
+<figuras/sobretensao_50_instantanea.pdf, id=1435, 594.22pt x 432.61626pt>
 File: figuras/sobretensao_50_instantanea.pdf Graphic file (type pdf)
 <use figuras/sobretensao_50_instantanea.pdf>
 Package pdftex.def Info: figuras/sobretensao_50_instantanea.pdf  used on input 
@@ -1952,7 +1952,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{figure.5.27})
                                                   \__shipout_drop_firstpage_...
 l.288 
        <./figuras/sobretensao_50_instantanea.pdf>]
-<figuras/subtensao_30_temporizada.pdf, id=1482, 598.235pt x 449.68pt>
+<figuras/subtensao_30_temporizada.pdf, id=1489, 598.235pt x 449.68pt>
 File: figuras/subtensao_30_temporizada.pdf Graphic file (type pdf)
 <use figuras/subtensao_30_temporizada.pdf>
 Package pdftex.def Info: figuras/subtensao_30_temporizada.pdf  used on input li
@@ -1971,7 +1971,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{figure.5.29})
                                                   \__shipout_drop_firstpage_...
 l.326 
        <./figuras/subtensao_30_temporizada.pdf>]
-<figuras/subtensao_50_instantanea.pdf, id=1538, 597.23125pt x 449.68pt>
+<figuras/subtensao_50_instantanea.pdf, id=1545, 597.23125pt x 449.68pt>
 File: figuras/subtensao_50_instantanea.pdf Graphic file (type pdf)
 <use figuras/subtensao_50_instantanea.pdf>
 Package pdftex.def Info: figuras/subtensao_50_instantanea.pdf  used on input li
@@ -1990,13 +1990,13 @@ pdfTeX warning (ext4): destination with the same identifier (name{figure.5.31})
                                                   \__shipout_drop_firstpage_...
 l.358 
        <./figuras/subtensao_50_instantanea.pdf>] [85]
-<figuras/distancia_10_z1_fdt.pdf, id=1594, 604.2575pt x 452.69125pt>
+<figuras/distancia_10_z1_fdt.pdf, id=1601, 604.2575pt x 452.69125pt>
 File: figuras/distancia_10_z1_fdt.pdf Graphic file (type pdf)
 <use figuras/distancia_10_z1_fdt.pdf>
 Package pdftex.def Info: figuras/distancia_10_z1_fdt.pdf  used on input line 37
 3.
 (pdftex.def)             Requested size: 418.59917pt x 313.60065pt.
-<figuras/distancia_10_z1_rx.pdf, id=1596, 438.63875pt x 261.97874pt>
+<figuras/distancia_10_z1_rx.pdf, id=1603, 438.63875pt x 261.97874pt>
 File: figuras/distancia_10_z1_rx.pdf Graphic file (type pdf)
 <use figuras/distancia_10_z1_rx.pdf>
 Package pdftex.def Info: figuras/distancia_10_z1_rx.pdf  used on input line 383
@@ -2021,13 +2021,13 @@ pdfTeX warning (ext4): destination with the same identifier (name{figure.5.34})
                                                   \__shipout_drop_firstpage_...
 l.412 
        <./figuras/distancia_10_z1_rx.pdf>]
-<figuras/distancia_90_z2_fdt.pdf, id=1776, 604.2575pt x 449.68pt>
+<figuras/distancia_90_z2_fdt.pdf, id=1783, 604.2575pt x 449.68pt>
 File: figuras/distancia_90_z2_fdt.pdf Graphic file (type pdf)
 <use figuras/distancia_90_z2_fdt.pdf>
 Package pdftex.def Info: figuras/distancia_90_z2_fdt.pdf  used on input line 41
 7.
 (pdftex.def)             Requested size: 418.59917pt x 311.5146pt.
-<figuras/distancia_90_z2_rx.pdf, id=1778, 459.7175pt x 274.02374pt>
+<figuras/distancia_90_z2_rx.pdf, id=1785, 459.7175pt x 274.02374pt>
 File: figuras/distancia_90_z2_rx.pdf Graphic file (type pdf)
 <use figuras/distancia_90_z2_rx.pdf>
 Package pdftex.def Info: figuras/distancia_90_z2_rx.pdf  used on input line 427
@@ -2039,91 +2039,123 @@ pdfTeX warning (ext4): destination with the same identifier (name{figure.5.35})
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.430 
-       <./figuras/distancia_90_z2_fdt.pdf>] [89
+       <./figuras/distancia_90_z2_fdt.pdf>]
+<figuras/distancia_25_reverso_fdt.pdf, id=1840, 606.265pt x 450.68375pt>
+File: figuras/distancia_25_reverso_fdt.pdf Graphic file (type pdf)
+<use figuras/distancia_25_reverso_fdt.pdf>
+Package pdftex.def Info: figuras/distancia_25_reverso_fdt.pdf  used on input li
+ne 460.
+(pdftex.def)             Requested size: 418.59917pt x 311.17842pt.
+ [89
 pdfTeX warning (ext4): destination with the same identifier (name{figure.5.36})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.477 
-      
+l.462 \end{figure}
+                  
 pdfTeX warning (ext4): destination with the same identifier (name{figure.5.37})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.477 
-       <./figuras/distancia_90_z2_rx.pdf>]
-<figuras/rele_instantaneo.jpg, id=1958, 1963.335pt x 2445.135pt>
-File: figuras/rele_instantaneo.jpg Graphic file (type jpg)
-<use figuras/rele_instantaneo.jpg>
-Package pdftex.def Info: figuras/rele_instantaneo.jpg  used on input line 490.
-(pdftex.def)             Requested size: 218.39806pt x 271.98776pt.
-<figuras/rele_temporizado.jpg, id=1959, 2047.65pt x 2595.6975pt>
-File: figuras/rele_temporizado.jpg Graphic file (type jpg)
-<use figuras/rele_temporizado.jpg>
-Package pdftex.def Info: figuras/rele_temporizado.jpg  used on input line 495.
-(pdftex.def)             Requested size: 218.39806pt x 276.81404pt.
+l.462 \end{figure}
+                   <./figuras/distancia_90_z2_rx.pdf>]
+<figuras/distancia_25_reverso_rx.pdf, id=1966, 532.99126pt x 279.0425pt>
+File: figuras/distancia_25_reverso_rx.pdf Graphic file (type pdf)
+<use figuras/distancia_25_reverso_rx.pdf>
+Package pdftex.def Info: figuras/distancia_25_reverso_rx.pdf  used on input lin
+e 470.
+(pdftex.def)             Requested size: 373.10333pt x 195.34119pt.
  [90
-pdfTeX warning (ext4): destination with the same identifier (name{table.5.19}) 
-has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.499 
-      ]
-<figuras/rele_instantaneo_com_habilita_67.jpg, id=1966, 1989.4325pt x 2456.1762
-5pt>
-File: figuras/rele_instantaneo_com_habilita_67.jpg Graphic file (type jpg)
-<use figuras/rele_instantaneo_com_habilita_67.jpg>
-Package pdftex.def Info: figuras/rele_instantaneo_com_habilita_67.jpg  used on 
-input line 508.
-(pdftex.def)             Requested size: 145.60333pt x 179.74536pt.
-<figuras/rele_temporizado_com_habilita_67.jpg, id=1967, 1965.3425pt x 2467.2175
-pt>
-File: figuras/rele_temporizado_com_habilita_67.jpg Graphic file (type jpg)
-<use figuras/rele_temporizado_com_habilita_67.jpg>
-Package pdftex.def Info: figuras/rele_temporizado_com_habilita_67.jpg  used on 
-input line 513.
-(pdftex.def)             Requested size: 145.60333pt x 182.77452pt.
-<figuras/bloqueio_67.png, id=1968, 1124.2pt x 1410.26875pt>
-File: figuras/bloqueio_67.png Graphic file (type png)
-<use figuras/bloqueio_67.png>
-Package pdftex.def Info: figuras/bloqueio_67.png  used on input line 518.
-(pdftex.def)             Requested size: 145.60333pt x 182.65277pt.
- [91
 pdfTeX warning (ext4): destination with the same identifier (name{figure.5.38})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.522 
-       <./figuras/rele_instantaneo.jpg> <./figuras/rele_temporizado.jpg>]
-[92
+l.473 
+       <./figuras/distancia_25_reverso_fdt.pdf>] [91
 pdfTeX warning (ext4): destination with the same identifier (name{figure.5.39})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.532 
+l.523 
+      
+pdfTeX warning (ext4): destination with the same identifier (name{figure.5.40})
+ has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.523 
+      
+pdfTeX warning (ext4): destination with the same identifier (name{table.5.19}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.523 
+       <./figuras/distancia_25_reverso_rx.pdf>]
+<figuras/rele_instantaneo.jpg, id=2053, 1963.335pt x 2445.135pt>
+File: figuras/rele_instantaneo.jpg Graphic file (type jpg)
+<use figuras/rele_instantaneo.jpg>
+Package pdftex.def Info: figuras/rele_instantaneo.jpg  used on input line 532.
+(pdftex.def)             Requested size: 218.39806pt x 271.98776pt.
+<figuras/rele_temporizado.jpg, id=2054, 2047.65pt x 2595.6975pt>
+File: figuras/rele_temporizado.jpg Graphic file (type jpg)
+<use figuras/rele_temporizado.jpg>
+Package pdftex.def Info: figuras/rele_temporizado.jpg  used on input line 537.
+(pdftex.def)             Requested size: 218.39806pt x 276.81404pt.
+ [92
+pdfTeX warning (ext4): destination with the same identifier (name{figure.5.41})
+ has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.543 
+       <./figuras/rele_instantaneo.jpg> <./figuras/rele_temporizado.jpg>]
+<figuras/rele_instantaneo_com_habilita_67.jpg, id=2061, 1989.4325pt x 2456.1762
+5pt>
+File: figuras/rele_instantaneo_com_habilita_67.jpg Graphic file (type jpg)
+<use figuras/rele_instantaneo_com_habilita_67.jpg>
+Package pdftex.def Info: figuras/rele_instantaneo_com_habilita_67.jpg  used on 
+input line 550.
+(pdftex.def)             Requested size: 145.60333pt x 179.74536pt.
+<figuras/rele_temporizado_com_habilita_67.jpg, id=2062, 1965.3425pt x 2467.2175
+pt>
+File: figuras/rele_temporizado_com_habilita_67.jpg Graphic file (type jpg)
+<use figuras/rele_temporizado_com_habilita_67.jpg>
+Package pdftex.def Info: figuras/rele_temporizado_com_habilita_67.jpg  used on 
+input line 555.
+(pdftex.def)             Requested size: 145.60333pt x 182.77452pt.
+<figuras/bloqueio_67.png, id=2063, 1124.2pt x 1410.26875pt>
+File: figuras/bloqueio_67.png Graphic file (type png)
+<use figuras/bloqueio_67.png>
+Package pdftex.def Info: figuras/bloqueio_67.png  used on input line 560.
+(pdftex.def)             Requested size: 145.60333pt x 182.65277pt.
+
+[93
+pdfTeX warning (ext4): destination with the same identifier (name{figure.5.42})
+ has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.574 
        <./figuras/rele_instantaneo_com_habilita_67.jpg> <./figuras/rele_tempori
-zado_com_habilita_67.jpg> <./figuras/bloqueio_67.png (PNG copy)>]) [93]
+zado_com_habilita_67.jpg> <./figuras/bloqueio_67.png (PNG copy)>]) [94]
 \openout2 = `capitulos/06_conclusao.aux'.
 
 
-(./capitulos/06_conclusao.tex [94
+(./capitulos/06_conclusao.tex [95
 
 
 
 
-]) [95] (./main.bbl
+]) [96] (./main.bbl
 bibitemlist
-[96
+[97
 
 
 
-]) [97]
+]) [98]
 \openout2 = `capitulos/apendice_codigo.aux'.
 
- (./capitulos/apendice_codigo.tex [98
+ (./capitulos/apendice_codigo.tex [99
 
 
-] [99] [100] [101]
+] [100] [101] [102]
 Underfull \hbox (badness 10000) in paragraph at lines 138--138
 []|\T1/lmtt/m/n/10.95 --receiver-config
  []
@@ -2138,7 +2170,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 140--140
 []|\T1/lmtt/m/n/10.95 --process-timeout
  []
 
-[102
+[103
 pdfTeX warning (ext4): destination with the same identifier (name{table.A.20}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -2160,20 +2192,20 @@ Underfull \hbox (badness 10000) in paragraph at lines 213--213
 []|\T1/lmtt/m/n/10.95 --protection-event-interval
  []
 
-[103] [104
+[104] [105
 pdfTeX warning (ext4): destination with the same identifier (name{table.A.22}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.240 
-      ] [105
+      ] [106
 pdfTeX warning (ext4): destination with the same identifier (name{table.A.23}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.248   \item n
                o terminal da geradora, enviar \texttt{s} e manter a pré-fal...
-]) [106]
+]) [107]
 \tf@lof=\write5
 \openout5 = `main.lof'.
 
@@ -2193,11 +2225,11 @@ L3 programming layer <2020/03/25>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 36064 strings out of 474222
- 724855 string characters out of 5748733
- 1941975 words of memory out of 5000000
- 56971 multiletter control sequences out of 15000+600000
- 652692 words of font info for 254 fonts, out of 8000000 for 9000
+ 36087 strings out of 474222
+ 725647 string characters out of 5748733
+ 1942975 words of memory out of 5000000
+ 56988 multiletter control sequences out of 15000+600000
+ 652779 words of font info for 255 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  99i,14n,107p,1208b,1155s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/ty
@@ -2214,10 +2246,10 @@ ic/lm/lmsy8.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt10.pfb></usr/share/
 texmf/fonts/type1/public/lm/lmtt12.pfb></usr/share/texmf/fonts/type1/public/lm/
 lmtt9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/ms
 am10.pfb>
-Output written on main.pdf (125 pages, 27284509 bytes).
+Output written on main.pdf (126 pages, 27312621 bytes).
 PDF statistics:
- 2589 PDF objects out of 2984 (max. 8388607)
- 2258 compressed objects within 23 object streams
- 416 named destinations out of 1000 (max. 500000)
- 55878 words of extra memory for PDF output out of 61914 (max. 10000000)
+ 2680 PDF objects out of 2984 (max. 8388607)
+ 2339 compressed objects within 24 object streams
+ 420 named destinations out of 1000 (max. 500000)
+ 55888 words of extra memory for PDF output out of 61914 (max. 10000000)
 

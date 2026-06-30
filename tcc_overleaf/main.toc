@@ -86,20 +86,20 @@
 \contentsline {subsection}{\numberline {5.4.2}Sobretensão 59}{79}{subsection.5.4.2}%
 \contentsline {subsection}{\numberline {5.4.3}Subtensão 27}{82}{subsection.5.4.3}%
 \contentsline {subsection}{\numberline {5.4.4}Proteção de distância 21}{85}{subsection.5.4.4}%
-\contentsline {section}{\numberline {5.5}Sinalização física das atuações}{90}{section.5.5}%
-\contentsline {section}{\numberline {5.6}Síntese didática dos resultados}{92}{section.5.6}%
-\contentsline {section}{\numberline {5.7}Discussão das limitações}{92}{section.5.7}%
-\contentsline {chapter}{\chapternumberline {6}Considerações Finais}{94}{chapter.6}%
+\contentsline {section}{\numberline {5.5}Sinalização física das atuações}{92}{section.5.5}%
+\contentsline {section}{\numberline {5.6}Síntese didática dos resultados}{93}{section.5.6}%
+\contentsline {section}{\numberline {5.7}Discussão das limitações}{94}{section.5.7}%
+\contentsline {chapter}{\chapternumberline {6}Considerações Finais}{95}{chapter.6}%
 \vspace {\cftbeforepartskip }
-\contentsline {chapter}{Refer\^encias}{96}{chapter*.15}%
-\contentsline {appendix}{\chapternumberline {A}Trechos de Código e Referência Operacional}{98}{appendix.A}%
-\contentsline {section}{\numberline {A.1}Trechos representativos da implementação}{98}{section.A.1}%
-\contentsline {subsection}{\numberline {A.1.1}Buffer circular da unidade geradora}{98}{subsection.A.1.1}%
-\contentsline {subsection}{\numberline {A.1.2}Temporização e detecção de underflow}{99}{subsection.A.1.2}%
-\contentsline {subsection}{\numberline {A.1.3}Aquisição e estimação fasorial}{100}{subsection.A.1.3}%
-\contentsline {subsection}{\numberline {A.1.4}Supervisão direcional das proteções}{101}{subsection.A.1.4}%
-\contentsline {section}{\numberline {A.2}Transmissão e reprodução das amostras}{101}{section.A.2}%
-\contentsline {section}{\numberline {A.3}Configuração e execução da unidade receptora}{103}{section.A.3}%
-\contentsline {section}{\numberline {A.4}Argumentos das funções de proteção}{105}{section.A.4}%
-\contentsline {section}{\numberline {A.5}Sequência operacional recomendada}{105}{section.A.5}%
-\contentsline {section}{\numberline {A.6}Disponibilidade do projeto completo}{106}{section.A.6}%
+\contentsline {chapter}{Refer\^encias}{97}{chapter*.15}%
+\contentsline {appendix}{\chapternumberline {A}Trechos de Código e Referência Operacional}{99}{appendix.A}%
+\contentsline {section}{\numberline {A.1}Trechos representativos da implementação}{99}{section.A.1}%
+\contentsline {subsection}{\numberline {A.1.1}Buffer circular da unidade geradora}{99}{subsection.A.1.1}%
+\contentsline {subsection}{\numberline {A.1.2}Temporização e detecção de underflow}{100}{subsection.A.1.2}%
+\contentsline {subsection}{\numberline {A.1.3}Aquisição e estimação fasorial}{101}{subsection.A.1.3}%
+\contentsline {subsection}{\numberline {A.1.4}Supervisão direcional das proteções}{102}{subsection.A.1.4}%
+\contentsline {section}{\numberline {A.2}Transmissão e reprodução das amostras}{102}{section.A.2}%
+\contentsline {section}{\numberline {A.3}Configuração e execução da unidade receptora}{104}{section.A.3}%
+\contentsline {section}{\numberline {A.4}Argumentos das funções de proteção}{106}{section.A.4}%
+\contentsline {section}{\numberline {A.5}Sequência operacional recomendada}{106}{section.A.5}%
+\contentsline {section}{\numberline {A.6}Disponibilidade do projeto completo}{107}{section.A.6}%

@@ -36,5 +36,8 @@
 \contentsline {figure}{\numberline {35}{\ignorespaces Resposta da proteção de distância para falta direta em 90\% da linha.}}{88}{figure.5.35}%
 \contentsline {figure}{\numberline {36}{\ignorespaces Trajetória no plano $R$--$X$ para a falta direta em 90\% da linha.}}{89}{figure.5.36}%
 \contentsline {figure}{\numberline {37}{\ignorespaces Trecho do terminal da ESP32 receptora para atuação temporizada da zona 2.}}{89}{figure.5.37}%
-\contentsline {figure}{\numberline {38}{\ignorespaces Indicação física de atuação instantânea e temporizada no painel.}}{91}{figure.5.38}%
-\contentsline {figure}{\numberline {39}{\ignorespaces Indicação física de atuação com supervisão 67 e de bloqueio direcional.}}{92}{figure.5.39}%
+\contentsline {figure}{\numberline {38}{\ignorespaces Resposta da proteção de distância para falta reversa em 25\% da linha.}}{90}{figure.5.38}%
+\contentsline {figure}{\numberline {39}{\ignorespaces Trajetória no plano $R$--$X$ para a falta reversa em 25\% da linha.}}{91}{figure.5.39}%
+\contentsline {figure}{\numberline {40}{\ignorespaces Trecho do terminal da ESP32 receptora para bloqueio direcional da função 21.}}{91}{figure.5.40}%
+\contentsline {figure}{\numberline {41}{\ignorespaces Indicação física de atuação instantânea e temporizada no painel.}}{92}{figure.5.41}%
+\contentsline {figure}{\numberline {42}{\ignorespaces Indicação física de atuação com supervisão 67 e de bloqueio direcional.}}{93}{figure.5.42}%
