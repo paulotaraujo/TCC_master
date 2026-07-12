@@ -13,31 +13,31 @@
 \contentsline {figure}{\numberline {12}{\ignorespaces Bancada experimental utilizada na execução dos ensaios.}}{35}{figure.3.12}%
 \contentsline {figure}{\numberline {13}{\ignorespaces Montagem completa da plataforma, com geração, conversão, aquisição e sinalização.}}{36}{figure.3.13}%
 \contentsline {figure}{\numberline {14}{\ignorespaces Diagrama simplificado da implementação, destacando os principais blocos funcionais.}}{39}{figure.4.14}%
-\contentsline {figure}{\numberline {15}{\ignorespaces Máquina de estados simplificada da reprodução.}}{53}{figure.4.15}%
-\contentsline {figure}{\numberline {16}{\ignorespaces Comparação temporal das amostras instantâneas de tensão.}}{70}{figure.5.16}%
-\contentsline {figure}{\numberline {17}{\ignorespaces Comparação temporal das amostras instantâneas de corrente.}}{70}{figure.5.17}%
-\contentsline {figure}{\numberline {18}{\ignorespaces Comparação dos valores de tensão obtidos por DFT.}}{73}{figure.5.18}%
-\contentsline {figure}{\numberline {19}{\ignorespaces Comparação dos valores de corrente obtidos por DFT.}}{73}{figure.5.19}%
-\contentsline {figure}{\numberline {20}{\ignorespaces Resposta temporizada da função 51 para sobrecorrente de 20\%.}}{77}{figure.5.20}%
-\contentsline {figure}{\numberline {21}{\ignorespaces Trecho do terminal da ESP32 receptora para a sobrecorrente temporizada.}}{77}{figure.5.21}%
-\contentsline {figure}{\numberline {22}{\ignorespaces Resposta instantânea da função 50 para sobrecorrente de 50\%.}}{78}{figure.5.22}%
-\contentsline {figure}{\numberline {23}{\ignorespaces Trecho do terminal da ESP32 receptora para a sobrecorrente instantânea.}}{79}{figure.5.23}%
-\contentsline {figure}{\numberline {24}{\ignorespaces Resposta temporizada da função 59 para sobretensão de 15\%.}}{80}{figure.5.24}%
-\contentsline {figure}{\numberline {25}{\ignorespaces Trecho do terminal da ESP32 receptora para a sobretensão temporizada.}}{80}{figure.5.25}%
-\contentsline {figure}{\numberline {26}{\ignorespaces Resposta instantânea da função 59 para sobretensão de 50\%.}}{81}{figure.5.26}%
-\contentsline {figure}{\numberline {27}{\ignorespaces Trecho do terminal da ESP32 receptora para a sobretensão instantânea.}}{81}{figure.5.27}%
-\contentsline {figure}{\numberline {28}{\ignorespaces Resposta temporizada da função 27 para subtensão de 30\%.}}{83}{figure.5.28}%
-\contentsline {figure}{\numberline {29}{\ignorespaces Trecho do terminal da ESP32 receptora para a subtensão temporizada.}}{83}{figure.5.29}%
-\contentsline {figure}{\numberline {30}{\ignorespaces Resposta instantânea da função 27 para subtensão de 50\%.}}{84}{figure.5.30}%
-\contentsline {figure}{\numberline {31}{\ignorespaces Trecho do terminal da ESP32 receptora para a subtensão instantânea.}}{84}{figure.5.31}%
-\contentsline {figure}{\numberline {32}{\ignorespaces Resposta da proteção de distância para falta direta em 10\% da linha.}}{86}{figure.5.32}%
-\contentsline {figure}{\numberline {33}{\ignorespaces Trajetória no plano $R$--$X$ para a falta direta em 10\% da linha.}}{87}{figure.5.33}%
-\contentsline {figure}{\numberline {34}{\ignorespaces Trecho do terminal da ESP32 receptora para atuação instantânea da zona 1.}}{87}{figure.5.34}%
-\contentsline {figure}{\numberline {35}{\ignorespaces Resposta da proteção de distância para falta direta em 90\% da linha.}}{88}{figure.5.35}%
-\contentsline {figure}{\numberline {36}{\ignorespaces Trajetória no plano $R$--$X$ para a falta direta em 90\% da linha.}}{89}{figure.5.36}%
-\contentsline {figure}{\numberline {37}{\ignorespaces Trecho do terminal da ESP32 receptora para atuação temporizada da zona 2.}}{89}{figure.5.37}%
-\contentsline {figure}{\numberline {38}{\ignorespaces Resposta da proteção de distância para falta reversa em 25\% da linha.}}{90}{figure.5.38}%
-\contentsline {figure}{\numberline {39}{\ignorespaces Trajetória no plano $R$--$X$ para a falta reversa em 25\% da linha.}}{91}{figure.5.39}%
-\contentsline {figure}{\numberline {40}{\ignorespaces Trecho do terminal da ESP32 receptora para bloqueio direcional da função 21.}}{91}{figure.5.40}%
-\contentsline {figure}{\numberline {41}{\ignorespaces Indicação física de atuação instantânea e temporizada no painel.}}{92}{figure.5.41}%
-\contentsline {figure}{\numberline {42}{\ignorespaces Indicação física de atuação com supervisão 67 e de bloqueio direcional.}}{93}{figure.5.42}%
+\contentsline {figure}{\numberline {15}{\ignorespaces Máquina de estados simplificada da reprodução.}}{54}{figure.4.15}%
+\contentsline {figure}{\numberline {16}{\ignorespaces Comparação temporal das amostras instantâneas de tensão.}}{71}{figure.5.16}%
+\contentsline {figure}{\numberline {17}{\ignorespaces Comparação temporal das amostras instantâneas de corrente.}}{71}{figure.5.17}%
+\contentsline {figure}{\numberline {18}{\ignorespaces Comparação dos valores de tensão obtidos por DFT.}}{74}{figure.5.18}%
+\contentsline {figure}{\numberline {19}{\ignorespaces Comparação dos valores de corrente obtidos por DFT.}}{74}{figure.5.19}%
+\contentsline {figure}{\numberline {20}{\ignorespaces Resposta temporizada da função 51 para sobrecorrente de 20\%.}}{78}{figure.5.20}%
+\contentsline {figure}{\numberline {21}{\ignorespaces Trecho do terminal da ESP32 receptora para a sobrecorrente temporizada.}}{78}{figure.5.21}%
+\contentsline {figure}{\numberline {22}{\ignorespaces Resposta instantânea da função 50 para sobrecorrente de 50\%.}}{79}{figure.5.22}%
+\contentsline {figure}{\numberline {23}{\ignorespaces Trecho do terminal da ESP32 receptora para a sobrecorrente instantânea.}}{80}{figure.5.23}%
+\contentsline {figure}{\numberline {24}{\ignorespaces Resposta temporizada da função 59 para sobretensão de 15\%.}}{81}{figure.5.24}%
+\contentsline {figure}{\numberline {25}{\ignorespaces Trecho do terminal da ESP32 receptora para a sobretensão temporizada.}}{81}{figure.5.25}%
+\contentsline {figure}{\numberline {26}{\ignorespaces Resposta instantânea da função 59 para sobretensão de 50\%.}}{82}{figure.5.26}%
+\contentsline {figure}{\numberline {27}{\ignorespaces Trecho do terminal da ESP32 receptora para a sobretensão instantânea.}}{82}{figure.5.27}%
+\contentsline {figure}{\numberline {28}{\ignorespaces Resposta temporizada da função 27 para subtensão de 30\%.}}{84}{figure.5.28}%
+\contentsline {figure}{\numberline {29}{\ignorespaces Trecho do terminal da ESP32 receptora para a subtensão temporizada.}}{84}{figure.5.29}%
+\contentsline {figure}{\numberline {30}{\ignorespaces Resposta instantânea da função 27 para subtensão de 50\%.}}{85}{figure.5.30}%
+\contentsline {figure}{\numberline {31}{\ignorespaces Trecho do terminal da ESP32 receptora para a subtensão instantânea.}}{85}{figure.5.31}%
+\contentsline {figure}{\numberline {32}{\ignorespaces Resposta da proteção de distância para falta direta em 10\% da linha.}}{87}{figure.5.32}%
+\contentsline {figure}{\numberline {33}{\ignorespaces Trajetória no plano $R$--$X$ para a falta direta em 10\% da linha.}}{88}{figure.5.33}%
+\contentsline {figure}{\numberline {34}{\ignorespaces Trecho do terminal da ESP32 receptora para atuação instantânea da zona 1.}}{88}{figure.5.34}%
+\contentsline {figure}{\numberline {35}{\ignorespaces Resposta da proteção de distância para falta direta em 90\% da linha.}}{89}{figure.5.35}%
+\contentsline {figure}{\numberline {36}{\ignorespaces Trajetória no plano $R$--$X$ para a falta direta em 90\% da linha.}}{90}{figure.5.36}%
+\contentsline {figure}{\numberline {37}{\ignorespaces Trecho do terminal da ESP32 receptora para atuação temporizada da zona 2.}}{90}{figure.5.37}%
+\contentsline {figure}{\numberline {38}{\ignorespaces Resposta da proteção de distância para falta reversa em 25\% da linha.}}{91}{figure.5.38}%
+\contentsline {figure}{\numberline {39}{\ignorespaces Trajetória no plano $R$--$X$ para a falta reversa em 25\% da linha.}}{92}{figure.5.39}%
+\contentsline {figure}{\numberline {40}{\ignorespaces Trecho do terminal da ESP32 receptora para bloqueio direcional da função 21.}}{92}{figure.5.40}%
+\contentsline {figure}{\numberline {41}{\ignorespaces Indicação física de atuação instantânea e temporizada no painel.}}{93}{figure.5.41}%
+\contentsline {figure}{\numberline {42}{\ignorespaces Indicação física de atuação com supervisão 67 e de bloqueio direcional.}}{94}{figure.5.42}%

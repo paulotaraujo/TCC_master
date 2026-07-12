@@ -3,14 +3,16 @@
 A arquitetura desenvolvida permite diferentes extensões, que podem ampliar o conjunto de ensaios e as possibilidades de pesquisa. Como trabalhos futuros, recomendam-se:
 
 \begin{itemize}
-  \item expandir a reprodução e a aquisição para três tensões e três correntes, permitindo ensaios trifásicos e componentes simétricas;
+  \item \hl{expandir a reprodução e a aquisição para três tensões e três correntes, com pelo menos seis canais analógicos sincronizados, permitindo ensaios trifásicos, faltas assimétricas e cálculo de componentes simétricas;};
+  \item \hl{avaliar cenários com eventos múltiplos, como faltas simultâneas ou combinações de falta, variação de tensão e alteração de carregamento, de modo a submeter a ESP32 a ensaios de estresse computacional e verificar sua capacidade de processamento, temporização, uso de memória e robustez dos algoritmos embarcados;};
   \item ampliar o processador COMTRADE para outros formatos e diferentes ordenações de canais;
   \item tornar o mapeamento dos GPIOs integralmente configurável pelo JSON;
   \item avaliar conversores analógico-digitais externos e taxas de amostragem superiores em estudos de transitórios e harmônicos;
   \item incorporar curvas inversas normalizadas IEC e IEEE à função 51;
   \item implementar comparadores direcionais angulares adicionais para a função 67;
   \item desenvolver métodos de localização de faltas que considerem resistência de falta e condições do sistema;
-  \item acrescentar CRC e identificação dos arquivos ao protocolo de transferência; e
+  \item acrescentar CRC e identificação dos arquivos ao protocolo de transferência;
+  \item \hl{avaliar a prototipagem dos blocos de geração, aquisição e processamento em FPGA, ou em arquiteturas híbridas com microcontrolador e FPGA, permitindo maior paralelismo, sincronismo entre canais e capacidade de processamento para uma versão mais robusta da bancada; e}
   \item desenvolver uma placa dedicada com condicionamento analógico, isolamento e conectores próprios para a bancada.
 \end{itemize}
 

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.6.20)  12 JUL 2026 11:35
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.6.20)  12 JUL 2026 12:24
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -798,77 +798,7 @@ Package: translations 2022/02/05 v1.12 internationalization of LaTeX2e packages
 \l__siunitx_unit_position_int=\count368
 \l__siunitx_unit_total_int=\count369
 )
-(/usr/share/texlive/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty
-(/usr/share/texlive/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty
-(/usr/share/texlive/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty
-(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.tex
-\pgfutil@everybye=\toks37
-\pgfutil@tempdima=\dimen266
-\pgfutil@tempdimb=\dimen267
-)
-(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def
-\pgfutil@abb=\box71
-)
-(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfrcs.code.tex
-(/usr/share/texlive/texmf-dist/tex/generic/pgf/pgf.revision.tex)
-Package: pgfrcs 2023-01-15 v3.1.10 (3.1.10)
-))
-Package: pgf 2023-01-15 v3.1.10 (3.1.10)
-
-(/usr/share/texlive/texmf-dist/tex/latex/pgf/basiclayer/pgfcore.sty
-(/usr/share/texlive/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty
-(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
-Package: pgfsys 2023-01-15 v3.1.10 (3.1.10)
-
-(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
-\pgfkeys@pathtoks=\toks38
-\pgfkeys@temptoks=\toks39
-
-(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeyslibraryfiltered
-.code.tex
-\pgfkeys@tmptoks=\toks40
-))
-\pgf@x=\dimen268
-\pgf@y=\dimen269
-\pgf@xa=\dimen270
-\pgf@ya=\dimen271
-\pgf@xb=\dimen272
-\pgf@yb=\dimen273
-\pgf@xc=\dimen274
-\pgf@yc=\dimen275
-\pgf@xd=\dimen276
-\pgf@yd=\dimen277
-\w@pgf@writea=\write4
-\r@pgf@reada=\read4
-\c@pgf@counta=\count370
-\c@pgf@countb=\count371
-\c@pgf@countc=\count372
-\c@pgf@countd=\count373
-\t@pgf@toka=\toks41
-\t@pgf@tokb=\toks42
-\t@pgf@tokc=\toks43
-\pgf@sys@id@count=\count374
- (/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg
-File: pgf.cfg 2023-01-15 v3.1.10 (3.1.10)
-)
-Driver file for pgf: pgfsys-pdftex.def
-(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-pdftex.def
-File: pgfsys-pdftex.def 2023-01-15 v3.1.10 (3.1.10)
-
-(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-common-pdf.de
-f
-File: pgfsys-common-pdf.def 2023-01-15 v3.1.10 (3.1.10)
-)))
-(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.code.
-tex
-File: pgfsyssoftpath.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgfsyssoftpath@smallbuffer@items=\count375
-\pgfsyssoftpath@bigbuffer@items=\count376
-)
-(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.code.
-tex
-File: pgfsysprotocol.code.tex 2023-01-15 v3.1.10 (3.1.10)
-)) (/usr/share/texlive/texmf-dist/tex/latex/xcolor/xcolor.sty
+(/usr/share/texlive/texmf-dist/tex/latex/xcolor/xcolor.sty
 Package: xcolor 2023/11/15 v3.01 LaTeX color extensions (UK)
 
 (/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg
@@ -887,18 +817,118 @@ Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1371.
 Package xcolor Info: Model `Gray' substituted by `gray' on input line 1372.
 Package xcolor Info: Model `wave' substituted by `hsb' on input line 1373.
 )
+(/usr/share/texlive/texmf-dist/tex/generic/soul/soul.sty
+Package: soul 2023-06-14 v3.1 Permit use of UTF-8 characters in soul (HO)
+
+(/usr/share/texlive/texmf-dist/tex/generic/soul/soul-ori.sty
+Package: soul-ori 2023-06-14 v3.1 letterspacing/underlining (mf)
+\SOUL@word=\toks37
+\SOUL@lasttoken=\toks38
+\SOUL@syllable=\toks39
+\SOUL@cmds=\toks40
+\SOUL@buffer=\toks41
+\SOUL@token=\toks42
+\SOUL@syllgoal=\dimen266
+\SOUL@syllwidth=\dimen267
+\SOUL@charkern=\dimen268
+\SOUL@hyphkern=\dimen269
+\SOUL@dimen=\dimen270
+\SOUL@dimeni=\dimen271
+\SOUL@minus=\count370
+\SOUL@comma=\count371
+\SOUL@apo=\count372
+\SOUL@grave=\count373
+\SOUL@spaceskip=\skip261
+\SOUL@ttwidth=\dimen272
+\SOUL@uldp=\dimen273
+\SOUL@ulht=\dimen274
+)
+(/usr/share/texlive/texmf-dist/tex/generic/etexcmds/etexcmds.sty
+Package: etexcmds 2019/12/15 v1.7 Avoid name clashes with e-TeX commands (HO)
+))
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.tex
+\pgfutil@everybye=\toks43
+\pgfutil@tempdima=\dimen275
+\pgfutil@tempdimb=\dimen276
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def
+\pgfutil@abb=\box71
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfrcs.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/pgf.revision.tex)
+Package: pgfrcs 2023-01-15 v3.1.10 (3.1.10)
+))
+Package: pgf 2023-01-15 v3.1.10 (3.1.10)
+
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/basiclayer/pgfcore.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
+Package: pgfsys 2023-01-15 v3.1.10 (3.1.10)
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
+\pgfkeys@pathtoks=\toks44
+\pgfkeys@temptoks=\toks45
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeyslibraryfiltered
+.code.tex
+\pgfkeys@tmptoks=\toks46
+))
+\pgf@x=\dimen277
+\pgf@y=\dimen278
+\pgf@xa=\dimen279
+\pgf@ya=\dimen280
+\pgf@xb=\dimen281
+\pgf@yb=\dimen282
+\pgf@xc=\dimen283
+\pgf@yc=\dimen284
+\pgf@xd=\dimen285
+\pgf@yd=\dimen286
+\w@pgf@writea=\write4
+\r@pgf@reada=\read4
+\c@pgf@counta=\count374
+\c@pgf@countb=\count375
+\c@pgf@countc=\count376
+\c@pgf@countd=\count377
+\t@pgf@toka=\toks47
+\t@pgf@tokb=\toks48
+\t@pgf@tokc=\toks49
+\pgf@sys@id@count=\count378
+ (/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg
+File: pgf.cfg 2023-01-15 v3.1.10 (3.1.10)
+)
+Driver file for pgf: pgfsys-pdftex.def
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-pdftex.def
+File: pgfsys-pdftex.def 2023-01-15 v3.1.10 (3.1.10)
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-common-pdf.de
+f
+File: pgfsys-common-pdf.def 2023-01-15 v3.1.10 (3.1.10)
+)))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.code.
+tex
+File: pgfsyssoftpath.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfsyssoftpath@smallbuffer@items=\count379
+\pgfsyssoftpath@bigbuffer@items=\count380
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.code.
+tex
+File: pgfsysprotocol.code.tex 2023-01-15 v3.1.10 (3.1.10)
+))
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcore.code.tex
 Package: pgfcore 2023-01-15 v3.1.10 (3.1.10)
 
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex)
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex
-\pgfmath@dimen=\dimen278
-\pgfmath@count=\count377
+\pgfmath@dimen=\dimen287
+\pgfmath@count=\count381
 \pgfmath@box=\box72
-\pgfmath@toks=\toks44
-\pgfmath@stack@operand=\toks45
-\pgfmath@stack@operation=\toks46
+\pgfmath@toks=\toks50
+\pgfmath@stack@operand=\toks51
+\pgfmath@stack@operation=\toks52
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.code.tex)
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.basic.code
@@ -919,38 +949,38 @@ tex)
 thmetics.code.tex)
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathcalc.code.tex)
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex
-\c@pgfmathroundto@lastzeros=\count378
+\c@pgfmathroundto@lastzeros=\count382
 ))
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfint.code.tex)
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.code.te
 x
 File: pgfcorepoints.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgf@picminx=\dimen279
-\pgf@picmaxx=\dimen280
-\pgf@picminy=\dimen281
-\pgf@picmaxy=\dimen282
-\pgf@pathminx=\dimen283
-\pgf@pathmaxx=\dimen284
-\pgf@pathminy=\dimen285
-\pgf@pathmaxy=\dimen286
-\pgf@xx=\dimen287
-\pgf@xy=\dimen288
-\pgf@yx=\dimen289
-\pgf@yy=\dimen290
-\pgf@zx=\dimen291
-\pgf@zy=\dimen292
+\pgf@picminx=\dimen288
+\pgf@picmaxx=\dimen289
+\pgf@picminy=\dimen290
+\pgf@picmaxy=\dimen291
+\pgf@pathminx=\dimen292
+\pgf@pathmaxx=\dimen293
+\pgf@pathminy=\dimen294
+\pgf@pathmaxy=\dimen295
+\pgf@xx=\dimen296
+\pgf@xy=\dimen297
+\pgf@yx=\dimen298
+\pgf@yy=\dimen299
+\pgf@zx=\dimen300
+\pgf@zy=\dimen301
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathconstruct.
 code.tex
 File: pgfcorepathconstruct.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgf@path@lastx=\dimen293
-\pgf@path@lasty=\dimen294
+\pgf@path@lastx=\dimen302
+\pgf@path@lasty=\dimen303
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathusage.code
 .tex
 File: pgfcorepathusage.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgf@shorten@end@additional=\dimen295
-\pgf@shorten@start@additional=\dimen296
+\pgf@shorten@end@additional=\dimen304
+\pgf@shorten@start@additional=\dimen305
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorescopes.code.te
 x
@@ -958,19 +988,19 @@ File: pgfcorescopes.code.tex 2023-01-15 v3.1.10 (3.1.10)
 \pgfpic=\box73
 \pgf@hbox=\box74
 \pgf@layerbox@main=\box75
-\pgf@picture@serial@count=\count379
+\pgf@picture@serial@count=\count383
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicstate.c
 ode.tex
 File: pgfcoregraphicstate.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgflinewidth=\dimen297
+\pgflinewidth=\dimen306
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransformation
 s.code.tex
 File: pgfcoretransformations.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgf@pt@x=\dimen298
-\pgf@pt@y=\dimen299
-\pgf@pt@temp=\dimen300
+\pgf@pt@x=\dimen307
+\pgf@pt@y=\dimen308
+\pgf@pt@temp=\dimen309
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorequick.code.tex
 File: pgfcorequick.code.tex 2023-01-15 v3.1.10 (3.1.10)
@@ -986,13 +1016,13 @@ File: pgfcorepathprocessing.code.tex 2023-01-15 v3.1.10 (3.1.10)
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorearrows.code.te
 x
 File: pgfcorearrows.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgfarrowsep=\dimen301
+\pgfarrowsep=\dimen310
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreshade.code.tex
 File: pgfcoreshade.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgf@max=\dimen302
-\pgf@sys@shading@range@num=\count380
-\pgf@shadingcount=\count381
+\pgf@max=\dimen311
+\pgf@sys@shading@range@num=\count384
+\pgf@shadingcount=\count385
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.code.tex
 File: pgfcoreimage.code.tex 2023-01-15 v3.1.10 (3.1.10)
@@ -1026,8 +1056,8 @@ File: pgfmoduleplot.code.tex 2023-01-15 v3.1.10 (3.1.10)
 (/usr/share/texlive/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-0-65
 .sty
 Package: pgfcomp-version-0-65 2023-01-15 v3.1.10 (3.1.10)
-\pgf@nodesepstart=\dimen303
-\pgf@nodesepend=\dimen304
+\pgf@nodesepstart=\dimen312
+\pgf@nodesepend=\dimen313
 )
 (/usr/share/texlive/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-1-18
 .sty
@@ -1039,10 +1069,10 @@ Package: pgfcomp-version-1-18 2023-01-15 v3.1.10 (3.1.10)
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex))
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgffor.code.tex
 Package: pgffor 2023-01-15 v3.1.10 (3.1.10)
-\pgffor@iter=\dimen305
-\pgffor@skip=\dimen306
-\pgffor@stack=\toks47
-\pgffor@toks=\toks48
+\pgffor@iter=\dimen314
+\pgffor@skip=\dimen315
+\pgffor@stack=\toks53
+\pgffor@toks=\toks54
 ))
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/tikz.code.tex
 Package: tikz 2023-01-15 v3.1.10 (3.1.10)
@@ -1050,33 +1080,33 @@ Package: tikz 2023-01-15 v3.1.10 (3.1.10)
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothandlers
 .code.tex
 File: pgflibraryplothandlers.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgf@plot@mark@count=\count382
-\pgfplotmarksize=\dimen307
+\pgf@plot@mark@count=\count386
+\pgfplotmarksize=\dimen316
 )
-\tikz@lastx=\dimen308
-\tikz@lasty=\dimen309
-\tikz@lastxsaved=\dimen310
-\tikz@lastysaved=\dimen311
-\tikz@lastmovetox=\dimen312
-\tikz@lastmovetoy=\dimen313
-\tikzleveldistance=\dimen314
-\tikzsiblingdistance=\dimen315
+\tikz@lastx=\dimen317
+\tikz@lasty=\dimen318
+\tikz@lastxsaved=\dimen319
+\tikz@lastysaved=\dimen320
+\tikz@lastmovetox=\dimen321
+\tikz@lastmovetoy=\dimen322
+\tikzleveldistance=\dimen323
+\tikzsiblingdistance=\dimen324
 \tikz@figbox=\box78
 \tikz@figbox@bg=\box79
 \tikz@tempbox=\box80
 \tikz@tempbox@bg=\box81
-\tikztreelevel=\count383
-\tikznumberofchildren=\count384
-\tikznumberofcurrentchild=\count385
-\tikz@fig@count=\count386
+\tikztreelevel=\count387
+\tikznumberofchildren=\count388
+\tikznumberofcurrentchild=\count389
+\tikz@fig@count=\count390
 
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmodulematrix.code.tex
 File: pgfmodulematrix.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgfmatrixcurrentrow=\count387
-\pgfmatrixcurrentcolumn=\count388
-\pgf@matrix@numberofcolumns=\count389
+\pgfmatrixcurrentrow=\count391
+\pgfmatrixcurrentcolumn=\count392
+\pgf@matrix@numberofcolumns=\count393
 )
-\tikz@expandcount=\count390
+\tikz@expandcount=\count394
 
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
 zlibrarytopaths.code.tex
@@ -1087,29 +1117,29 @@ Package: indentfirst 2023/07/02 v1.03 Indent first paragraph (DPC)
 )
 (/usr/share/texlive/texmf-dist/tex/latex/ragged2e/ragged2e.sty
 Package: ragged2e 2023/06/22 v3.6 ragged2e Package
-\CenteringLeftskip=\skip261
-\RaggedLeftLeftskip=\skip262
-\RaggedRightLeftskip=\skip263
-\CenteringRightskip=\skip264
-\RaggedLeftRightskip=\skip265
-\RaggedRightRightskip=\skip266
-\CenteringParfillskip=\skip267
-\RaggedLeftParfillskip=\skip268
-\RaggedRightParfillskip=\skip269
-\JustifyingParfillskip=\skip270
-\CenteringParindent=\skip271
-\RaggedLeftParindent=\skip272
-\RaggedRightParindent=\skip273
-\JustifyingParindent=\skip274
+\CenteringLeftskip=\skip262
+\RaggedLeftLeftskip=\skip263
+\RaggedRightLeftskip=\skip264
+\CenteringRightskip=\skip265
+\RaggedLeftRightskip=\skip266
+\RaggedRightRightskip=\skip267
+\CenteringParfillskip=\skip268
+\RaggedLeftParfillskip=\skip269
+\RaggedRightParfillskip=\skip270
+\JustifyingParfillskip=\skip271
+\CenteringParindent=\skip272
+\RaggedLeftParindent=\skip273
+\RaggedRightParindent=\skip274
+\JustifyingParindent=\skip275
 )
 (/usr/share/texlive/texmf-dist/tex/latex/abntex2/abntex2cite.sty
 Package: abntex2cite 2018/11/24 v-1.9.7 abnTeX2
 
 (/usr/share/texlive/texmf-dist/tex/latex/abntex2/abntex2abrev.sty)
-\minimumbiblabelwidth=\skip275
-\ABCIauxlen=\skip276
-\c@ABCIaux=\count391
-\c@ABCImax=\count392
+\minimumbiblabelwidth=\skip276
+\ABCIauxlen=\skip277
+\c@ABCIaux=\count395
+\c@ABCImax=\count396
 
 (/usr/share/texlive/texmf-dist/tex/generic/iftex/ifpdf.sty
 Package: ifpdf 2019/10/25 v3.4 ifpdf legacy package. Use iftex instead.
@@ -1120,18 +1150,18 @@ Package: ifxetex 2019/10/25 v0.7 ifxetex legacy package. Use iftex instead.
 (/usr/share/texlive/texmf-dist/tex/latex/relsize/relsize.sty
 Package: relsize 2013/03/29 ver 4.1
 )
-\biblabelsep=\skip277
+\biblabelsep=\skip278
 LaTeX Info: Redefining \newblock on input line 591.
 LaTeX Info: Redefining \cite on input line 862.
-\ABCItoken=\toks49
+\ABCItoken=\toks55
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/pgflibraryarrows.meta.
 code.tex
 File: pgflibraryarrows.meta.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgfarrowinset=\dimen316
-\pgfarrowlength=\dimen317
-\pgfarrowwidth=\dimen318
-\pgfarrowlinewidth=\dimen319
+\pgfarrowinset=\dimen325
+\pgfarrowlength=\dimen326
+\pgfarrowwidth=\dimen327
+\pgfarrowlinewidth=\dimen328
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
 zlibrarypositioning.code.tex
@@ -1161,29 +1191,29 @@ zlibrarydecorations.markings.code.tex
 zlibrarydecorations.code.tex
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmoduledecorations.cod
 e.tex
-\pgfdecoratedcompleteddistance=\dimen320
-\pgfdecoratedremainingdistance=\dimen321
-\pgfdecoratedinputsegmentcompleteddistance=\dimen322
-\pgfdecoratedinputsegmentremainingdistance=\dimen323
-\pgf@decorate@distancetomove=\dimen324
-\pgf@decorate@repeatstate=\count393
-\pgfdecorationsegmentamplitude=\dimen325
-\pgfdecorationsegmentlength=\dimen326
+\pgfdecoratedcompleteddistance=\dimen329
+\pgfdecoratedremainingdistance=\dimen330
+\pgfdecoratedinputsegmentcompleteddistance=\dimen331
+\pgfdecoratedinputsegmentremainingdistance=\dimen332
+\pgf@decorate@distancetomove=\dimen333
+\pgf@decorate@repeatstate=\count397
+\pgfdecorationsegmentamplitude=\dimen334
+\pgfdecorationsegmentlength=\dimen335
 )
 \tikz@lib@dec@box=\box82
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/decorations/pgflibrary
 decorations.markings.code.tex))
-\tikz@lib@circ@count=\count394
-\tikzcircuitssizeunit=\dimen327
+\tikz@lib@circ@count=\count398
+\tikzcircuitssizeunit=\dimen336
 ))
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/shapes/circuits/pgflib
 raryshapes.gates.logic.US.code.tex
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/shapes/circuits/pgflib
 raryshapes.gates.logic.code.tex)))
-Package hyperref Info: Option `colorlinks' set `true' on input line 37.
-LaTeX Font Info:    Trying to load font information for T1+lmr on input line 17
-8.
+Package hyperref Info: Option `colorlinks' set `true' on input line 39.
+LaTeX Font Info:    Trying to load font information for T1+lmr on input line 18
+3.
  (/usr/share/texmf/tex/latex/lm/t1lmr.fd
 File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
@@ -1194,40 +1224,40 @@ File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 (./capitulos/apendice_codigo.aux))
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 178.
-LaTeX Font Info:    ... okay on input line 178.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 178.
-LaTeX Font Info:    ... okay on input line 178.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 178.
-LaTeX Font Info:    ... okay on input line 178.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 178.
-LaTeX Font Info:    ... okay on input line 178.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 178.
-LaTeX Font Info:    ... okay on input line 178.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 178.
-LaTeX Font Info:    ... okay on input line 178.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 178.
-LaTeX Font Info:    ... okay on input line 178.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 178.
-LaTeX Font Info:    ... okay on input line 178.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 178.
-LaTeX Font Info:    ... okay on input line 178.
-Package hyperref Info: Link coloring ON on input line 178.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 183.
+LaTeX Font Info:    ... okay on input line 183.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 183.
+LaTeX Font Info:    ... okay on input line 183.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 183.
+LaTeX Font Info:    ... okay on input line 183.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 183.
+LaTeX Font Info:    ... okay on input line 183.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 183.
+LaTeX Font Info:    ... okay on input line 183.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 183.
+LaTeX Font Info:    ... okay on input line 183.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 183.
+LaTeX Font Info:    ... okay on input line 183.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 183.
+LaTeX Font Info:    ... okay on input line 183.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 183.
+LaTeX Font Info:    ... okay on input line 183.
+Package hyperref Info: Link coloring ON on input line 183.
 \myptabbox=\box83
-\myptabboxwidth=\skip278
-LaTeX Info: Redefining \microtypecontext on input line 178.
-Package microtype Info: Applying patch `item' on input line 178.
-Package microtype Info: Applying patch `toc' on input line 178.
-Package microtype Info: Applying patch `eqnum' on input line 178.
-Package microtype Info: Applying patch `footnote' on input line 178.
-Package microtype Info: Applying patch `verbatim' on input line 178.
+\myptabboxwidth=\skip279
+LaTeX Info: Redefining \microtypecontext on input line 183.
+Package microtype Info: Applying patch `item' on input line 183.
+Package microtype Info: Applying patch `toc' on input line 183.
+Package microtype Info: Applying patch `eqnum' on input line 183.
+Package microtype Info: Applying patch `footnote' on input line 183.
+Package microtype Info: Applying patch `verbatim' on input line 183.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
 Package microtype Info: Automatic font expansion enabled (level 2),
 (microtype)             stretch: 20, shrink: 20, step: 1, non-selected.
 Package microtype Info: Using default expansion set `alltext-nott'.
-LaTeX Info: Redefining \showhyphens on input line 178.
+LaTeX Info: Redefining \showhyphens on input line 183.
 Package microtype Info: No adjustment of tracking.
 Package microtype Info: No adjustment of interword spacing.
 Package microtype Info: No adjustment of character kerning.
@@ -1238,17 +1268,17 @@ File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman
 )
 (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count395
-\scratchdimen=\dimen328
+\scratchcounter=\count399
+\scratchdimen=\dimen337
 \scratchbox=\box84
-\nofMPsegments=\count396
-\nofMParguments=\count397
-\everyMPshowfont=\toks50
-\MPscratchCnt=\count398
-\MPscratchDim=\dimen329
-\MPnumerator=\count399
-\makeMPintoPDFobject=\count400
-\everyMPtoPDFconversion=\toks51
+\nofMPsegments=\count400
+\nofMParguments=\count401
+\everyMPshowfont=\toks56
+\MPscratchCnt=\count402
+\MPscratchDim=\dimen338
+\MPnumerator=\count403
+\makeMPintoPDFobject=\count404
+\everyMPtoPDFconversion=\toks57
 ) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
@@ -1264,18 +1294,18 @@ File: translations-basic-dictionary-brazil.trsl (brazil translation file `trans
 lations-basic-dictionary')
 )
 Package translations Info: loading dictionary `translations-basic-dictionary' f
-or `brazil'. on input line 178.
+or `brazil'. on input line 183.
 <figuras/brasao_ufam_limpo.png, id=7, 85.39905pt x 83.3514pt>
 File: figuras/brasao_ufam_limpo.png Graphic file (type png)
 <use figuras/brasao_ufam_limpo.png>
-Package pdftex.def Info: figuras/brasao_ufam_limpo.png  used on input line 184.
+Package pdftex.def Info: figuras/brasao_ufam_limpo.png  used on input line 189.
 
 (pdftex.def)             Requested size: 87.4629pt x 85.35826pt.
  [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texmf/fonts/enc/
 dvips/lm/lm-ec.enc} <./figuras/brasao_ufam_limpo.png (PNG copy)>]
-Underfull \hbox (badness 1360) in paragraph at lines 185--185
+Underfull \hbox (badness 1360) in paragraph at lines 190--190
 [][]\T1/lmr/m/n/12 (+20) Monografia apre-sen-tada � Co-or-de-na-��o do
  []
 
@@ -1284,40 +1314,40 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.i}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.185 \folhaderostotcc
+l.190 \folhaderostotcc
                        [1
 
 ]
-LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 1
-99.
+LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 2
+04.
  (/usr/share/texmf/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 1
-99.
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 2
+04.
 
 (/usr/share/texmf/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 
-199.
+204.
 
 (/usr/share/texmf/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 
-199.
+204.
 
 (/usr/share/texmf/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 199.
+(Font)              <12> on input line 204.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 199.
+(Font)              <8> on input line 204.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 199.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 199
+(Font)              <6> on input line 204.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 204
 .
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
@@ -1326,7 +1356,7 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 199
+LaTeX Font Info:    Trying to load font information for U+msb on input line 204
 .
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
@@ -1339,7 +1369,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.i}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.202 \end{dedicatoria}
+l.207 \end{dedicatoria}
                         [1
 
 ] [2
@@ -1362,7 +1392,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.i}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.26 ...bretensão temporizada.}}{80}{figure.5.25}
+l.26 ...bretensão temporizada.}}{81}{figure.5.25}
                                                   % [1
 
 
@@ -1371,13 +1401,13 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.ii}) has
  been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.251 \cleardoublepage
+l.256 \cleardoublepage
                        [2] (./main.lot)
 pdfTeX warning (ext4): destination with the same identifier (name{page.iii}) ha
 s been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.256 \cleardoublepage
+l.261 \cleardoublepage
                        [3
 
 ]
@@ -1385,7 +1415,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.iv}) has
  been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.280   \item[RMS]
+l.285   \item[RMS]
                    \textit{Root Mean Square} --- valor eficaz [4
 
 
@@ -1394,7 +1424,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.v}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.286 \end{siglas}
+l.291 \end{siglas}
                    [5] [6
 
 
@@ -1405,12 +1435,12 @@ l.286 \end{siglas}
 
 ] [10] [11]
 Overfull \hbox (2.03773pt too wide) detected at line 95
- \T1/lmr/bx/n/12 100
+ \T1/lmr/bx/n/12 101
  []
 
 
 Overfull \hbox (2.03773pt too wide) detected at line 96
- \T1/lmr/bx/n/12 102
+ \T1/lmr/bx/n/12 103
  []
 
 ) [12]
@@ -1432,12 +1462,12 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
  [2]
-LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 2
-8.
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 3
+0.
 
 (/usr/share/texmf/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-) [3{/usr/share/texmf/fonts/enc/dvips/lm/lm-ts1.enc}] [4]) [5]
+) [3] [4{/usr/share/texmf/fonts/enc/dvips/lm/lm-ts1.enc}]) [5]
 \openout2 = `capitulos/02_fundamentacao.aux'.
 
  (./capitulos/02_fundamentacao.tex
@@ -1493,93 +1523,93 @@ texmf/fonts/enc/dvips/lm/lm-mathex.enc}] [12] [13] [14] [15] [16]) [17]
 File: figuras/arquitetura_geral_v3_limpo.png Graphic file (type png)
 <use figuras/arquitetura_geral_v3_limpo.png>
 Package pdftex.def Info: figuras/arquitetura_geral_v3_limpo.png  used on input 
-line 27.
+line 29.
 (pdftex.def)             Requested size: 455.0pt x 430.54785pt.
  [19] [20
 pdfTeX warning (ext4): destination with the same identifier (name{figure.3.3}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.40   \item r
+l.42   \item r
               eprodução analógica de tensão e corrente pelo DAC MCP4728; <.
 /figuras/arquitetura_geral_v3_limpo.png (PNG copy)>]
 <figuras/modelo_simulink.png, id=676, 1269.74374pt x 497.86pt>
 File: figuras/modelo_simulink.png Graphic file (type png)
 <use figuras/modelo_simulink.png>
-Package pdftex.def Info: figuras/modelo_simulink.png  used on input line 60.
+Package pdftex.def Info: figuras/modelo_simulink.png  used on input line 62.
 (pdftex.def)             Requested size: 500.50278pt x 196.24611pt.
  [21]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10.95> on input line 73.
+(Font)              <10.95> on input line 75.
  [22
 pdfTeX warning (ext4): destination with the same identifier (name{figure.3.4}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.116 
+l.118 
       
 pdfTeX warning (ext4): destination with the same identifier (name{table.3.1}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.116 
+l.118 
       
 pdfTeX warning (ext4): destination with the same identifier (name{table.3.2}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.116 
+l.118 
        <./figuras/modelo_simulink.png>]
 <figuras/simulink_tensao_limpo.png, id=702, 797.1381pt x 398.6895pt>
 File: figuras/simulink_tensao_limpo.png Graphic file (type png)
 <use figuras/simulink_tensao_limpo.png>
 Package pdftex.def Info: figuras/simulink_tensao_limpo.png  used on input line 
-143.
+145.
 (pdftex.def)             Requested size: 432.24861pt x 216.18948pt.
  [23
 pdfTeX warning (ext4): destination with the same identifier (name{table.3.3}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.146 
+l.148 
       
 pdfTeX warning (ext4): destination with the same identifier (name{table.3.4}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.146 
+l.148 
       ]
 <figuras/simulink_corrente_limpo.png, id=707, 797.1381pt x 398.6895pt>
 File: figuras/simulink_corrente_limpo.png Graphic file (type png)
 <use figuras/simulink_corrente_limpo.png>
 Package pdftex.def Info: figuras/simulink_corrente_limpo.png  used on input lin
-e 151.
+e 153.
 (pdftex.def)             Requested size: 432.24861pt x 216.18948pt.
  [24
 pdfTeX warning (ext4): destination with the same identifier (name{figure.3.5}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.158 
+l.160 
       
 pdfTeX warning (ext4): destination with the same identifier (name{figure.3.6}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.158 
+l.160 
        <./figuras/simulink_tensao_limpo.png (PNG copy)> <./figuras/simulink_cor
 rente_limpo.png (PNG copy)>] [25
 pdfTeX warning (ext4): destination with the same identifier (name{table.3.5}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.191   \item a
+l.193   \item a
                 frequência nominal, a taxa de amostragem e o número de reg...
 ]
 <figuras/terminal_geração.png, id=720, 697.60625pt x 256.96pt>
 File: figuras/terminal_geração.png Graphic file (type png)
 <use figuras/terminal_geração.png>
-Package pdftex.def Info: figuras/terminal_geração.png  used on input line 208
+Package pdftex.def Info: figuras/terminal_geração.png  used on input line 210
 .
 (pdftex.def)             Requested size: 432.24861pt x 159.21552pt.
  [26] [27
@@ -1587,81 +1617,81 @@ pdfTeX warning (ext4): destination with the same identifier (name{figure.3.7})
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.226 
+l.228 
        <./figuras/terminal_geração.png>] [28]
 <figuras/esp32_geradora.png, id=737, 1421.31pt x 1115.16624pt>
 File: figuras/esp32_geradora.png Graphic file (type png)
 <use figuras/esp32_geradora.png>
-Package pdftex.def Info: figuras/esp32_geradora.png  used on input line 249.
+Package pdftex.def Info: figuras/esp32_geradora.png  used on input line 251.
 (pdftex.def)             Requested size: 341.25pt x 267.74747pt.
  [29
 pdfTeX warning (ext4): destination with the same identifier (name{figure.3.8}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.256 
+l.258 
        <./figuras/esp32_geradora.png (PNG copy)>]
 <figuras/terminal_recepção.png, id=743, 656.4525pt x 194.7275pt>
 File: figuras/terminal_recepção.png Graphic file (type png)
 <use figuras/terminal_recepção.png>
 Package pdftex.def Info: figuras/terminal_recepção.png  used on input line 26
-1.
+3.
 (pdftex.def)             Requested size: 432.24861pt x 128.22043pt.
 <figuras/esp32_receptora.png, id=744, 1653.17625pt x 958.58125pt>
 File: figuras/esp32_receptora.png Graphic file (type png)
 <use figuras/esp32_receptora.png>
-Package pdftex.def Info: figuras/esp32_receptora.png  used on input line 271.
+Package pdftex.def Info: figuras/esp32_receptora.png  used on input line 273.
 (pdftex.def)             Requested size: 386.75278pt x 224.25737pt.
  [30
 pdfTeX warning (ext4): destination with the same identifier (name{figure.3.9}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.274 
+l.276 
        <./figuras/terminal_recepção.png>] [31
 pdfTeX warning (ext4): destination with the same identifier (name{figure.3.10})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.287   \item \textbf
+l.289   \item \textbf
                      {ANSI 51}: sobrecorrente de tempo definido, com \textit...
  <./figuras/esp32_receptora.png (PNG copy)>] [32]
 <figuras/painel_leds.png, id=761, 1658.195pt x 955.57pt>
 File: figuras/painel_leds.png Graphic file (type png)
 <use figuras/painel_leds.png>
-Package pdftex.def Info: figuras/painel_leds.png  used on input line 306.
+Package pdftex.def Info: figuras/painel_leds.png  used on input line 308.
 (pdftex.def)             Requested size: 341.25pt x 196.65132pt.
  [33
 pdfTeX warning (ext4): destination with the same identifier (name{figure.3.11})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.320   \item i
+l.322   \item i
                niciar a reprodução em pré-falta contínua na geradora; <./fi
 guras/painel_leds.png (PNG copy)>]
 <figuras/bancada_testes.jpg, id=772, 2002.48125pt x 3780.1225pt>
 File: figuras/bancada_testes.jpg Graphic file (type jpg)
 <use figuras/bancada_testes.jpg>
-Package pdftex.def Info: figuras/bancada_testes.jpg  used on input line 336.
+Package pdftex.def Info: figuras/bancada_testes.jpg  used on input line 338.
 (pdftex.def)             Requested size: 327.60056pt x 618.38675pt.
  [34]
 <figuras/bancada_board.png, id=786, 1122.1925pt x 1412.27625pt>
 File: figuras/bancada_board.png Graphic file (type png)
 <use figuras/bancada_board.png>
-Package pdftex.def Info: figuras/bancada_board.png  used on input line 344.
+Package pdftex.def Info: figuras/bancada_board.png  used on input line 346.
 (pdftex.def)             Requested size: 327.60056pt x 412.26488pt.
  [35
 pdfTeX warning (ext4): destination with the same identifier (name{figure.3.12})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.347 
+l.349 
        <./figuras/bancada_testes.jpg>] [36
 pdfTeX warning (ext4): destination with the same identifier (name{figure.3.13})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.353 
+l.355 
        <./figuras/bancada_board.png (PNG copy)>]) [37]
 \openout2 = `capitulos/04_implementacao_revisada.aux'.
 
@@ -1691,138 +1721,138 @@ as been already used, duplicate ignored
                                                   \__shipout_drop_firstpage_...
 l.59 O
       s dois módulos pertencem à família ESP32 e utilizam processador Xte...
-]
-Underfull \hbox (badness 5548) in paragraph at lines 73--74
+] [41]
+Underfull \hbox (badness 5548) in paragraph at lines 77--78
 []|\T1/lmr/m/n/10.95 (+20) Ubuntu 24.04.4 LTS, co-di-nome No-ble Num-bat
  []
 
-[41] [42
+[42
 pdfTeX warning (ext4): destination with the same identifier (name{table.4.7}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.110 
-      
+l.90 
+     ] [43
 pdfTeX warning (ext4): destination with the same identifier (name{table.4.8}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.110 
-      ] [43] [44
+l.122 
+      ] [44
 pdfTeX warning (ext4): destination with the same identifier (name{table.4.9}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.154 
+l.150 
       ]
-Underfull \hbox (badness 10000) in paragraph at lines 167--167
+Underfull \hbox (badness 10000) in paragraph at lines 171--171
 []|$\T1/lmtt/m/n/10.95 <[]generate _ comtrade .
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 168--168
+Underfull \hbox (badness 10000) in paragraph at lines 172--172
 []|$\T1/lmtt/m/n/10.95 <[]run _ embedded _
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 169--169
+Underfull \hbox (badness 10000) in paragraph at lines 173--173
 []|$\T1/lmtt/m/n/10.95 <[]embedded _ generator .
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 171--171
+Underfull \hbox (badness 10000) in paragraph at lines 175--175
 []|$\T1/lmtt/m/n/10.95 <[]run _ embedded _
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 172--172
+Underfull \hbox (badness 10000) in paragraph at lines 176--176
 []|$\T1/lmtt/m/n/10.95 <[]embedded _ receiver .
  []
 
-[45
+[45] [46
 pdfTeX warning (ext4): destination with the same identifier (name{table.4.10}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.183 
+l.187 
       ]
-Underfull \hbox (badness 4859) in paragraph at lines 200--200
+Underfull \hbox (badness 4859) in paragraph at lines 204--204
 []|\T1/lmr/m/n/10.95 (+20) Adafruit MCP4728
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 201--201
+Underfull \hbox (badness 10000) in paragraph at lines 205--205
 []|\T1/lmr/m/n/10.95 (+20) Arduino-ESP32 e
  []
 
-[46
+[47
 pdfTeX warning (ext4): destination with the same identifier (name{table.4.11}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.211 \begin{equation}
-                      ] [47] [48
+l.215 \begin{equation}
+                      ] [48] [49
 pdfTeX warning (ext4): destination with the same identifier (name{table.4.12}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.270 
-      ] [49
+l.274 
+      ] [50
 pdfTeX warning (ext4): destination with the same identifier (name{table.4.13}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.302 
-      ] [50] [51]
-<figuras/maquina_de_estado_v2_limpo.png, id=898, 1445.4pt x 813.0375pt>
+l.306 
+      ] [51] [52]
+<figuras/maquina_de_estado_v2_limpo.png, id=902, 1445.4pt x 813.0375pt>
 File: figuras/maquina_de_estado_v2_limpo.png Graphic file (type png)
 <use figuras/maquina_de_estado_v2_limpo.png>
 Package pdftex.def Info: figuras/maquina_de_estado_v2_limpo.png  used on input 
-line 385.
+line 389.
 (pdftex.def)             Requested size: 341.25pt x 177.09666pt.
- [52
+ [53
 pdfTeX warning (ext4): destination with the same identifier (name{table.4.14}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.388 
-      ] [53
+l.392 
+      ] [54
 pdfTeX warning (ext4): destination with the same identifier (name{figure.4.15})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.401 \end{equation}
+l.405 \end{equation}
                      <./figuras/maquina_de_estado_v2_limpo.png (PNG copy)>]
-[54] [55] [56] [57] [58] [59] [60] [61
+[55] [56] [57] [58] [59] [60] [61] [62
 pdfTeX warning (ext4): destination with the same identifier (name{table.4.15}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.618 
-      ] [62] [63] [64] [65] [66]) [67]
+l.622 
+      ] [63] [64] [65] [66] [67]) [68]
 \openout2 = `capitulos/05_resultados.aux'.
 
- (./capitulos/05_resultados.tex [68
+ (./capitulos/05_resultados.tex [69
 
 
 
 
 ]
-<figuras/resultados_tensao_inst_limpo.png, id=1000, 595.2639pt x 367.3725pt>
+<figuras/resultados_tensao_inst_limpo.png, id=1004, 595.2639pt x 367.3725pt>
 File: figuras/resultados_tensao_inst_limpo.png Graphic file (type png)
 <use figuras/resultados_tensao_inst_limpo.png>
 Package pdftex.def Info: figuras/resultados_tensao_inst_limpo.png  used on inpu
 t line 20.
 (pdftex.def)             Requested size: 418.59917pt x 258.34738pt.
 
-[69]
-<figuras/resultados_corrente_inst_limpo.png, id=1005, 573.342pt x 383.5128pt>
+[70]
+<figuras/resultados_corrente_inst_limpo.png, id=1009, 573.342pt x 383.5128pt>
 File: figuras/resultados_corrente_inst_limpo.png Graphic file (type png)
 <use figuras/resultados_corrente_inst_limpo.png>
 Package pdftex.def Info: figuras/resultados_corrente_inst_limpo.png  used on in
 put line 28.
 (pdftex.def)             Requested size: 418.59917pt x 280.01468pt.
- [70
+ [71
 pdfTeX warning (ext4): destination with the same identifier (name{figure.5.16})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -1835,27 +1865,27 @@ pdfTeX warning (ext4): destination with the same identifier (name{figure.5.17})
                                                   \__shipout_drop_firstpage_...
 l.33 
       <./figuras/resultados_tensao_inst_limpo.png (PNG copy)> <./figuras/result
-ados_corrente_inst_limpo.png (PNG copy)>] [71]
-<figuras/resultados_tensao_fdt_limpo.png, id=1020, 594.3003pt x 377.4903pt>
+ados_corrente_inst_limpo.png (PNG copy)>] [72]
+<figuras/resultados_tensao_fdt_limpo.png, id=1025, 594.3003pt x 377.4903pt>
 File: figuras/resultados_tensao_fdt_limpo.png Graphic file (type png)
 <use figuras/resultados_tensao_fdt_limpo.png>
 Package pdftex.def Info: figuras/resultados_tensao_fdt_limpo.png  used on input
  line 82.
 (pdftex.def)             Requested size: 418.59917pt x 265.89453pt.
- [72
+ [73
 pdfTeX warning (ext4): destination with the same identifier (name{table.5.16}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.85 
      ]
-<figuras/resultados_corrente_fdt_limpo.png, id=1026, 601.2864pt x 376.5267pt>
+<figuras/resultados_corrente_fdt_limpo.png, id=1030, 601.2864pt x 376.5267pt>
 File: figuras/resultados_corrente_fdt_limpo.png Graphic file (type png)
 <use figuras/resultados_corrente_fdt_limpo.png>
 Package pdftex.def Info: figuras/resultados_corrente_fdt_limpo.png  used on inp
 ut line 90.
 (pdftex.def)             Requested size: 418.59917pt x 262.1248pt.
- [73
+ [74
 pdfTeX warning (ext4): destination with the same identifier (name{figure.5.18})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -1868,7 +1898,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{figure.5.19})
                                                   \__shipout_drop_firstpage_...
 l.95 
       <./figuras/resultados_tensao_fdt_limpo.png (PNG copy)> <./figuras/resulta
-dos_corrente_fdt_limpo.png (PNG copy)>] [74
+dos_corrente_fdt_limpo.png (PNG copy)>] [75
 pdfTeX warning (ext4): destination with the same identifier (name{table.5.17}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -1879,21 +1909,21 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <9> on input line 127.
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <5> on input line 127.
- [75
+ [76
 pdfTeX warning (ext4): destination with the same identifier (name{table.5.18}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.153 
       ]
-<figuras/sobrecorrente_20_temporizada_limpo.png, id=1045, 602.25pt x 436.7517pt
+<figuras/sobrecorrente_20_temporizada_limpo.png, id=1049, 602.25pt x 436.7517pt
 >
 File: figuras/sobrecorrente_20_temporizada_limpo.png Graphic file (type png)
 <use figuras/sobrecorrente_20_temporizada_limpo.png>
 Package pdftex.def Info: figuras/sobrecorrente_20_temporizada_limpo.png  used o
 n input line 160.
 (pdftex.def)             Requested size: 418.59917pt x 303.57819pt.
- [76] [77
+ [77] [78
 pdfTeX warning (ext4): destination with the same identifier (name{figure.5.20})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -1906,34 +1936,34 @@ pdfTeX warning (ext4): destination with the same identifier (name{figure.5.21})
                                                   \__shipout_drop_firstpage_...
 l.187 
        <./figuras/sobrecorrente_20_temporizada_limpo.png (PNG copy)>]
-<figuras/sobrecorrente_50_instantanea_limpo.png, id=1058, 603.4545pt x 435.7881
+<figuras/sobrecorrente_50_instantanea_limpo.png, id=1064, 603.4545pt x 435.7881
 pt>
 File: figuras/sobrecorrente_50_instantanea_limpo.png Graphic file (type png)
 <use figuras/sobrecorrente_50_instantanea_limpo.png>
 Package pdftex.def Info: figuras/sobrecorrente_50_instantanea_limpo.png  used o
 n input line 192.
 (pdftex.def)             Requested size: 418.59917pt x 302.29665pt.
- [78
+ [79
 pdfTeX warning (ext4): destination with the same identifier (name{figure.5.22})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.216 
        <./figuras/sobrecorrente_50_instantanea_limpo.png (PNG copy)>]
-<figuras/sobretensao_15_temporizada_limpo.png, id=1068, 526.1256pt x 408.5664pt
+<figuras/sobretensao_15_temporizada_limpo.png, id=1072, 526.1256pt x 408.5664pt
 >
 File: figuras/sobretensao_15_temporizada_limpo.png Graphic file (type png)
 <use figuras/sobretensao_15_temporizada_limpo.png>
 Package pdftex.def Info: figuras/sobretensao_15_temporizada_limpo.png  used on 
 input line 229.
 (pdftex.def)             Requested size: 418.59917pt x 325.08304pt.
- [79
+ [80
 pdfTeX warning (ext4): destination with the same identifier (name{figure.5.23})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.232 
-      ] [80
+      ] [81
 pdfTeX warning (ext4): destination with the same identifier (name{figure.5.24})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -1946,14 +1976,14 @@ pdfTeX warning (ext4): destination with the same identifier (name{figure.5.25})
                                                   \__shipout_drop_firstpage_...
 l.256 
        <./figuras/sobretensao_15_temporizada_limpo.png (PNG copy)>]
-<figuras/sobretensao_50_instantanea_limpo.png, id=1080, 594.3003pt x 432.6564pt
+<figuras/sobretensao_50_instantanea_limpo.png, id=1084, 594.3003pt x 432.6564pt
 >
 File: figuras/sobretensao_50_instantanea_limpo.png Graphic file (type png)
 <use figuras/sobretensao_50_instantanea_limpo.png>
 Package pdftex.def Info: figuras/sobretensao_50_instantanea_limpo.png  used on 
 input line 261.
 (pdftex.def)             Requested size: 418.59917pt x 304.75214pt.
- [81
+ [82
 pdfTeX warning (ext4): destination with the same identifier (name{figure.5.26})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -1966,14 +1996,14 @@ pdfTeX warning (ext4): destination with the same identifier (name{figure.5.27})
                                                   \__shipout_drop_firstpage_...
 l.288 
        <./figuras/sobretensao_50_instantanea_limpo.png (PNG copy)>]
-<figuras/subtensao_30_temporizada_limpo.png, id=1088, 598.3956pt x 449.7603pt>
+<figuras/subtensao_30_temporizada_limpo.png, id=1092, 598.3956pt x 449.7603pt>
 File: figuras/subtensao_30_temporizada_limpo.png Graphic file (type png)
 <use figuras/subtensao_30_temporizada_limpo.png>
 Package pdftex.def Info: figuras/subtensao_30_temporizada_limpo.png  used on in
 put line 299.
 (pdftex.def)             Requested size: 418.59917pt x 314.63103pt.
- [82]
-[83
+ [83]
+[84
 pdfTeX warning (ext4): destination with the same identifier (name{figure.5.28})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -1986,13 +2016,13 @@ pdfTeX warning (ext4): destination with the same identifier (name{figure.5.29})
                                                   \__shipout_drop_firstpage_...
 l.326 
        <./figuras/subtensao_30_temporizada_limpo.png (PNG copy)>]
-<figuras/subtensao_50_instantanea_limpo.png, id=1100, 597.432pt x 449.7603pt>
+<figuras/subtensao_50_instantanea_limpo.png, id=1105, 597.432pt x 449.7603pt>
 File: figuras/subtensao_50_instantanea_limpo.png Graphic file (type png)
 <use figuras/subtensao_50_instantanea_limpo.png>
 Package pdftex.def Info: figuras/subtensao_50_instantanea_limpo.png  used on in
 put line 331.
 (pdftex.def)             Requested size: 418.59917pt x 315.13887pt.
- [84
+ [85
 pdfTeX warning (ext4): destination with the same identifier (name{figure.5.30})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -2004,26 +2034,26 @@ pdfTeX warning (ext4): destination with the same identifier (name{figure.5.31})
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.358 
-       <./figuras/subtensao_50_instantanea_limpo.png (PNG copy)>] [85]
-<figuras/distancia_10_z1_fdt_limpo.png, id=1113, 604.4181pt x 452.892pt>
+       <./figuras/subtensao_50_instantanea_limpo.png (PNG copy)>] [86]
+<figuras/distancia_10_z1_fdt_limpo.png, id=1117, 604.4181pt x 452.892pt>
 File: figuras/distancia_10_z1_fdt_limpo.png Graphic file (type png)
 <use figuras/distancia_10_z1_fdt_limpo.png>
 Package pdftex.def Info: figuras/distancia_10_z1_fdt_limpo.png  used on input l
 ine 373.
 (pdftex.def)             Requested size: 418.59917pt x 313.65678pt.
-<figuras/distancia_10_z1_rx_limpo.png, id=1115, 438.6789pt x 262.0992pt>
+<figuras/distancia_10_z1_rx_limpo.png, id=1119, 438.6789pt x 262.0992pt>
 File: figuras/distancia_10_z1_rx_limpo.png Graphic file (type png)
 <use figuras/distancia_10_z1_rx_limpo.png>
 Package pdftex.def Info: figuras/distancia_10_z1_rx_limpo.png  used on input li
 ne 383.
 (pdftex.def)             Requested size: 373.10333pt x 222.92932pt.
- [86
+ [87
 pdfTeX warning (ext4): destination with the same identifier (name{figure.5.32})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.386 
-       <./figuras/distancia_10_z1_fdt_limpo.png (PNG copy)>] [87
+       <./figuras/distancia_10_z1_fdt_limpo.png (PNG copy)>] [88
 pdfTeX warning (ext4): destination with the same identifier (name{figure.5.33})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -2036,32 +2066,32 @@ pdfTeX warning (ext4): destination with the same identifier (name{figure.5.34})
                                                   \__shipout_drop_firstpage_...
 l.412 
        <./figuras/distancia_10_z1_rx_limpo.png (PNG copy)>]
-<figuras/distancia_90_z2_fdt_limpo.png, id=1126, 604.4181pt x 449.7603pt>
+<figuras/distancia_90_z2_fdt_limpo.png, id=1130, 604.4181pt x 449.7603pt>
 File: figuras/distancia_90_z2_fdt_limpo.png Graphic file (type png)
 <use figuras/distancia_90_z2_fdt_limpo.png>
 Package pdftex.def Info: figuras/distancia_90_z2_fdt_limpo.png  used on input l
 ine 417.
 (pdftex.def)             Requested size: 418.59917pt x 311.48787pt.
-<figuras/distancia_90_z2_rx_limpo.png, id=1128, 459.8781pt x 274.1442pt>
+<figuras/distancia_90_z2_rx_limpo.png, id=1132, 459.8781pt x 274.1442pt>
 File: figuras/distancia_90_z2_rx_limpo.png Graphic file (type png)
 <use figuras/distancia_90_z2_rx_limpo.png>
 Package pdftex.def Info: figuras/distancia_90_z2_rx_limpo.png  used on input li
 ne 427.
 (pdftex.def)             Requested size: 373.10333pt x 222.41531pt.
- [88
+ [89
 pdfTeX warning (ext4): destination with the same identifier (name{figure.5.35})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.430 
        <./figuras/distancia_90_z2_fdt_limpo.png (PNG copy)>]
-<figuras/distancia_25_reverso_fdt_limpo.png, id=1135, 606.3453pt x 450.7239pt>
+<figuras/distancia_25_reverso_fdt_limpo.png, id=1139, 606.3453pt x 450.7239pt>
 File: figuras/distancia_25_reverso_fdt_limpo.png Graphic file (type png)
 <use figuras/distancia_25_reverso_fdt_limpo.png>
 Package pdftex.def Info: figuras/distancia_25_reverso_fdt_limpo.png  used on in
 put line 460.
 (pdftex.def)             Requested size: 418.59917pt x 311.158pt.
- [89
+ [90
 pdfTeX warning (ext4): destination with the same identifier (name{figure.5.36})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -2074,20 +2104,20 @@ pdfTeX warning (ext4): destination with the same identifier (name{figure.5.37})
                                                   \__shipout_drop_firstpage_...
 l.462 \end{figure}
                    <./figuras/distancia_90_z2_rx_limpo.png (PNG copy)>]
-<figuras/distancia_25_reverso_rx_limpo.png, id=1141, 533.1117pt x 279.2031pt>
+<figuras/distancia_25_reverso_rx_limpo.png, id=1146, 533.1117pt x 279.2031pt>
 File: figuras/distancia_25_reverso_rx_limpo.png Graphic file (type png)
 <use figuras/distancia_25_reverso_rx_limpo.png>
 Package pdftex.def Info: figuras/distancia_25_reverso_rx_limpo.png  used on inp
 ut line 470.
 (pdftex.def)             Requested size: 373.10333pt x 195.40674pt.
 
-[90
+[91
 pdfTeX warning (ext4): destination with the same identifier (name{figure.5.38})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.473 
-       <./figuras/distancia_25_reverso_fdt_limpo.png (PNG copy)>] [91
+       <./figuras/distancia_25_reverso_fdt_limpo.png (PNG copy)>] [92
 pdfTeX warning (ext4): destination with the same identifier (name{figure.5.39})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -2106,81 +2136,81 @@ has been already used, duplicate ignored
                                                   \__shipout_drop_firstpage_...
 l.523 
        <./figuras/distancia_25_reverso_rx_limpo.png (PNG copy)>]
-<figuras/rele_instantaneo.jpg, id=1155, 1963.335pt x 2445.135pt>
+<figuras/rele_instantaneo.jpg, id=1159, 1963.335pt x 2445.135pt>
 File: figuras/rele_instantaneo.jpg Graphic file (type jpg)
 <use figuras/rele_instantaneo.jpg>
 Package pdftex.def Info: figuras/rele_instantaneo.jpg  used on input line 532.
 (pdftex.def)             Requested size: 218.39806pt x 271.98776pt.
-<figuras/rele_temporizado.jpg, id=1156, 2047.65pt x 2595.6975pt>
+<figuras/rele_temporizado.jpg, id=1160, 2047.65pt x 2595.6975pt>
 File: figuras/rele_temporizado.jpg Graphic file (type jpg)
 <use figuras/rele_temporizado.jpg>
 Package pdftex.def Info: figuras/rele_temporizado.jpg  used on input line 537.
 (pdftex.def)             Requested size: 218.39806pt x 276.81404pt.
- [92
+ [93
 pdfTeX warning (ext4): destination with the same identifier (name{figure.5.41})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.543 
        <./figuras/rele_instantaneo.jpg> <./figuras/rele_temporizado.jpg>]
-<figuras/rele_instantaneo_com_habilita_67.jpg, id=1162, 1989.4325pt x 2456.1762
+<figuras/rele_instantaneo_com_habilita_67.jpg, id=1166, 1989.4325pt x 2456.1762
 5pt>
 File: figuras/rele_instantaneo_com_habilita_67.jpg Graphic file (type jpg)
 <use figuras/rele_instantaneo_com_habilita_67.jpg>
 Package pdftex.def Info: figuras/rele_instantaneo_com_habilita_67.jpg  used on 
 input line 550.
 (pdftex.def)             Requested size: 145.60333pt x 179.74536pt.
-<figuras/rele_temporizado_com_habilita_67.jpg, id=1163, 1965.3425pt x 2467.2175
+<figuras/rele_temporizado_com_habilita_67.jpg, id=1167, 1965.3425pt x 2467.2175
 pt>
 File: figuras/rele_temporizado_com_habilita_67.jpg Graphic file (type jpg)
 <use figuras/rele_temporizado_com_habilita_67.jpg>
 Package pdftex.def Info: figuras/rele_temporizado_com_habilita_67.jpg  used on 
 input line 555.
 (pdftex.def)             Requested size: 145.60333pt x 182.77452pt.
-<figuras/bloqueio_67.png, id=1164, 1124.2pt x 1410.26875pt>
+<figuras/bloqueio_67.png, id=1168, 1124.2pt x 1410.26875pt>
 File: figuras/bloqueio_67.png Graphic file (type png)
 <use figuras/bloqueio_67.png>
 Package pdftex.def Info: figuras/bloqueio_67.png  used on input line 560.
 (pdftex.def)             Requested size: 145.60333pt x 182.65277pt.
 
-[93
+[94
 pdfTeX warning (ext4): destination with the same identifier (name{figure.5.42})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.574 
        <./figuras/rele_instantaneo_com_habilita_67.jpg> <./figuras/rele_tempori
-zado_com_habilita_67.jpg> <./figuras/bloqueio_67.png (PNG copy)>]) [94]
-[95]
+zado_com_habilita_67.jpg> <./figuras/bloqueio_67.png (PNG copy)>] [95])
+[96]
 \openout2 = `capitulos/06_conclusao.aux'.
 
- (./capitulos/06_conclusao.tex) [96
+ (./capitulos/06_conclusao.tex) [97
 
 
 
 
-] [97]
+] [98]
 \openout2 = `capitulos/07_trabalhos_futuros.aux'.
 
 
-(./capitulos/07_trabalhos_futuros.tex) [98
+(./capitulos/07_trabalhos_futuros.tex [99
 
 
 
 
-] [99] (./main.bbl
+]) [100] (./main.bbl
 bibitemlist
-[100
+[101
 
 
 
-]) [101]
+]) [102]
 \openout2 = `capitulos/apendice_codigo.aux'.
 
- (./capitulos/apendice_codigo.tex [102
+ (./capitulos/apendice_codigo.tex [103
 
 
-] [103] [104] [105]
+] [104] [105] [106]
 Underfull \hbox (badness 10000) in paragraph at lines 138--138
 []|\T1/lmtt/m/n/10.95 --receiver-config
  []
@@ -2195,7 +2225,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 140--140
 []|\T1/lmtt/m/n/10.95 --process-timeout
  []
 
-[106
+[107
 pdfTeX warning (ext4): destination with the same identifier (name{table.A.20}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -2217,20 +2247,20 @@ Underfull \hbox (badness 10000) in paragraph at lines 213--213
 []|\T1/lmtt/m/n/10.95 --protection-event-interval
  []
 
-[107] [108
+[108] [109
 pdfTeX warning (ext4): destination with the same identifier (name{table.A.22}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.240 
-      ] [109
+      ] [110
 pdfTeX warning (ext4): destination with the same identifier (name{table.A.23}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.248   \item n
                o terminal da geradora, enviar \texttt{s} e manter a pré-fal...
-]) [110]
+]) [111]
 \tf@lof=\write5
 \openout5 = `main.lof'.
 
@@ -2251,11 +2281,11 @@ L3 programming layer <2020/03/25>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 36179 strings out of 474222
- 728125 string characters out of 5748733
- 1942975 words of memory out of 5000000
- 57013 multiletter control sequences out of 15000+600000
- 669175 words of font info for 285 fonts, out of 8000000 for 9000
+ 36432 strings out of 474222
+ 732266 string characters out of 5748733
+ 1981975 words of memory out of 5000000
+ 57253 multiletter control sequences out of 15000+600000
+ 669488 words of font info for 286 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  99i,14n,107p,1261b,1153s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/ty
@@ -2273,10 +2303,10 @@ lic/lm/lmri9.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb></usr/share
 lmtt10.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt12.pfb></usr/share/texmf
 /fonts/type1/public/lm/lmtt9.pfb></usr/share/texlive/texmf-dist/fonts/type1/pub
 lic/amsfonts/symbols/msam10.pfb>
-Output written on main.pdf (129 pages, 31359089 bytes).
+Output written on main.pdf (130 pages, 31392485 bytes).
 PDF statistics:
- 1807 PDF objects out of 2073 (max. 8388607)
- 1554 compressed objects within 16 object streams
- 424 named destinations out of 1000 (max. 500000)
+ 1811 PDF objects out of 2073 (max. 8388607)
+ 1557 compressed objects within 16 object streams
+ 425 named destinations out of 1000 (max. 500000)
  62040 words of extra memory for PDF output out of 74296 (max. 10000000)
 
