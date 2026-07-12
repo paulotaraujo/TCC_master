@@ -36,13 +36,13 @@
 \contentsline {section}{\numberline {3.12}Conclusão}{37}{section.3.12}%
 \contentsline {chapter}{\chapternumberline {4}Implementação}{38}{chapter.4}%
 \contentsline {section}{\numberline {4.1}Visão geral da implementação}{38}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Implementação do hardware}{39}{section.4.2}%
+\contentsline {section}{\numberline {4.2}Implementação do \textit {hardware}}{39}{section.4.2}%
 \contentsline {subsection}{\numberline {4.2.1}Componentes da plataforma}{39}{subsection.4.2.1}%
 \contentsline {subsection}{\numberline {4.2.2}Ambiente computacional e placas utilizadas}{40}{subsection.4.2.2}%
 \contentsline {subsection}{\numberline {4.2.3}Unidade geradora e DAC}{42}{subsection.4.2.3}%
 \contentsline {subsection}{\numberline {4.2.4}Unidade receptora e sinalização}{43}{subsection.4.2.4}%
 \contentsline {subsection}{\numberline {4.2.5}Cuidados elétricos da interligação}{44}{subsection.4.2.5}%
-\contentsline {section}{\numberline {4.3}Organização do software}{45}{section.4.3}%
+\contentsline {section}{\numberline {4.3}Organização do \textit {software}}{45}{section.4.3}%
 \contentsline {subsection}{\numberline {4.3.1}Bibliotecas, dependências e ambiente de compilação}{45}{subsection.4.3.1}%
 \contentsline {section}{\numberline {4.4}Geração e adequação dos arquivos COMTRADE}{47}{section.4.4}%
 \contentsline {section}{\numberline {4.5}Interface Python da unidade geradora}{48}{section.4.5}%
@@ -52,35 +52,34 @@
 \contentsline {section}{\numberline {4.6}Firmware da ESP32 geradora}{49}{section.4.6}%
 \contentsline {subsection}{\numberline {4.6.1}Armazenamento e estruturas de dados}{49}{subsection.4.6.1}%
 \contentsline {subsection}{\numberline {4.6.2}Determinação das referências de escala}{50}{subsection.4.6.2}%
-\contentsline {subsection}{\numberline {4.6.3}Conversão de grandezas de engenharia para códigos do DAC}{50}{subsection.4.6.3}%
+\contentsline {subsection}{\numberline {4.6.3}Conversão de grandezas de engenharia para códigos do DAC}{51}{subsection.4.6.3}%
 \contentsline {subsection}{\numberline {4.6.4}Construção do ciclo de pré-falta e interpolação}{51}{subsection.4.6.4}%
-\contentsline {subsection}{\numberline {4.6.5}Buffer circular e tarefas FreeRTOS}{51}{subsection.4.6.5}%
+\contentsline {subsection}{\numberline {4.6.5}Buffer circular e tarefas FreeRTOS}{52}{subsection.4.6.5}%
 \contentsline {section}{\numberline {4.7}Interface Python da unidade receptora}{53}{section.4.7}%
-\contentsline {section}{\numberline {4.8}Firmware da ESP32 receptora}{54}{section.4.8}%
-\contentsline {subsection}{\numberline {4.8.1}Aquisição e conversão das entradas}{54}{subsection.4.8.1}%
-\contentsline {subsection}{\numberline {4.8.2}Delimitação dos ciclos e controle de qualidade}{55}{subsection.4.8.2}%
+\contentsline {section}{\numberline {4.8}Firmware da ESP32 receptora}{55}{section.4.8}%
+\contentsline {subsection}{\numberline {4.8.1}Aquisição e conversão das entradas}{55}{subsection.4.8.1}%
+\contentsline {subsection}{\numberline {4.8.2}Delimitação dos ciclos e controle de qualidade}{56}{subsection.4.8.2}%
 \contentsline {subsection}{\numberline {4.8.3}Estimação da componente fundamental}{56}{subsection.4.8.3}%
-\contentsline {subsection}{\numberline {4.8.4}Normalização opcional pela pré-falta}{56}{subsection.4.8.4}%
+\contentsline {subsection}{\numberline {4.8.4}Normalização opcional pela pré-falta}{57}{subsection.4.8.4}%
 \contentsline {section}{\numberline {4.9}Implementação das funções de proteção}{57}{section.4.9}%
 \contentsline {subsection}{\numberline {4.9.1}Sobrecorrente instantânea e temporizada -- ANSI 50/51}{57}{subsection.4.9.1}%
-\contentsline {subsection}{\numberline {4.9.2}Subtensão e sobretensão -- ANSI 27/59}{57}{subsection.4.9.2}%
-\contentsline {subsection}{\numberline {4.9.3}Proteção de distância -- ANSI 21}{58}{subsection.4.9.3}%
-\contentsline {subsection}{\numberline {4.9.4}Supervisão direcional -- ANSI 67}{59}{subsection.4.9.4}%
-\contentsline {subsection}{\numberline {4.9.5}Eventos, retenção e prioridade lógica}{60}{subsection.4.9.5}%
+\contentsline {subsection}{\numberline {4.9.2}Subtensão e sobretensão -- ANSI 27/59}{58}{subsection.4.9.2}%
+\contentsline {subsection}{\numberline {4.9.3}Proteção de distância -- ANSI 21}{59}{subsection.4.9.3}%
+\contentsline {subsection}{\numberline {4.9.4}Supervisão direcional -- ANSI 67}{60}{subsection.4.9.4}%
+\contentsline {subsection}{\numberline {4.9.5}Eventos, retenção e prioridade lógica}{61}{subsection.4.9.5}%
 \contentsline {section}{\numberline {4.10}Protocolo de configuração e supervisão da receptora}{61}{section.4.10}%
-\contentsline {section}{\numberline {4.11}Montagem e execução integrada}{61}{section.4.11}%
+\contentsline {section}{\numberline {4.11}Montagem e execução integrada}{62}{section.4.11}%
 \contentsline {subsection}{\numberline {4.11.1}Execução dos comandos de geração e recepção}{62}{subsection.4.11.1}%
-\contentsline {section}{\numberline {4.12}Tratamento de falhas e mecanismos de diagnóstico}{63}{section.4.12}%
+\contentsline {section}{\numberline {4.12}Tratamento de falhas e mecanismos de diagnóstico}{64}{section.4.12}%
 \contentsline {section}{\numberline {4.13}Limitações técnicas e operacionais}{64}{section.4.13}%
 \contentsline {subsection}{\numberline {4.13.1}Taxa de amostragem e capacidade de processamento}{64}{subsection.4.13.1}%
 \contentsline {subsection}{\numberline {4.13.2}Buffer, memória e continuidade temporal}{65}{subsection.4.13.2}%
 \contentsline {subsection}{\numberline {4.13.3}Restrições de formato e da cadeia analógica}{66}{subsection.4.13.3}%
-\contentsline {section}{\numberline {4.14}Recomendações para trabalhos futuros}{66}{section.4.14}%
-\contentsline {section}{\numberline {4.15}Conclusão}{67}{section.4.15}%
+\contentsline {section}{\numberline {4.14}Conclusão}{67}{section.4.14}%
 \contentsline {chapter}{\chapternumberline {5}Resultados e Discussão}{68}{chapter.5}%
 \contentsline {section}{\numberline {5.1}Reprodutibilidade das amostras geradas e adquiridas}{68}{section.5.1}%
 \contentsline {section}{\numberline {5.2}Cenários dos ensaios de proteção}{74}{section.5.2}%
-\contentsline {section}{\numberline {5.3}Convenção de leitura dos gráficos e logs}{75}{section.5.3}%
+\contentsline {section}{\numberline {5.3}Convenção de leitura dos gráficos e \textit {logs}}{75}{section.5.3}%
 \contentsline {section}{\numberline {5.4}Resultados das funções de proteção}{76}{section.5.4}%
 \contentsline {subsection}{\numberline {5.4.1}Sobrecorrente 50/51}{76}{subsection.5.4.1}%
 \contentsline {subsection}{\numberline {5.4.2}Sobretensão 59}{79}{subsection.5.4.2}%
@@ -89,17 +88,19 @@
 \contentsline {section}{\numberline {5.5}Sinalização física das atuações}{92}{section.5.5}%
 \contentsline {section}{\numberline {5.6}Síntese didática dos resultados}{93}{section.5.6}%
 \contentsline {section}{\numberline {5.7}Discussão das limitações}{94}{section.5.7}%
-\contentsline {chapter}{\chapternumberline {6}Considerações Finais}{95}{chapter.6}%
+\contentsline {section}{\numberline {5.8}Conclusão}{94}{section.5.8}%
+\contentsline {chapter}{\chapternumberline {6}Considerações Finais}{96}{chapter.6}%
+\contentsline {chapter}{\chapternumberline {7}Recomendações para Trabalhos Futuros}{98}{chapter.7}%
 \vspace {\cftbeforepartskip }
-\contentsline {chapter}{Refer\^encias}{97}{chapter*.15}%
-\contentsline {appendix}{\chapternumberline {A}Trechos de Código e Referência Operacional}{99}{appendix.A}%
-\contentsline {section}{\numberline {A.1}Trechos representativos da implementação}{99}{section.A.1}%
-\contentsline {subsection}{\numberline {A.1.1}Buffer circular da unidade geradora}{99}{subsection.A.1.1}%
-\contentsline {subsection}{\numberline {A.1.2}Temporização e detecção de underflow}{100}{subsection.A.1.2}%
-\contentsline {subsection}{\numberline {A.1.3}Aquisição e estimação fasorial}{101}{subsection.A.1.3}%
-\contentsline {subsection}{\numberline {A.1.4}Supervisão direcional das proteções}{102}{subsection.A.1.4}%
-\contentsline {section}{\numberline {A.2}Transmissão e reprodução das amostras}{102}{section.A.2}%
-\contentsline {section}{\numberline {A.3}Configuração e execução da unidade receptora}{104}{section.A.3}%
-\contentsline {section}{\numberline {A.4}Argumentos das funções de proteção}{106}{section.A.4}%
-\contentsline {section}{\numberline {A.5}Sequência operacional recomendada}{106}{section.A.5}%
-\contentsline {section}{\numberline {A.6}Disponibilidade do projeto completo}{107}{section.A.6}%
+\contentsline {chapter}{Refer\^encias}{100}{chapter*.15}%
+\contentsline {appendix}{\chapternumberline {A}Trechos de Código e Referência Operacional}{102}{appendix.A}%
+\contentsline {section}{\numberline {A.1}Trechos representativos da implementação}{102}{section.A.1}%
+\contentsline {subsection}{\numberline {A.1.1}Buffer circular da unidade geradora}{102}{subsection.A.1.1}%
+\contentsline {subsection}{\numberline {A.1.2}Temporização e detecção de \textit {underflow}}{103}{subsection.A.1.2}%
+\contentsline {subsection}{\numberline {A.1.3}Aquisição e estimação fasorial}{104}{subsection.A.1.3}%
+\contentsline {subsection}{\numberline {A.1.4}Supervisão direcional das proteções}{105}{subsection.A.1.4}%
+\contentsline {section}{\numberline {A.2}Transmissão e reprodução das amostras}{105}{section.A.2}%
+\contentsline {section}{\numberline {A.3}Configuração e execução da unidade receptora}{107}{section.A.3}%
+\contentsline {section}{\numberline {A.4}Argumentos das funções de proteção}{109}{section.A.4}%
+\contentsline {section}{\numberline {A.5}Sequência operacional recomendada}{109}{section.A.5}%
+\contentsline {section}{\numberline {A.6}Disponibilidade do projeto completo}{110}{section.A.6}%

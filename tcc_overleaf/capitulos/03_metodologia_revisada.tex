@@ -23,7 +23,7 @@ A plataforma é constituída por quatro blocos funcionais: (i) geração das osc
           width=\textwidth,
           trim=14cm 4cm 14cm 3cm,
           clip
-      ]{figuras/arquitetura_geral_v3.pdf}%
+      ]{figuras/arquitetura_geral_v3_limpo.png}%
     }
     \legend{Fonte: Autoria própria.}
 \end{figure}
@@ -140,7 +140,7 @@ Em cada cenário são definidos o tipo, o local e o instante de aplicação da f
     \centering
     \caption{Tensões trifásicas obtidas na simulação.}
     \label{fig:saida-tensao}
-    \includegraphics[width=0.95\textwidth]{figuras/simulink_tensao.pdf}
+    \includegraphics[width=0.95\textwidth]{figuras/simulink_tensao_limpo.png}
     \legend{Fonte: Autoria própria.}
 \end{figure}
 
@@ -148,7 +148,7 @@ Em cada cenário são definidos o tipo, o local e o instante de aplicação da f
     \centering
     \caption{Correntes trifásicas obtidas na simulação.}
     \label{fig:saida-corrente}
-    \includegraphics[width=0.95\textwidth]{figuras/simulink_corrente.pdf}
+    \includegraphics[width=0.95\textwidth]{figuras/simulink_corrente_limpo.png}
     \legend{Fonte: Autoria própria.}
 \end{figure}
 
@@ -177,11 +177,11 @@ Os cenários foram elaborados de acordo com a função de proteção avaliada. P
 
 \section{Preparação e validação do registro COMTRADE}
 
-O script \texttt{generate\_comtrade.m} organiza os vetores do MATLAB e produz um registro COMTRADE com arquivo de configuração \texttt{.cfg} e arquivo de dados. O \texttt{.cfg} descreve o registro, incluindo canais, unidades, fatores de conversão, frequência nominal, taxa de amostragem e formato dos dados; o segundo arquivo contém as amostras e suas marcas de tempo. A adoção do COMTRADE aproxima a plataforma dos procedimentos empregados na análise de oscilografias de sistemas elétricos \cite{ieee_comtrade,iec_60255_24_2013}.
+O \textit{script} \texttt{generate\_comtrade.m} organiza os vetores do MATLAB e produz um registro COMTRADE com arquivo de configuração \texttt{.cfg} e arquivo de dados. O \texttt{.cfg} descreve o registro, incluindo canais, unidades, fatores de conversão, frequência nominal, taxa de amostragem e formato dos dados; o segundo arquivo contém as amostras e suas marcas de tempo. A adoção do COMTRADE aproxima a plataforma dos procedimentos empregados na análise de oscilografias de sistemas elétricos \cite{ieee_comtrade,iec_60255_24_2013}.
 
-O modelo MATLAB gera originalmente seis canais analógicos trifásicos em formato ASCII. Entretanto, o firmware \path{embedded_generator.ino} da unidade geradora processa registros binários e interpreta os dois primeiros canais analógicos como tensão e corrente. Por isso, antes do envio, o registro utilizado na bancada deve ser exportado ou convertido para o par \texttt{.cfg}/\texttt{.bdat} no formato \texttt{BINARY}, contendo como primeiros canais a tensão e a corrente da fase selecionada. Essa adequação de formato e de ordem dos canais é parte explícita do preparo dos dados, e não uma etapa implícita do ensaio.
+O modelo MATLAB gera originalmente seis canais analógicos trifásicos em formato ASCII. Entretanto, o \textit{firmware} \path{embedded_generator.ino} da unidade geradora processa registros binários e interpreta os dois primeiros canais analógicos como tensão e corrente. Por isso, antes do envio, o registro utilizado na bancada deve ser exportado ou convertido para o par \texttt{.cfg}/\texttt{.bdat} no formato \texttt{BINARY}, contendo como primeiros canais a tensão e a corrente da fase selecionada. Essa adequação de formato e de ordem dos canais é parte explícita do preparo dos dados, e não uma etapa implícita do ensaio.
 
-Antes do upload, verificam-se:
+Antes do \textit{upload}, verificam-se:
 
 \begin{itemize}
   \item a existência e a correspondência entre os arquivos \texttt{.cfg} e \texttt{.bdat};
@@ -197,7 +197,7 @@ Registros que não atendam a esses critérios não devem prosseguir para o ensai
 
 \section{Transferência e processamento na ESP32 geradora}
 
-O script \path{run_embedded_generator.py} estabelece a comunicação USB/serial à taxa de 921600 baud, aguarda a sinalização de prontidão, transfere os arquivos em blocos e verifica as confirmações emitidas pela placa. Na arquitetura adotada, o computador atua principalmente como interface de transferência e controle: a interpretação do COMTRADE, o cálculo das referências e a formação dos quadros de reprodução são realizados pelo firmware \path{embedded_generator.ino}.
+O \textit{script} \path{run_embedded_generator.py} estabelece a comunicação USB/serial à taxa de 921600 \textit{baud}, aguarda a sinalização de prontidão, transfere os arquivos em blocos e verifica as confirmações emitidas pela placa. Na arquitetura adotada, o computador atua principalmente como interface de transferência e controle: a interpretação do COMTRADE, o cálculo das referências e a formação dos quadros de reprodução são realizados pelo \textit{firmware} \path{embedded_generator.ino}.
 
 Durante o processamento, a ESP32 determina o leiaute dos registros binários, converte os valores brutos em grandezas de engenharia e estima, a partir dos primeiros ciclos, os picos nominais de tensão e corrente. Em seguida, define limites de representação para preservar a condição de pré-falta e acomodar a elevação das grandezas durante o defeito. A Figura \ref{fig:comandos-geracao} mostra as mensagens de estado emitidas nesse processo.
 
@@ -219,7 +219,7 @@ O arquivo contém quatro grupos principais de informações:
   \item \texttt{comtrade}: identificação dos arquivos de origem, quantidade de canais, frequência, taxa de amostragem, número e tamanho dos registros e formato dos dados;
   \item \texttt{dac\_mapping}: tensão de referência, código central, amplitude útil e associação lógica dos canais do DAC;
   \item \texttt{comtrade\_reference}: valores nominais e limites de pico e eficazes calculados para tensão e corrente; e
-  \item \texttt{receiver\_recommendation}: mapeamento dos canais de aquisição --- GPIO35 para tensão e GPIO34 para corrente ---, offsets, escalas em unidades de engenharia por volt, frequência e taxa de amostragem recomendada.
+  \item \texttt{receiver\_recommendation}: mapeamento dos canais de aquisição --- GPIO35 para tensão e GPIO34 para corrente ---, \textit{offsets}, escalas em unidades de engenharia por volt, frequência e taxa de amostragem recomendada.
 \end{itemize}
 
 As escalas são calculadas a partir da razão entre o limite de engenharia do registro e a amplitude útil do DAC. Consequentemente, o JSON preserva a equivalência
@@ -230,17 +230,17 @@ As escalas são calculadas a partir da razão entre o limite de engenharia do re
 
 em que $x_{\mathrm{eng}}$ representa tensão ou corrente em unidades de engenharia e $k_x$ é o fator de escala correspondente. Se o arquivo for omitido, substituído por outro ensaio ou editado sem controle, as funções de proteção poderão receber magnitudes, valores por unidade e impedâncias aparentes incorretas. Isso comprometeria simultaneamente os ajustes das funções 27, 59, 50, 51 e 21, mesmo que a forma de onda observada permanecesse visualmente senoidal.
 
-Assim, cada par COMTRADE deve permanecer associado ao JSON gerado após seu processamento. Recomenda-se armazená-los na mesma pasta, não reutilizar o JSON de outro cenário e registrar sua identificação junto aos resultados. Antes da execução, também se deve confirmar que o mapeamento declarado no JSON coincide com a pinagem compilada no firmware receptor. Na implementação, o firmware \path{embedded_receiver.ino} utiliza o GPIO35 para tensão e o GPIO34 para corrente; portanto, qualquer configuração com associação inversa deve ser corrigida antes do ensaio.
+Assim, cada par COMTRADE deve permanecer associado ao JSON gerado após seu processamento. Recomenda-se armazená-los na mesma pasta, não reutilizar o JSON de outro cenário e registrar sua identificação junto aos resultados. Antes da execução, também se deve confirmar que o mapeamento declarado no JSON coincide com a pinagem compilada no \textit{firmware} receptor. Na implementação, o \textit{firmware} \path{embedded_receiver.ino} utiliza o GPIO35 para tensão e o GPIO34 para corrente; portanto, qualquer configuração com associação inversa deve ser corrigida antes do ensaio.
 
-Além da associação lógica entre arquivos e canais, a cadeia física DAC--ADC requer uma calibração de ganho da bancada. O \texttt{config.json} descreve a escala ideal usada para converter a oscilografia em tensão analógica e reconstruí-la em unidades de engenharia, mas o ADC interno da ESP32 não apresenta resposta perfeitamente linear nem fundo de escala exatamente igual à referência ideal assumida pelo firmware. Por isso, antes dos ensaios que dependem de magnitude absoluta, especialmente 50/51 e 59, a geradora deve permanecer em pré-falta contínua e a receptora deve ser comparada aos valores nominais do JSON pelo comando \texttt{status}. Caso $V_1$ ou $I_1$ de pré-falta não coincidam com os valores nominais, aplicam-se fatores multiplicativos de correção às escalas de tensão e corrente no script receptor. Essa correção não altera o COMTRADE nem os valores nominais de referência; ela apenas compensa o ganho efetivo da etapa analógica de aquisição.
+Além da associação lógica entre arquivos e canais, a cadeia física DAC--ADC requer uma calibração de ganho da bancada. O \texttt{config.json} descreve a escala ideal usada para converter a oscilografia em tensão analógica e reconstruí-la em unidades de engenharia, mas o ADC interno da ESP32 não apresenta resposta perfeitamente linear nem fundo de escala exatamente igual à referência ideal assumida pelo \textit{firmware}. Por isso, antes dos ensaios que dependem de magnitude absoluta, especialmente 50/51 e 59, a geradora deve permanecer em pré-falta contínua e a receptora deve ser comparada aos valores nominais do JSON pelo comando \texttt{status}. Caso $V_1$ ou $I_1$ de pré-falta não coincidam com os valores nominais, aplicam-se fatores multiplicativos de correção às escalas de tensão e corrente no \textit{script} receptor. Essa correção não altera o COMTRADE nem os valores nominais de referência; ela apenas compensa o ganho efetivo da etapa analógica de aquisição.
 
 \section{Reprodução analógica dos sinais}
 
-O firmware \texttt{embedded\_\allowbreak generator.ino} armazena o registro na memória de arquivos da ESP32, constrói os quadros temporizados e comanda o DAC MCP4728 por barramento I\textsuperscript{2}C. O conversor possui resolução de 12 bits e quatro canais \cite{microchip_mcp4728}; nesta aplicação, dois canais representam a tensão e a corrente da fase selecionada.
+O \textit{firmware} \texttt{embedded\_\allowbreak generator.ino} armazena o registro na memória de arquivos da ESP32, constrói os quadros temporizados e comanda o DAC MCP4728 por barramento I\textsuperscript{2}C. O conversor possui resolução de 12 bits e quatro canais \cite{microchip_mcp4728}; nesta aplicação, dois canais representam a tensão e a corrente da fase selecionada.
 
 Como o DAC opera apenas com tensões positivas, as formas de onda alternadas são centralizadas em aproximadamente \SI{1,65}{\volt}. A amplitude útil adotada é de aproximadamente \SI{1,55}{\volt} em torno desse ponto médio, respeitando a faixa de \SIrange{0}{3,3}{\volt}. Os valores que excedem os limites calculados são saturados antes da conversão. A ESP32 também pode interpolar transições entre quadros, reduzindo degraus excessivos na saída.
 
-O firmware oferece três condições de reprodução: senoide de teste, ciclo de pré-falta em repetição contínua e execução integral do COMTRADE. A pré-falta contínua permite estabilizar a estimação do offset, a detecção de ciclos e, quando habilitada, a normalização do receptor antes da aplicação do evento completo. A Figura \ref{fig:unidade-geradora} apresenta a montagem da unidade geradora.
+O \textit{firmware} oferece três condições de reprodução: senoide de teste, ciclo de pré-falta em repetição contínua e execução integral do COMTRADE. A pré-falta contínua permite estabilizar a estimação do \textit{offset}, a detecção de ciclos e, quando habilitada, a normalização do receptor antes da aplicação do evento completo. A Figura \ref{fig:unidade-geradora} apresenta a montagem da unidade geradora.
 
 \begin{figure}[H]
     \centering
@@ -252,7 +252,7 @@ O firmware oferece três condições de reprodução: senoide de teste, ciclo de
 
 \section{Configuração e aquisição na ESP32 receptora}
 
-O script \path{run_embedded_receiver.py} lê o \texttt{config.json}, extrai a taxa de amostragem, as escalas, a frequência de referência e os valores nominais eficazes, combina esses dados com os ajustes de proteção fornecidos na linha de comando e transmite os parâmetros ao firmware \path{embedded_receiver.ino}. Cada ajuste recebe uma confirmação individual antes do início da aquisição. A sequência inclui parada preventiva, limpeza dos estados retidos, envio dos parâmetros e comando de início, como mostra a Figura \ref{fig:comandos-protecao}.
+O \textit{script} \path{run_embedded_receiver.py} lê o \texttt{config.json}, extrai a taxa de amostragem, as escalas, a frequência de referência e os valores nominais eficazes, combina esses dados com os ajustes de proteção fornecidos na linha de comando e transmite os parâmetros ao \textit{firmware} \path{embedded_receiver.ino}. Cada ajuste recebe uma confirmação individual antes do início da aquisição. A sequência inclui parada preventiva, limpeza dos estados retidos, envio dos parâmetros e comando de início, como mostra a Figura \ref{fig:comandos-protecao}.
 
 \begin{figure}[H]
     \centering
@@ -262,7 +262,7 @@ O script \path{run_embedded_receiver.py} lê o \texttt{config.json}, extrai a ta
     \legend{Fonte: Autoria própria.}
 \end{figure}
 
-Na implementação atual, a tensão é adquirida pelo GPIO35 e a corrente pelo GPIO34. Para cada instante de amostragem, são realizadas oito leituras do ADC e utilizada sua média. O firmware converte os códigos para volts, estima continuamente o nível médio por um filtro de primeira ordem, remove esse offset e aplica os fatores de escala provenientes do JSON. Também são sinalizadas condições de saturação, amostras discrepantes, ciclos incompletos e frequência fora da faixa válida.
+Na implementação atual, a tensão é adquirida pelo GPIO35 e a corrente pelo GPIO34. Para cada instante de amostragem, são realizadas oito leituras do ADC e utilizada sua média. O \textit{firmware} converte os códigos para volts, estima continuamente o nível médio por um filtro de primeira ordem, remove esse \textit{offset} e aplica os fatores de escala provenientes do JSON. Também são sinalizadas condições de saturação, amostras discrepantes, ciclos incompletos e frequência fora da faixa válida.
 
 \begin{figure}[H]
     \centering
@@ -274,7 +274,7 @@ Na implementação atual, a tensão é adquirida pelo GPIO35 e a corrente pelo G
 
 \section{Processamento fasorial e funções de proteção}
 
-Os ciclos elétricos são delimitados pelas passagens ascendentes por zero da tensão, com histerese para reduzir comutações indevidas. Ao término de cada ciclo válido, o firmware aplica uma DFT de um ciclo para estimar as magnitudes eficazes e os ângulos da componente fundamental de tensão e corrente. A frequência é obtida do intervalo entre passagens por zero consecutivas. Ciclos com menos de oito amostras ou frequência fora da faixa configurada são invalidados e não alimentam a lógica de proteção.
+Os ciclos elétricos são delimitados pelas passagens ascendentes por zero da tensão, com histerese para reduzir comutações indevidas. Ao término de cada ciclo válido, o \textit{firmware} aplica uma DFT de um ciclo para estimar as magnitudes eficazes e os ângulos da componente fundamental de tensão e corrente. A frequência é obtida do intervalo entre passagens por zero consecutivas. Ciclos com menos de oito amostras ou frequência fora da faixa configurada são invalidados e não alimentam a lógica de proteção.
 
 Opcionalmente, a normalização em relação ao COMTRADE utiliza a mediana de dez ciclos de pré-falta válidos para aproximar as magnitudes medidas dos valores nominais registrados. Esse recurso reduz erros sistemáticos de ganho da cadeia DAC--ADC, mas não substitui o uso correto das escalas nem a verificação de saturação.
 
@@ -284,20 +284,20 @@ As funções implementadas são:
   \item \textbf{ANSI 27}: subtensão em dois estágios, um crítico instantâneo e outro moderado temporizado, com histerese de retorno;
   \item \textbf{ANSI 59}: sobretensão em dois estágios, um crítico instantâneo e outro moderado temporizado, com histerese de retorno;
   \item \textbf{ANSI 50}: sobrecorrente instantânea;
-  \item \textbf{ANSI 51}: sobrecorrente de tempo definido, com pickup expresso como percentual acima da corrente nominal e atraso ajustável;
+  \item \textbf{ANSI 51}: sobrecorrente de tempo definido, com \textit{pickup} expresso como percentual acima da corrente nominal e atraso ajustável;
   \item \textbf{ANSI 21}: proteção de distância com característica mho, zona 1 instantânea e zona 2 temporizada; e
   \item \textbf{ANSI 67}: supervisão direcional comum às funções 21, 27, 50, 51 e 59.
 \end{itemize}
 
-Para a função 21, calcula-se $Z=V_1/I_1$ e decompõe-se a impedância aparente em resistência e reatância. A atuação depende da posição desse ponto no plano $R$--$X$, do alcance percentual das zonas, do ângulo da linha e de uma corrente mínima de supervisão. A zona 1 atua sem atraso intencional, enquanto a zona 2 deve permanecer em pickup pelo tempo configurado.
+Para a função 21, calcula-se $Z=V_1/I_1$ e decompõe-se a impedância aparente em resistência e reatância. A atuação depende da posição desse ponto no plano $R$--$X$, do alcance percentual das zonas, do ângulo da linha e de uma corrente mínima de supervisão. A zona 1 atua sem atraso intencional, enquanto a zona 2 deve permanecer em \textit{pickup} pelo tempo configurado.
 
-Na versão corrente do firmware, a supervisão 67 determina o sentido a partir do sinal da potência ativa de pré-falta, desde que seu módulo ultrapasse o limiar mínimo configurado. O emprego dessa supervisão não constitui uma condição obrigatória para toda aplicação de proteção, pois depende da filosofia adotada. Neste projeto, entretanto, definiu-se que a função 67 pode supervisionar todas as funções atuantes implementadas: 21, 27, 50, 51 e 59. Quando habilitada em conjunto com qualquer uma delas, a função 67 fornece uma permissão comum: o pickup continua sendo determinado pelo critério próprio da proteção, mas o trip instantâneo ou o início e a continuidade da temporização dependem também da concordância entre o sentido medido e o sentido selecionado (direto ou reverso). Na ausência dessa concordância, a atuação é bloqueada e o temporizador da função supervisionada não avança. A validação metodológica considera esse critério de potência ativa efetivamente executado pelo firmware.
+Na versão corrente do \textit{firmware}, a supervisão 67 determina o sentido a partir do sinal da potência ativa de pré-falta, desde que seu módulo ultrapasse o limiar mínimo configurado. O emprego dessa supervisão não constitui uma condição obrigatória para toda aplicação de proteção, pois depende da filosofia adotada. Neste projeto, entretanto, definiu-se que a função 67 pode supervisionar todas as funções atuantes implementadas: 21, 27, 50, 51 e 59. Quando habilitada em conjunto com qualquer uma delas, a função 67 fornece uma permissão comum: o \textit{pickup} continua sendo determinado pelo critério próprio da proteção, mas o \textit{trip} instantâneo ou o início e a continuidade da temporização dependem também da concordância entre o sentido medido e o sentido selecionado (direto ou reverso). Na ausência dessa concordância, a atuação é bloqueada e o temporizador da função supervisionada não avança. A validação metodológica considera esse critério de potência ativa efetivamente executado pelo \textit{firmware}.
 
 \section{Atuação e indicação física}
 
-Quando uma condição de proteção satisfaz os critérios de magnitude, direção e temporização, o firmware registra o evento e retém o estado de trip até o comando \texttt{resettrip} ou a reinicialização da placa. Os eventos seriais podem indicar pickup, temporização, retorno, bloqueio e trip, o que permite relacionar a resposta lógica ao instante do evento reproduzido.
+Quando uma condição de proteção satisfaz os critérios de magnitude, direção e temporização, o \textit{firmware} registra o evento e retém o estado de \textit{trip} até o comando \texttt{resettrip} ou a reinicialização da placa. Os eventos seriais podem indicar \textit{pickup}, temporização, retorno, bloqueio e \textit{trip}, o que permite relacionar a resposta lógica ao instante do evento reproduzido.
 
-As saídas digitais destinadas ao painel indicam: bloqueio imposto pela supervisão 67; permissão direcional fornecida pela função 67; ocorrência de trip instantâneo; e ocorrência de trip temporizado. A indicação instantânea agrega 21/Z1, os estágios instantâneos de 27 e 59 e a função 50; a temporizada agrega 21/Z2, os estágios temporizados de 27 e 59 e a função 51. Há ainda LEDs para estado do sistema e presença de qualquer trip. A origem exata da atuação é identificada pelas mensagens seriais. A Figura \ref{fig:indicacao-leds} apresenta o painel empregado nos ensaios.
+As saídas digitais destinadas ao painel indicam: bloqueio imposto pela supervisão 67; permissão direcional fornecida pela função 67; ocorrência de \textit{trip} instantâneo; e ocorrência de \textit{trip} temporizado. A indicação instantânea agrega 21/Z1, os estágios instantâneos de 27 e 59 e a função 50; a temporizada agrega 21/Z2, os estágios temporizados de 27 e 59 e a função 51. Há ainda LEDs para estado do sistema e presença de qualquer \textit{trip}. A origem exata da atuação é identificada pelas mensagens seriais. A Figura \ref{fig:indicacao-leds} apresenta o painel empregado nos ensaios.
 
 \begin{figure}[H]
     \centering
@@ -321,9 +321,9 @@ Para assegurar a repetibilidade, cada ensaio segue o procedimento abaixo:
   \item iniciar a ESP32 receptora com o JSON do mesmo cenário e com os ajustes da função sob ensaio;
   \item com o evento ainda não liberado, verificar pelo \texttt{status} se $V_1$ e $I_1$ correspondem aos valores nominais do JSON;
   \item quando houver desvio sistemático de ganho, reiniciar a receptora aplicando os fatores \texttt{--v-scale-correction} e \texttt{--i-scale-correction} e repetir a verificação de pré-falta;
-  \item manter ciclos de pré-falta até a estabilização do offset, da frequência e, quando usada, da normalização;
+  \item manter ciclos de pré-falta até a estabilização do \textit{offset}, da frequência e, quando usada, da normalização;
   \item limpar trips anteriores, iniciar o registro dos eventos e executar uma vez o COMTRADE completo;
-  \item observar as mensagens seriais e os LEDs correspondentes a pickup, bloqueio, permissão, temporização e trip; e
+  \item observar as mensagens seriais e os LEDs correspondentes a \textit{pickup}, bloqueio, permissão, temporização e \textit{trip}; e
   \item repetir o ensaio para uma condição de atuação e uma condição de não atuação, registrando ajustes, arquivo utilizado e resultado observado.
 \end{enumerate}
 
@@ -349,9 +349,9 @@ A Figura \ref{fig:bancada-testes} apresenta a bancada, enquanto a Figura \ref{fi
 
 A avaliação funcional verifica: aceitação do COMTRADE; conclusão do processamento na geradora; criação do JSON; reprodução sem saturação indevida; aquisição com frequência e número de amostras válidos; coerência das magnitudes fundamentais; e resposta das proteções de acordo com os ajustes. Para cada função, devem ser ensaiadas ao menos uma condição interna e uma externa ao seu limiar, incluindo a verificação do atraso nas funções temporizadas.
 
-A análise dos resultados deve comparar valores esperados e observados, e não apenas registrar que um LED acendeu. Para 27, 59, 50 e 51, comparam-se magnitude, pickup e tempo de atuação; para 21, comparam-se a impedância aparente, a zona esperada e o tempo; para 67, comparam-se o sentido selecionado e o estado de permissão ou bloqueio. A condição de não atuação é igualmente necessária para demonstrar seletividade.
+A análise dos resultados deve comparar valores esperados e observados, e não apenas registrar que um LED acendeu. Para 27, 59, 50 e 51, comparam-se magnitude, \textit{pickup} e tempo de atuação; para 21, comparam-se a impedância aparente, a zona esperada e o tempo; para 67, comparam-se o sentido selecionado e o estado de permissão ou bloqueio. A condição de não atuação é igualmente necessária para demonstrar seletividade.
 
-Como controles adicionais, recomenda-se registrar, para cada ensaio, o nome dos arquivos COMTRADE e JSON, a versão dos dois firmwares, os ajustes enviados, os valores de referência calculados e as mensagens de evento. Também se recomenda validar periodicamente a cadeia analógica com osciloscópio ou instrumento equivalente. Esses registros permitem distinguir falhas do algoritmo de proteção de erros de formato, canal, escala, conexão ou saturação.
+Como controles adicionais, recomenda-se registrar, para cada ensaio, o nome dos arquivos COMTRADE e JSON, a versão dos dois \textit{firmwares}, os ajustes enviados, os valores de referência calculados e as mensagens de evento. Também se recomenda validar periodicamente a cadeia analógica com osciloscópio ou instrumento equivalente. Esses registros permitem distinguir falhas do algoritmo de proteção de erros de formato, canal, escala, conexão ou saturação.
 
 Do ponto de vista didático, avalia-se a capacidade da plataforma de tornar observável o encadeamento completo: modelagem da falta, oscilografia, reprodução analógica, aquisição, estimação fasorial, decisão de proteção e indicação física. A contribuição metodológica reside justamente nessa continuidade entre o evento simulado e seu efeito mensurável na bancada.
 

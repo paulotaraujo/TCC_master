@@ -1,5 +1,5 @@
 \babel@toc {brazil}{}\relax 
-\contentsline {figure}{\numberline {1}{\ignorespaces Diagrama básico de um sistema elétrico de potência}}{7}{figure.2.1}%
+\contentsline {figure}{\numberline {1}{\ignorespaces Diagrama unifilar de um sistema elétrico de potência}}{7}{figure.2.1}%
 \contentsline {figure}{\numberline {2}{\ignorespaces Representação simplificada de uma falta trifásica em um sistema elétrico}}{9}{figure.2.2}%
 \contentsline {figure}{\numberline {3}{\ignorespaces Arquitetura funcional da plataforma didática proposta.}}{20}{figure.3.3}%
 \contentsline {figure}{\numberline {4}{\ignorespaces Modelo do sistema elétrico implementado no Simulink.}}{22}{figure.3.4}%
@@ -13,11 +13,11 @@
 \contentsline {figure}{\numberline {12}{\ignorespaces Bancada experimental utilizada na execução dos ensaios.}}{35}{figure.3.12}%
 \contentsline {figure}{\numberline {13}{\ignorespaces Montagem completa da plataforma, com geração, conversão, aquisição e sinalização.}}{36}{figure.3.13}%
 \contentsline {figure}{\numberline {14}{\ignorespaces Diagrama simplificado da implementação, destacando os principais blocos funcionais.}}{39}{figure.4.14}%
-\contentsline {figure}{\numberline {15}{\ignorespaces Máquina de estados simplificada da reprodução.}}{52}{figure.4.15}%
+\contentsline {figure}{\numberline {15}{\ignorespaces Máquina de estados simplificada da reprodução.}}{53}{figure.4.15}%
 \contentsline {figure}{\numberline {16}{\ignorespaces Comparação temporal das amostras instantâneas de tensão.}}{70}{figure.5.16}%
 \contentsline {figure}{\numberline {17}{\ignorespaces Comparação temporal das amostras instantâneas de corrente.}}{70}{figure.5.17}%
-\contentsline {figure}{\numberline {18}{\ignorespaces Comparação dos valores de tensão obtidos por FDT.}}{73}{figure.5.18}%
-\contentsline {figure}{\numberline {19}{\ignorespaces Comparação dos valores de corrente obtidos por FDT.}}{73}{figure.5.19}%
+\contentsline {figure}{\numberline {18}{\ignorespaces Comparação dos valores de tensão obtidos por DFT.}}{73}{figure.5.18}%
+\contentsline {figure}{\numberline {19}{\ignorespaces Comparação dos valores de corrente obtidos por DFT.}}{73}{figure.5.19}%
 \contentsline {figure}{\numberline {20}{\ignorespaces Resposta temporizada da função 51 para sobrecorrente de 20\%.}}{77}{figure.5.20}%
 \contentsline {figure}{\numberline {21}{\ignorespaces Trecho do terminal da ESP32 receptora para a sobrecorrente temporizada.}}{77}{figure.5.21}%
 \contentsline {figure}{\numberline {22}{\ignorespaces Resposta instantânea da função 50 para sobrecorrente de 50\%.}}{78}{figure.5.22}%

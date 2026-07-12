@@ -69,6 +69,12 @@
 {HOROWITZ, S.~H.; PHADKE, A.~G. \emph{Power System Relaying}. 4. ed. [S.l.]:
   Wiley, 2014.}
 
+\bibitem[IEC 2013]{iec_60255_24_2013}
+\abntrefinfo{IEC}{IEC}{2013}
+{IEC. \emph{Measuring Relays and Protection Equipment -- Part 24: Common Format
+  for Transient Data Exchange (COMTRADE) for Power Systems}.
+[S.l.], 2013.}
+
 \bibitem[IEEE 2013]{ieee_comtrade}
 \abntrefinfo{IEEE}{IEEE}{2013}
 {IEEE. \emph{IEEE Standard Common Format for Transient Data Exchange (COMTRADE)
@@ -87,14 +93,6 @@
 [S.l.], 2022. Dispon{\'\i}vel em:
   \url{https://www.intel.com/content/www/us/en/products/sku/132228/intel-core-i712700h-processor-24m-cache-up-to-4-70-ghz/specifications.html}.
   Acesso em: 20 jun. 2026.}
-
-\bibitem[International Electrotechnical Commission 2013]{iec_60255_24_2013}
-\abntrefinfo{International Electrotechnical Commission}{INTERNATIONAL
-  ELECTROTECHNICAL COMMISSION}{2013}
-{INTERNATIONAL ELECTROTECHNICAL COMMISSION. \emph{Measuring Relays and
-  Protection Equipment -- Part 24: Common Format for Transient Data Exchange
-  (COMTRADE) for Power Systems}.
-[S.l.], 2013.}
 
 \bibitem[Kundur 1994]{kundur1994power}
 \abntrefinfo{Kundur}{KUNDUR}{1994}

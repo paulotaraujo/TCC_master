@@ -115,7 +115,7 @@
     \thispagestyle{empty}
     \begin{tikzpicture}[remember picture,overlay]
       \node[anchor=north, yshift=-2.70cm] at (current page.north)
-        {\includegraphics[height=3.00cm]{figuras/brasao_ufam.pdf}};
+        {\includegraphics[height=3.00cm]{figuras/brasao_ufam_limpo.png}};
 
       \node[anchor=north, yshift=-6.35cm, align=center,
             font=\bfseries\fontsize{12}{18}\selectfont] at (current page.north)
@@ -124,9 +124,9 @@
          ENGENHARIA ELÉTRICA - ELETROTÉCNICA};
 
       \node[anchor=center, yshift=0.65cm, align=center,
-            text width=16.2cm, font=\fontsize{12}{18}\selectfont]
+            text width=16.2cm, font=\bfseries\fontsize{12}{18}\selectfont]
         at (current page.center)
-        {\textbf{Plataforma Didática Embarcada para Reprodução de Arquivos COMTRADE}\\
+        {Plataforma Didática Embarcada para Reprodução de Arquivos COMTRADE\\
          e Emulação de Relés de Proteção em Sistemas Elétricos de Potência};
 
       \node[anchor=north, yshift=-20.45cm,
@@ -150,9 +150,9 @@
         {Paulo Tiago Araújo Pereira};
 
       \node[anchor=north, yshift=-7.80cm, align=center,
-            text width=16.2cm, font=\fontsize{12}{18}\selectfont]
+            text width=16.2cm, font=\bfseries\fontsize{12}{18}\selectfont]
         at (current page.north)
-        {\textbf{Plataforma Didática Embarcada para Reprodução de Arquivos COMTRADE}\\
+        {Plataforma Didática Embarcada para Reprodução de Arquivos COMTRADE\\
          e Emulação de Relés de Proteção em Sistemas Elétricos de Potência};
 
       \node[anchor=north west, xshift=10.50cm, yshift=-13.15cm,
@@ -222,7 +222,7 @@ Agradeço primeiramente a Deus, à minha família, ao meu orientador e aos profe
 \end{epigrafe}
 
 \begin{resumo}
-Este trabalho apresenta o desenvolvimento de uma plataforma didática embarcada para reprodução de arquivos COMTRADE e emulação de funções de proteção aplicadas a sistemas elétricos de potência. A proposta utiliza duas placas ESP32: uma interpreta a oscilografia e reproduz um canal analógico de tensão e um de corrente por meio de um conversor digital-analógico MCP4728; a outra adquire esses sinais, estima seus fasores fundamentais e executa as funções ANSI 21, 27, 50, 51, 59 e 67. As oscilografias são obtidas em simulações trifásicas no Simulink, mas a bancada processa a tensão e a corrente de uma fase selecionada, em registros COMTRADE binários. Um arquivo JSON gerado após o processamento preserva as escalas e os valores de referência compartilhados entre as unidades. A plataforma busca aproximar o ensino teórico de proteção de uma experiência prática, acessível e reconfigurável. A caracterização experimental estabeleceu \SI{1000}{amostras\per\second} como limite operacional do protótipo para a reprodução coerente de sinais de \SI{60}{\hertz}; acima desse valor, observou-se perda de sincronismo temporal.
+Este trabalho apresenta o desenvolvimento de uma plataforma didática embarcada para reprodução de arquivos COMTRADE (\textit{Common Format for Transient Data Exchange}) e emulação de funções de proteção aplicadas a sistemas elétricos de potência. A proposta utiliza duas placas ESP32: uma interpreta a oscilografia e reproduz um canal analógico de tensão e um de corrente por meio de um conversor digital-analógico MCP4728; a outra adquire esses sinais, estima seus fasores fundamentais e executa as funções ANSI 21, 27, 50, 51, 59 e 67. As oscilografias são obtidas em simulações trifásicas no Simulink, mas a bancada processa a tensão e a corrente de uma fase selecionada, em registros COMTRADE binários. Um arquivo JSON gerado após o processamento preserva as escalas e os valores de referência compartilhados entre as unidades. A plataforma busca aproximar o ensino teórico de proteção de uma experiência prática, acessível e reconfigurável. A caracterização experimental estabeleceu \SI{1000}{amostras\per\second} como limite operacional do protótipo para a reprodução coerente de sinais de \SI{60}{\hertz}; acima desse valor, observou-se perda de sincronismo temporal.
 
 \vspace{\onelineskip}
 
@@ -264,7 +264,6 @@ This work presents the development of an embedded educational platform for COMTR
   \item[DAC] \textit{Digital-to-Analog Converter} --- conversor digital-analógico
   \item[DFT] \textit{Discrete Fourier Transform} --- transformada discreta de Fourier
   \item[ESP32] Família de microcontroladores da Espressif Systems
-  \item[FDT] Transformada Discreta de Fourier
   \item[FreeRTOS] \textit{Free Real-Time Operating System}
   \item[GPIO] \textit{General-Purpose Input/Output}
   \item[I\textsuperscript{2}C] \textit{Inter-Integrated Circuit}
@@ -318,9 +317,9 @@ This work presents the development of an embedded educational platform for COMTR
   \item[$p_{50}$, $p_{51}$] Acréscimos percentuais dos estágios 50 e 51 sobre a corrente nominal
   \item[$p_{27,i}$, $p_{27,t}$] Ajustes percentuais dos estágios instantâneo e temporizado de subtensão
   \item[$p_{59,i}$, $p_{59,t}$] Elevações percentuais dos estágios instantâneo e temporizado de sobretensão
-  \item[$P_F$] Estado de pickup da função de proteção $F$
-  \item[$P_{Z1}$, $P_{Z2}$] Estados de pickup das zonas 1 e 2 da função de distância
-  \item[$P_{\Sigma}$] Existência de ao menos um pickup submetido à supervisão direcional
+  \item[$P_F$] Estado de \textit{pickup} da função de proteção $F$
+  \item[$P_{Z1}$, $P_{Z2}$] Estados de \textit{pickup} das zonas 1 e 2 da função de distância
+  \item[$P_{\Sigma}$] Existência de ao menos um \textit{pickup} submetido à supervisão direcional
   \item[$P_{67}$] Potência ativa usada no critério direcional da função 67
   \item[$\operatorname{op}_F$] Condição própria de atuação da função de proteção $F$
   \item[$R$, $X$, $Z$] Resistência, reatância e impedância complexa
@@ -366,6 +365,7 @@ This work presents the development of an embedded educational platform for COMTR
 \include{capitulos/04_implementacao_revisada}
 \include{capitulos/05_resultados}
 \include{capitulos/06_conclusao}
+\include{capitulos/07_trabalhos_futuros}
 
 \postextual
 
@@ -373,6 +373,7 @@ This work presents the development of an embedded educational platform for COMTR
 \bibliography{referencias}
 
 \appendix
+\renewcommand{\chaptername}{Apêndice}
 \include{capitulos/apendice_codigo}
 
 \end{document}

@@ -10,9 +10,9 @@ Um sistema elétrico de potência pode ser entendido como o conjunto de instala�
 
 \begin{figure}[H]
   \centering
-  \caption{Diagrama básico de um sistema elétrico de potência}
+  \caption{Diagrama unifilar de um sistema elétrico de potência}
   \label{fig:diagrama-sep}
-  \includegraphics[width=0.94\textwidth]{figuras/sistema_eletrico_potencia.pdf}
+  \includegraphics[width=0.94\textwidth]{figuras/sistema_eletrico_potencia_v2_cortado.pdf}
   \legend{Fonte: Adaptado de \citeonline{blackburn2006protective}.}
 \end{figure}
 
@@ -70,7 +70,7 @@ As faltas trifásicas são classificadas como simétricas, pois, idealmente, pre
   \centering
   \caption{Representação simplificada de uma falta trifásica em um sistema elétrico}
   \label{fig:falta-trifasica}
-  \includegraphics[width=0.92\textwidth]{figuras/SEP_falta.pdf}
+  \includegraphics[width=0.92\textwidth]{figuras/SEP_falta_br_cortado.pdf}
   \legend{Fonte: Adaptado de \citeonline{blackburn2006protective}.}
 \end{figure}
 
@@ -119,7 +119,7 @@ As funções de proteção são frequentemente identificadas por números padron
 No projeto desenvolvido, as funções de relés são tratadas como algoritmos configuráveis. A lógica básica de decisão pode ser representada por uma comparação entre a grandeza medida, extraída das amostras, e um valor de ajuste definido pelo usuário. Em geral, a atuação pode ser expressa por:
 
 \begin{equation}
-  \text{trip} =
+  \text{atuação} =
   \begin{cases}
     1, & \text{se a condição de atuação permanece verdadeira por } t \geq T_{\text{ajuste}},\\
     0, & \text{caso contrário}.
@@ -148,7 +148,7 @@ Uma forma usual de parametrização é definir o ajuste em valor por unidade:
   \label{eq:subtensao}
 \end{equation}
 
-O estágio temporizado responde a uma subtensão moderada persistente, enquanto o estágio instantâneo é reservado a uma tensão remanescente mais baixa e, portanto, mais crítica. O pickup é identificado assim que um ciclo fasorial válido cruza o limiar; a temporização condiciona o trip, não a detecção da condição.
+O estágio temporizado responde a uma subtensão moderada persistente, enquanto o estágio instantâneo é reservado a uma tensão remanescente mais baixa e, portanto, mais crítica. O \textit{pickup} é identificado assim que um ciclo fasorial válido cruza o limiar; a temporização condiciona o \textit{trip}, não a detecção da condição.
 
 \subsection{Relé de sobretensão}
 
@@ -166,7 +166,7 @@ O estágio temporizado responde a uma elevação moderada e persistente, enquant
 
 \subsection{Relé de sobrecorrente}
 
-O relé de sobrecorrente é uma das funções mais utilizadas em sistemas de proteção. Ele atua quando a corrente medida ultrapassa um valor de pickup previamente definido. De acordo com a aplicação, pode assumir forma instantânea, associada ao número ANSI 50, ou temporizada, associada ao número ANSI 51 \cite{blackburn2006protective,ieee_c37_2_2022}.
+O relé de sobrecorrente é uma das funções mais utilizadas em sistemas de proteção. Ele atua quando a corrente medida ultrapassa um valor de \textit{pickup} previamente definido. De acordo com a aplicação, pode assumir forma instantânea, associada ao número ANSI 50, ou temporizada, associada ao número ANSI 51 \cite{blackburn2006protective,ieee_c37_2_2022}.
 
 A condição de atuação instantânea pode ser representada por:
 
@@ -175,7 +175,7 @@ A condição de atuação instantânea pode ser representada por:
   \label{eq:sobrecorrente-50}
 \end{equation}
 
-Para a função temporizada, define-se normalmente um múltiplo da corrente de pickup:
+Para a função temporizada, define-se normalmente um múltiplo da corrente de \textit{pickup}:
 
 \begin{equation}
   M = \frac{I_{\text{medido}}}{I_{51,\text{pickup}}}.
@@ -242,7 +242,7 @@ Na plataforma desenvolvida, a função de distância permite estudar a relação
 
 \section{Arquivos COMTRADE}
 
-O COMTRADE, sigla para \textit{Common Format for Transient Data Exchange}, é um padrão utilizado para armazenar e intercambiar dados transitórios e registros oscilográficos de sistemas elétricos de potência. O padrão é definido pela IEEE C37.111 e também corresponde à IEC 60255-24 \cite{ieee_comtrade,iec_60255_24_2013}. Ele estabelece uma forma comum de representar dados provenientes de registradores digitais de perturbação, relés de proteção, simulações computacionais e sistemas de medição.
+O padrão COMTRADE é utilizado para armazenar e intercambiar dados transitórios e registros oscilográficos de sistemas elétricos de potência. Sua definição normativa aparece na IEEE C37.111 \cite{ieee_comtrade}. A IEC 60255-24 apresenta a norma equivalente para o mesmo formato \cite{iec_60255_24_2013}. Ele estabelece uma forma comum de representar dados provenientes de registradores digitais de perturbação, relés de proteção, simulações computacionais e sistemas de medição.
 
 De maneira geral, um registro COMTRADE é composto por um arquivo de configuração, com extensão \texttt{.cfg}, e um arquivo de dados, com extensão \texttt{.dat}. O arquivo \texttt{.cfg} descreve informações como identificação do registro, canais analógicos e digitais, unidades, fatores de escala, frequência nominal, taxa de amostragem e formato dos dados. O arquivo \texttt{.dat} contém as amostras propriamente ditas, associadas aos instantes de tempo correspondentes.
 
@@ -257,7 +257,7 @@ Para canais analógicos, a conversão entre o valor armazenado e a grandeza de e
 
 Neste trabalho, o COMTRADE desempenha papel central, pois permite conectar o ambiente de simulação ao sistema embarcado. As faltas simuladas no Simulink geram sinais de tensão e corrente, que são convertidos para arquivos \texttt{.cfg} e \texttt{.dat}. Em seguida, esses arquivos são validados, decodificados e transformados em amostras apropriadas para envio à ESP32 geradora, que reproduz os sinais por meio do DAC MCP4728.
 
-O uso do COMTRADE também fortalece o caráter acadêmico e aplicado da plataforma, uma vez que esse padrão é empregado na análise de eventos elétricos reais. Assim, os estudantes têm contato com um formato de dados utilizado em estudos de proteção, análise de faltas e avaliação de desempenho de sistemas elétricos. Além disso, a utilização de um padrão reconhecido facilita a futura expansão do projeto para registros de outras fontes, como softwares de simulação, registradores digitais ou relés comerciais.
+O uso do COMTRADE também fortalece o caráter acadêmico e aplicado da plataforma, uma vez que esse padrão é empregado na análise de eventos elétricos reais. Assim, os estudantes têm contato com um formato de dados utilizado em estudos de proteção, análise de faltas e avaliação de desempenho de sistemas elétricos. Além disso, a utilização de um padrão reconhecido facilita a futura expansão do projeto para registros de outras fontes, como \textit{softwares} de simulação, registradores digitais ou relés comerciais.
 
 \section{Processamento de sinais em relés digitais}
 
@@ -281,11 +281,11 @@ Nesse contexto, a Transformada Discreta de Fourier é amplamente empregada em re
   \label{eq:dft-fundamental}
 \end{equation}
 
-\noindent A partir desse coeficiente, obtêm-se a amplitude de pico e o ângulo da componente fundamental. Para expressar o fasor em valor eficaz, como ocorre no firmware receptor, a magnitude deve ser dividida por $\sqrt{2}$:
+\noindent A partir desse coeficiente, obtêm-se a amplitude de pico e o ângulo da componente fundamental. Para expressar o fasor em valor eficaz, como ocorre no \textit{firmware} receptor, a magnitude deve ser dividida por $\sqrt{2}$:
 
 \begin{align}
   |\bar{X}_1|_{\mathrm{rms}} &= \frac{1}{\sqrt{2}}\sqrt{\operatorname{Re}(X_1)^2 + \operatorname{Im}(X_1)^2}, \label{eq:magnitude-fasor}\\
-  \theta_X &= \operatorname{atan2}\!\left(\operatorname{Im}(X_1),\operatorname{Re}(X_1)\right). \label{eq:angulo-fasor}
+  \theta_X &= \arctan\left(\frac{\operatorname{Im}(X_1)}{\operatorname{Re}(X_1)}\right). \label{eq:angulo-fasor}
 \end{align}
 
 No projeto desenvolvido, esse processamento permite que as amostras recebidas pela ESP32 receptora sejam convertidas em grandezas úteis aos algoritmos de proteção. Assim, a plataforma não apenas reproduz formas de onda, mas também demonstra o processo de aquisição, filtragem, estimação fasorial e decisão lógica característico de relés digitais.

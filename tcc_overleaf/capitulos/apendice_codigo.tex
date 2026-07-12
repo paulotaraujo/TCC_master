@@ -34,9 +34,9 @@ struct FrameRing {
 };
 \end{verbatim}
 
-\subsection{Temporização e detecção de underflow}
+\subsection{Temporização e detecção de \textit{underflow}}
 
-A tarefa do DAC acumula os intervalos relativos em uma referência absoluta. Se a fila estiver vazia, registra underflow e suspende a reprodução até que existam novos quadros:
+A tarefa do DAC acumula os intervalos relativos em uma referência absoluta. Se a fila estiver vazia, registra \textit{underflow} e suspende a reprodução até que existam novos quadros:
 
 \begin{verbatim}
 if (!g_pendingValid) {
@@ -126,7 +126,7 @@ python3 run_embedded_generator.py \
 \begin{table}[H]
   \centering
   \small
-  \caption{Principais argumentos do script de geração.}
+  \caption{Principais argumentos do \textit{script} de geração.}
   \begin{tabular}{p{4.8cm}p{8.4cm}}
     \toprule
     Argumento & Finalidade \\
@@ -134,11 +134,11 @@ python3 run_embedded_generator.py \
     \texttt{--cfg ARQUIVO} & Indicar o arquivo de configuração COMTRADE \texttt{.cfg}; obrigatório. \\
     \texttt{--bdat ARQUIVO} & Indicar o arquivo de dados binário \texttt{.bdat} ou \texttt{.dat}; obrigatório. \\
     \texttt{--port PORTA} & Selecionar a porta serial da ESP32 geradora; obrigatório. \\
-    \texttt{--baud TAXA} & Definir a taxa serial; o valor padrão da implementação é 921600 baud. \\
+    \texttt{--baud TAXA} & Definir a taxa serial; o valor padrão da implementação é 921600 \textit{baud}. \\
     \texttt{--receiver-config ARQUIVO} & Definir onde será salvo o JSON com escalas, valores nominais e referências para a receptora; o padrão é \texttt{config.json}. \\
     \texttt{--ready-timeout SEGUNDOS} & Definir o tempo máximo de espera por \texttt{READY\_UPLOAD}; padrão de 12 s. \\
     \texttt{--process-timeout SEGUNDOS} & Definir o tempo máximo para processamento e \texttt{READY\_PLAYBACK}; padrão de 60 s. \\
-    \texttt{--upload-delay SEGUNDOS} & Inserir uma pausa adicional entre os blocos do upload; padrão igual a zero. \\
+    \texttt{--upload-delay SEGUNDOS} & Inserir uma pausa adicional entre os blocos do \textit{upload}; padrão igual a zero. \\
     \texttt{--skip-upload} & Reutilizar os arquivos armazenados na ESP32, enviando apenas \texttt{PROCESS} antes de abrir o terminal. \\
     \bottomrule
   \end{tabular}
@@ -193,14 +193,14 @@ python3 receiver/python/embedded_receiver/run_embedded_receiver.py \
 \begin{table}[H]
   \centering
   \small
-  \caption{Argumentos gerais do script de recepção.}
+  \caption{Argumentos gerais do \textit{script} de recepção.}
   \begin{tabular}{p{5.5cm}p{7.7cm}}
     \toprule
     Argumento & Finalidade \\
     \midrule
     \texttt{--config ARQUIVO} & Carregar o JSON produzido pela unidade geradora; obrigatório. \\
     \texttt{--port PORTA} & Selecionar a porta serial da ESP32 receptora; padrão \path{/dev/ttyUSB1}. \\
-    \texttt{--baud TAXA} & Definir a taxa de comunicação serial; padrão de 921600 baud. \\
+    \texttt{--baud TAXA} & Definir a taxa de comunicação serial; padrão de 921600 \textit{baud}. \\
     \texttt{--ready-timeout SEGUNDOS} & Definir a espera máxima pela prontidão da receptora; padrão de 5 s. \\
     \texttt{--v-scale-correction VALOR} & Multiplicar a escala de tensão do JSON por um fator de correção obtido em pré-falta; padrão igual a 1. \\
     \texttt{--i-scale-correction VALOR} & Multiplicar a escala de corrente do JSON por um fator de correção obtido em pré-falta; padrão igual a 1. \\
@@ -209,7 +209,7 @@ python3 receiver/python/embedded_receiver/run_embedded_receiver.py \
     \texttt{--auto-scale-seconds SEGUNDOS} & Definir a duração da medição usada pela auto-calibração; padrão de 2 s. \\
     \texttt{--auto-scale-settle SEGUNDOS} & Definir o intervalo inicial ignorado na auto-calibração para estabilização dos sinais; padrão de 0,5 s. \\
     \texttt{--norm-min-pu VALOR} & Definir a magnitude mínima, em por unidade, aceita durante a normalização; padrão de 0,5 pu. \\
-    \texttt{--protection-events} & Exibir eventos de pickup, retorno, temporização e trip. \\
+    \texttt{--protection-events} & Exibir eventos de \textit{pickup}, retorno, temporização e \textit{trip}. \\
     \texttt{--protection-event-interval SEGUNDOS} & Limitar a frequência das mensagens de temporização; padrão de 0,05 s. \\
     \bottomrule
   \end{tabular}
@@ -231,8 +231,8 @@ python3 receiver/python/embedded_receiver/run_embedded_receiver.py \
     \texttt{--distance-line-angle A} & Ângulo da impedância da linha em graus, empregado na característica de distância. \\
     \texttt{--directional-67 A} & $A$: sentido \texttt{forward} ou \texttt{reverse}, definido pelo sinal permitido da potência ativa de pré-falta. \\
     \texttt{--directional-67-power-min A} & Módulo mínimo da potência ativa de pré-falta necessário para validar a decisão direcional; padrão de 10000 nas unidades de engenharia do ensaio. \\
-    \texttt{--under-voltage A B C} & $A$: tensão remanescente crítica, em porcentagem de $V_N$, para trip instantâneo; $B$: queda percentual para o estágio temporizado; $C$: atraso. Exemplo: \texttt{50 10 0.20} corresponde a $0{,}50V_N$ instantâneo e $0{,}90V_N$ por \SI{0,20}{\second}. \\
-    \texttt{--over-voltage A B C} & $A$: elevação percentual para trip instantâneo; $B$: elevação para o estágio temporizado; $C$: atraso. Exemplo: \texttt{50 10 0.20} corresponde a $1{,}50V_N$ instantâneo e $1{,}10V_N$ por \SI{0,20}{\second}. \\
+    \texttt{--under-voltage A B C} & $A$: tensão remanescente crítica, em porcentagem de $V_N$, para \textit{trip} instantâneo; $B$: queda percentual para o estágio temporizado; $C$: atraso. Exemplo: \texttt{50 10 0.20} corresponde a $0{,}50V_N$ instantâneo e $0{,}90V_N$ por \SI{0,20}{\second}. \\
+    \texttt{--over-voltage A B C} & $A$: elevação percentual para \textit{trip} instantâneo; $B$: elevação para o estágio temporizado; $C$: atraso. Exemplo: \texttt{50 10 0.20} corresponde a $1{,}50V_N$ instantâneo e $1{,}10V_N$ por \SI{0,20}{\second}. \\
     \bottomrule
   \end{tabular}
   \legend{Fonte: Autoria própria.}
@@ -255,7 +255,7 @@ As opções de proteção são independentes e podem ser combinadas. Quando \tex
 
 \section{Disponibilidade do projeto completo}
 
-Todos os scripts Python, firmwares Arduino, arquivos de configuração, exemplos COMTRADE e demais recursos do projeto estão disponíveis em:
+Todos os \textit{scripts} Python, \textit{firmwares} Arduino, arquivos de configuração, exemplos COMTRADE e demais recursos do projeto estão disponíveis em:
 
 \begin{center}
   \url{https://github.com/paulotaraujo/TCC_master}

@@ -17,7 +17,7 @@ As Figuras \ref{fig:resultado-tensao-inst} e \ref{fig:resultado-corrente-inst} a
   \centering
   \caption{Comparação temporal das amostras instantâneas de tensão.}
   \label{fig:resultado-tensao-inst}
-  \includegraphics[width=0.92\textwidth]{figuras/resultados_tensao_inst.pdf}
+  \includegraphics[width=0.92\textwidth]{figuras/resultados_tensao_inst_limpo.png}
   \legend{Fonte: Autoria própria.}
 \end{figure}
 
@@ -25,13 +25,13 @@ As Figuras \ref{fig:resultado-tensao-inst} e \ref{fig:resultado-corrente-inst} a
   \centering
   \caption{Comparação temporal das amostras instantâneas de corrente.}
   \label{fig:resultado-corrente-inst}
-  \includegraphics[width=0.92\textwidth]{figuras/resultados_corrente_inst.pdf}
+  \includegraphics[width=0.92\textwidth]{figuras/resultados_corrente_inst_limpo.png}
   \legend{Fonte: Autoria própria.}
 \end{figure}
 
 O alinhamento temporal aplicado aos registros indicou deslocamento de aproximadamente \SI{-0,605}{\milli\second} entre o registro da ESP32 receptora e a referência do Simulink. Esse alinhamento corresponde apenas ao ajuste de deslocamento entre as bases de tempo dos arquivos comparados, necessário para sobrepor as curvas e calcular as métricas de erro; ele não altera as amostras reproduzidas nem integra a lógica das funções de proteção. Após esse alinhamento, a comparação quantitativa apresentou NRMSE de \SI{1,186}{\percent} para tensão e \SI{2,659}{\percent} para corrente. O erro relativo ao pico foi de \SI{2,345}{\percent} para tensão e \SI{4,137}{\percent} para corrente. Esses valores mostram que a ESP32 receptora captura a evolução temporal das amostras com erro reduzido em relação à amplitude dos sinais, validando a reprodução do evento pela ESP32 geradora.
 
-As métricas de erro foram calculadas ponto a ponto entre o sinal de referência do Simulink e o sinal adquirido pela ESP32 receptora. O MAE, ou erro médio absoluto, representa a média dos módulos das diferenças entre as duas curvas. O RMSE, ou raiz do erro quadrático médio, eleva essas diferenças ao quadrado antes da média e, por isso, penaliza mais fortemente desvios maiores ou picos localizados de erro. O NRMSE corresponde ao RMSE normalizado pela faixa de variação do sinal de referência e expresso em porcentagem; dessa forma, permite comparar erros entre grandezas com escalas distintas, como tensão e corrente. O erro relativo ao pico, por sua vez, relaciona o maior desvio observado com o valor de pico da referência. A mesma interpretação é adotada para as métricas apresentadas posteriormente na comparação por FDT.
+As métricas de erro foram calculadas ponto a ponto entre o sinal de referência do Simulink e o sinal adquirido pela ESP32 receptora. O MAE, ou erro médio absoluto, representa a média dos módulos das diferenças entre as duas curvas. O RMSE, ou raiz do erro quadrático médio, eleva essas diferenças ao quadrado antes da média e, por isso, penaliza mais fortemente desvios maiores ou picos localizados de erro. O NRMSE corresponde ao RMSE normalizado pela faixa de variação do sinal de referência e expresso em porcentagem; dessa forma, permite comparar erros entre grandezas com escalas distintas, como tensão e corrente. O erro relativo ao pico, por sua vez, relaciona o maior desvio observado com o valor de pico da referência. A mesma interpretação é adotada para as métricas apresentadas posteriormente na comparação por DFT.
 
 Considerando $x_k$ como a amostra de referência do Simulink, $\hat{x}_k$ como a amostra adquirida pela ESP32 receptora e $N$ como o número de amostras comparadas, as métricas são calculadas por:
 
@@ -71,45 +71,45 @@ Considerando $x_k$ como a amostra de referência do Simulink, $\hat{x}_k$ como a
   \legend{Fonte: Autoria própria.}
 \end{table}
 
-A comparação entre tensão e corrente também evidencia que as duas grandezas preservam a mesma base temporal. Essa característica é essencial para a análise de proteção, pois a estimação de impedância e a supervisão direcional dependem da relação fasorial entre os sinais. Embora as figuras temporais sejam úteis para demonstrar que a forma de onda reproduzida acompanha a forma de onda simulada, as decisões de proteção implementadas na ESP32 receptora não são tomadas diretamente pela comparação ponto a ponto das amostras instantâneas. As funções ANSI implementadas operam a partir da componente fundamental estimada por FDT, isto é, a partir de magnitudes e ângulos calculados sobre janelas de amostragem.
+A comparação entre tensão e corrente também evidencia que as duas grandezas preservam a mesma base temporal. Essa característica é essencial para a análise de proteção, pois a estimação de impedância e a supervisão direcional dependem da relação fasorial entre os sinais. Embora as figuras temporais sejam úteis para demonstrar que a forma de onda reproduzida acompanha a forma de onda simulada, as decisões de proteção implementadas na ESP32 receptora não são tomadas diretamente pela comparação ponto a ponto das amostras instantâneas. As funções ANSI implementadas operam a partir da componente fundamental estimada por DFT, isto é, a partir de magnitudes e ângulos calculados sobre janelas de amostragem.
 
-Por esse motivo, a reprodutibilidade também foi avaliada no domínio da FDT. As Figuras \ref{fig:resultado-tensao-fdt} e \ref{fig:resultado-corrente-fdt} comparam as magnitudes fundamentais obtidas no Simulink com aquelas estimadas pela ESP32 receptora. Nessa análise, os valores do Simulink foram convertidos de pico para RMS, permitindo comparação direta com os valores usados pelas proteções embarcadas.
+Por esse motivo, a reprodutibilidade também foi avaliada no domínio da DFT. As Figuras \ref{fig:resultado-tensao-fdt} e \ref{fig:resultado-corrente-fdt} comparam as magnitudes fundamentais obtidas no Simulink com aquelas estimadas pela ESP32 receptora. Nessa análise, os valores do Simulink foram convertidos de pico para RMS, permitindo comparação direta com os valores usados pelas proteções embarcadas.
 
 \begin{figure}[H]
   \centering
-  \caption{Comparação dos valores de tensão obtidos por FDT.}
+  \caption{Comparação dos valores de tensão obtidos por DFT.}
   \label{fig:resultado-tensao-fdt}
-  \includegraphics[width=0.92\textwidth]{figuras/resultados_tensao_fdt.pdf}
+  \includegraphics[width=0.92\textwidth]{figuras/resultados_tensao_fdt_limpo.png}
   \legend{Fonte: Autoria própria.}
 \end{figure}
 
 \begin{figure}[H]
   \centering
-  \caption{Comparação dos valores de corrente obtidos por FDT.}
+  \caption{Comparação dos valores de corrente obtidos por DFT.}
   \label{fig:resultado-corrente-fdt}
-  \includegraphics[width=0.92\textwidth]{figuras/resultados_corrente_fdt.pdf}
+  \includegraphics[width=0.92\textwidth]{figuras/resultados_corrente_fdt_limpo.png}
   \legend{Fonte: Autoria própria.}
 \end{figure}
 
-Na análise em FDT, o alinhamento temporal dos registros resultou em deslocamento de aproximadamente \SI{1,022}{\milli\second}. Esse alinhamento corresponde apenas ao ajuste temporal aplicado para compensar o pequeno deslocamento entre a referência do Simulink e o registro adquirido pela ESP32 receptora durante a comparação; ele não altera a forma de onda reproduzida nem os valores usados pela proteção. A comparação apresentou NRMSE de \SI{11,086}{\percent} para tensão e \SI{6,008}{\percent} para corrente, conforme a Tabela \ref{tab:erros-fdt-reprodutibilidade}. Esses erros são superiores aos observados na análise temporal porque a FDT agrega os efeitos da janela de estimação, dos transitórios, do instante de alinhamento e da discretização da aquisição. Ainda assim, as curvas mostram que a ESP32 receptora acompanha a tendência da componente fundamental e preserva os patamares necessários para a avaliação das funções de proteção.
+Na análise em DFT, o alinhamento temporal dos registros resultou em deslocamento de aproximadamente \SI{1,022}{\milli\second}. Esse alinhamento corresponde apenas ao ajuste temporal aplicado para compensar o pequeno deslocamento entre a referência do Simulink e o registro adquirido pela ESP32 receptora durante a comparação; ele não altera a forma de onda reproduzida nem os valores usados pela proteção. A comparação apresentou NRMSE de \SI{11,086}{\percent} para tensão e \SI{6,008}{\percent} para corrente, conforme a Tabela \ref{tab:erros-fdt-reprodutibilidade}. Esses erros são superiores aos observados na análise temporal porque a DFT agrega os efeitos da janela de estimação, dos transitórios, do instante de alinhamento e da discretização da aquisição. Ainda assim, as curvas mostram que a ESP32 receptora acompanha a tendência da componente fundamental e preserva os patamares necessários para a avaliação das funções de proteção.
 
 \begin{table}[H]
   \centering
   \small
-  \caption{Erros entre os valores FDT do Simulink e da ESP32 receptora.}
+  \caption{Erros entre os valores DFT do Simulink e da ESP32 receptora.}
   \label{tab:erros-fdt-reprodutibilidade}
   \begin{tabular}{lrrrr}
     \toprule
     Grandeza & MAE & RMSE & Erro relativo ao pico & NRMSE \\
     \midrule
-    Tensão FDT & \SI{7743,42}{\volt} & \SI{30717,96}{\volt} & \SI{11,086}{\percent} & \SI{11,086}{\percent} \\
-    Corrente FDT & \SI{55,01}{\ampere} & \SI{179,94}{\ampere} & \SI{6,008}{\percent} & \SI{6,008}{\percent} \\
+    Tensão DFT & \SI{7743,42}{\volt} & \SI{30717,96}{\volt} & \SI{11,086}{\percent} & \SI{11,086}{\percent} \\
+    Corrente DFT & \SI{55,01}{\ampere} & \SI{179,94}{\ampere} & \SI{6,008}{\percent} & \SI{6,008}{\percent} \\
     \bottomrule
   \end{tabular}
   \legend{Fonte: Autoria própria.}
 \end{table}
 
-Portanto, a comparação temporal confirma que a plataforma reproduz e recebe as amostras da fase A com boa aderência à referência do Simulink, enquanto a comparação por FDT confirma que a grandeza efetivamente utilizada pelas proteções mantém coerência com a simulação. Como o ensaio analisado corresponde a uma falta trifásica equilibrada, essa validação é extensiva às fases B e C quanto ao comportamento elétrico fundamental, preservadas suas respectivas defasagens. A partir desta constatação, os demais resultados são apresentados sob a ótica da FDT. Essa escolha é coerente com a implementação da ESP32 receptora: ainda que as amostras existam no domínio temporal e sejam reproduzidas ponto a ponto pela ESP32 geradora, as análises de proteção dependem das magnitudes e ângulos fundamentais estimados. Assim, os gráficos e demonstrações seguintes priorizam a leitura fasorial em FDT, considerada a representação mais diretamente relacionada às decisões de proteção do sistema.
+Portanto, a comparação temporal confirma que a plataforma reproduz e recebe as amostras da fase A com boa aderência à referência do Simulink, enquanto a comparação por DFT confirma que a grandeza efetivamente utilizada pelas proteções mantém coerência com a simulação. Como o ensaio analisado corresponde a uma falta trifásica equilibrada, essa validação é extensiva às fases B e C quanto ao comportamento elétrico fundamental, preservadas suas respectivas defasagens. A partir desta constatação, os demais resultados são apresentados sob a ótica da DFT. Essa escolha é coerente com a implementação da ESP32 receptora: ainda que as amostras existam no domínio temporal e sejam reproduzidas ponto a ponto pela ESP32 geradora, as análises de proteção dependem das magnitudes e ângulos fundamentais estimados. Assim, os gráficos e demonstrações seguintes priorizam a leitura fasorial em DFT, considerada a representação mais diretamente relacionada às decisões de proteção do sistema.
 
 \section{Cenários dos ensaios de proteção}
 
@@ -141,27 +141,27 @@ A Tabela \ref{tab:cenarios-protecoes-resultados} resume os casos usados para dem
   \legend{Fonte: Autoria própria.}
 \end{table}
 
-\section{Convenção de leitura dos gráficos e logs}
+\section{Convenção de leitura dos gráficos e \textit{logs}}
 
-Os gráficos apresentados a seguir representam a evolução temporal da falta em uma janela normalizada de \SI{2}{\second}, permitindo a comparação direta entre a grandeza estimada pela ESP32 receptora e a referência de simulação. Já os logs mostrados nas subseções correspondem aos estados reais de execução do sistema durante o ensaio, registrados pelo receptor em tempo de serviço. Dessa forma, o gráfico sintetiza o comportamento elétrico observado na falta, enquanto o log evidencia como essa mesma condição foi interpretada pela proteção na prática: pickup, temporização quando aplicável, trip e retenção da saída.
+Os gráficos apresentados a seguir representam a evolução temporal da falta em uma janela normalizada de \SI{2}{\second}, permitindo a comparação direta entre a grandeza estimada pela ESP32 receptora e a referência de simulação. Já os \textit{logs} mostrados nas subseções correspondem aos estados reais de execução do sistema durante o ensaio, registrados pelo receptor em tempo de serviço. Dessa forma, o gráfico sintetiza o comportamento elétrico observado na falta, enquanto o \textit{log} evidencia como essa mesma condição foi interpretada pela proteção na prática: \textit{pickup}, temporização quando aplicável, \textit{trip} e retenção da saída.
 
 \section{Resultados das funções de proteção}
 
 \subsection{Sobrecorrente 50/51}
 
-Os ensaios de sobrecorrente foram obtidos por curto-circuito trifásico aplicado a \SI{19}{\kilo\metre} do ponto de medição, com alteração da impedância no ponto de falta para produzir elevações de corrente de 10\%, 20\% e 50\% em relação ao valor nominal. Para a apresentação dos resultados, o caso de 20\% foi usado como exemplo temporizado, pois a corrente ultrapassou o pickup da função 51 sem atingir o limiar instantâneo da função 50. O caso de 50\% foi usado como exemplo instantâneo, pois a corrente ultrapassou diretamente o limiar de 50.
+Os ensaios de sobrecorrente foram obtidos por curto-circuito trifásico aplicado a \SI{19}{\kilo\metre} do ponto de medição, com alteração da impedância no ponto de falta para produzir elevações de corrente de 10\%, 20\% e 50\% em relação ao valor nominal. Para a apresentação dos resultados, o caso de 20\% foi usado como exemplo temporizado, pois a corrente ultrapassou o \textit{pickup} da função 51 sem atingir o limiar instantâneo da função 50. O caso de 50\% foi usado como exemplo instantâneo, pois a corrente ultrapassou diretamente o limiar de 50.
 
-Na Figura \ref{fig:sobrecorrente-20-temporizada}, a corrente fundamental estimada pela ESP32 receptora acompanha a elevação imposta no Simulink e cruza o pickup temporizado de \SI{1428,70}{\ampere}. A análise do ensaio indicou corrente em regime de falta de \SI{1583,24}{\ampere}, pickup da função 51 em \SI{0,5151}{\second} e trip em \SI{0,5989}{\second}, resultando em atraso medido de \SI{83,77}{\milli\second}. O valor é compatível com o atraso configurado de \SI{0,1}{\second}, considerando a atualização por ciclos da FDT e o instante discreto em que a condição é reconhecida pelo firmware.
+Na Figura \ref{fig:sobrecorrente-20-temporizada}, a corrente fundamental estimada pela ESP32 receptora acompanha a elevação imposta no Simulink e cruza o \textit{pickup} temporizado de \SI{1428,70}{\ampere}. A análise do ensaio indicou corrente em regime de falta de \SI{1583,24}{\ampere}, \textit{pickup} da função 51 em \SI{0,5151}{\second} e \textit{trip} em \SI{0,5989}{\second}, resultando em atraso medido de \SI{83,77}{\milli\second}. O valor é compatível com o atraso configurado de \SI{0,1}{\second}, considerando a atualização por ciclos da DFT e o instante discreto em que a condição é reconhecida pelo \textit{firmware}.
 
 \begin{figure}[H]
   \centering
   \caption{Resposta temporizada da função 51 para sobrecorrente de 20\%.}
   \label{fig:sobrecorrente-20-temporizada}
-  \includegraphics[width=0.92\textwidth]{figuras/sobrecorrente_20_temporizada.pdf}
+  \includegraphics[width=0.92\textwidth]{figuras/sobrecorrente_20_temporizada_limpo.png}
   \legend{Fonte: Autoria própria.}
 \end{figure}
 
-O log da Figura \ref{fig:log-sobrecorrente-51} mostra a execução prática do caso temporizado. Primeiro, a função 51 entra em pickup quando a corrente fundamental medida atinge \SI{1529,14}{\ampere}, acima do limiar de \SI{1428,70}{\ampere}. Em seguida, a mensagem de temporização indica que a condição permaneceu ativa, com contador em \SI{84,005}{\milli\second} de um ajuste de \SI{100}{\milli\second}. Por fim, o trip temporizado é emitido com tempo acumulado de \SI{101,004}{\milli\second}, seguido do comando de disjuntor com origem na função 51. O gráfico utiliza a janela normalizada de \SI{2}{\second} para comparação com a referência de simulação, enquanto o log preserva o tempo de serviço do receptor. A saída física correspondente é o padrão de atuação temporizada apresentado na Figura \ref{fig:reles-instantaneo-temporizado}.
+O \textit{log} da Figura \ref{fig:log-sobrecorrente-51} mostra a execução prática do caso temporizado. Primeiro, a função 51 entra em \textit{pickup} quando a corrente fundamental medida atinge \SI{1529,14}{\ampere}, acima do limiar de \SI{1428,70}{\ampere}. Em seguida, a mensagem de temporização indica que a condição permaneceu ativa, com contador em \SI{84,005}{\milli\second} de um ajuste de \SI{100}{\milli\second}. Por fim, o \textit{trip} temporizado é emitido com tempo acumulado de \SI{101,004}{\milli\second}, seguido do comando de disjuntor com origem na função 51. O gráfico utiliza a janela normalizada de \SI{2}{\second} para comparação com a referência de simulação, enquanto o \textit{log} preserva o tempo de serviço do receptor. A saída física correspondente é o padrão de atuação temporizada apresentado na Figura \ref{fig:reles-instantaneo-temporizado}.
 
 \begin{figure}[H]
   \centering
@@ -183,17 +183,17 @@ O log da Figura \ref{fig:log-sobrecorrente-51} mostra a execução prática do c
   \legend{Fonte: Autoria própria.}
 \end{figure}
 
-No caso de 50\%, apresentado na Figura \ref{fig:sobrecorrente-50-instantanea}, a corrente estimada em regime de falta foi de \SI{1966,35}{\ampere}, superior ao pickup instantâneo de \SI{1688,46}{\ampere}. No eixo do registro, o trip 50 ocorreu em aproximadamente \SI{0,5160}{\second}, isto é, logo após o início do degrau em \SI{0,5}{\second}.
+No caso de 50\%, apresentado na Figura \ref{fig:sobrecorrente-50-instantanea}, a corrente estimada em regime de falta foi de \SI{1966,35}{\ampere}, superior ao \textit{pickup} instantâneo de \SI{1688,46}{\ampere}. No eixo do registro, o \textit{trip} 50 ocorreu em aproximadamente \SI{0,5160}{\second}, isto é, logo após o início do degrau em \SI{0,5}{\second}.
 
 \begin{figure}[H]
   \centering
   \caption{Resposta instantânea da função 50 para sobrecorrente de 50\%.}
   \label{fig:sobrecorrente-50-instantanea}
-  \includegraphics[width=0.92\textwidth]{figuras/sobrecorrente_50_instantanea.pdf}
+  \includegraphics[width=0.92\textwidth]{figuras/sobrecorrente_50_instantanea_limpo.png}
   \legend{Fonte: Autoria própria.}
 \end{figure}
 
-A execução embarcada confirma a prioridade do estágio instantâneo. No mesmo timestamp de serviço, mostrado na Figura \ref{fig:log-sobrecorrente-50}, a receptora identifica \SI{1959,23}{\ampere}, emite \texttt{[OC50 TRIP]}, reconhece também que a função 51 estaria em pickup e aciona o disjuntor com \texttt{source=50}. Dessa forma, embora o estágio temporizado também veja corrente acima de seu pickup, a abertura fica associada à função instantânea, como esperado para uma falta que excede o limiar de 50. A atuação no painel segue o padrão instantâneo indicado na Figura \ref{fig:reles-instantaneo-temporizado}, enquanto a simultaneidade entre trip e comando de disjuntor no log evidencia que não houve espera intencional antes da abertura.
+A execução embarcada confirma a prioridade do estágio instantâneo. No mesmo \textit{timestamp} de serviço, mostrado na Figura \ref{fig:log-sobrecorrente-50}, a receptora identifica \SI{1959,23}{\ampere}, emite \texttt{[OC50 TRIP]}, reconhece também que a função 51 estaria em \textit{pickup} e aciona o disjuntor com \texttt{source=50}. Dessa forma, embora o estágio temporizado também veja corrente acima de seu \textit{pickup}, a abertura fica associada à função instantânea, como esperado para uma falta que excede o limiar de 50. A atuação no painel segue o padrão instantâneo indicado na Figura \ref{fig:reles-instantaneo-temporizado}, enquanto a simultaneidade entre \textit{trip} e comando de disjuntor no \textit{log} evidencia que não houve espera intencional antes da abertura.
 
 \begin{figure}[H]
   \centering
@@ -214,23 +214,23 @@ A execução embarcada confirma a prioridade do estágio instantâneo. No mesmo 
   \legend{Fonte: Autoria própria.}
 \end{figure}
 
-As métricas de comparação FDT ficaram próximas nos dois casos: NRMSE de \SI{7,908}{\percent} para o ensaio de 20\% e \SI{6,636}{\percent} para o ensaio de 50\%. Como a decisão de sobrecorrente depende principalmente da magnitude eficaz da componente fundamental, a concordância dos patamares foi suficiente para que os limiares de 50/51 fossem avaliados corretamente.
+As métricas de comparação DFT ficaram próximas nos dois casos: NRMSE de \SI{7,908}{\percent} para o ensaio de 20\% e \SI{6,636}{\percent} para o ensaio de 50\%. Como a decisão de sobrecorrente depende principalmente da magnitude eficaz da componente fundamental, a concordância dos patamares foi suficiente para que os limiares de 50/51 fossem avaliados corretamente.
 
 \subsection{Sobretensão 59}
 
-Os ensaios de sobretensão foram gerados pela elevação da tensão no gerador 1 em 0,15 pu, 0,30 pu e 0,50 pu a partir de \SI{0,5}{\second}. O caso de 15\% foi selecionado para demonstrar a atuação temporizada, pois excedeu o pickup temporizado de 59 sem atingir o pickup instantâneo. O caso de 50\% foi selecionado para demonstrar a atuação instantânea.
+Os ensaios de sobretensão foram gerados pela elevação da tensão no gerador 1 em 0,15 pu, 0,30 pu e 0,50 pu a partir de \SI{0,5}{\second}. O caso de 15\% foi selecionado para demonstrar a atuação temporizada, pois excedeu o \textit{pickup} temporizado de 59 sem atingir o \textit{pickup} instantâneo. O caso de 50\% foi selecionado para demonstrar a atuação instantânea.
 
-Na Figura \ref{fig:sobretensao-15-temporizada}, a tensão em regime de falta foi estimada em \SI{279503,46}{\volt}, acima do pickup temporizado de \SI{269057,45}{\volt} e abaixo do pickup instantâneo de \SI{307494,23}{\volt}. O pickup temporizado ocorreu em \SI{0,5152}{\second} e o trip em \SI{0,6160}{\second}, com atraso de \SI{100,80}{\milli\second}. Essa condição é adequada para demonstrar a seletividade entre os dois patamares da função 59: a tensão viola o nível temporizado, mas não alcança o nível de atuação instantânea.
+Na Figura \ref{fig:sobretensao-15-temporizada}, a tensão em regime de falta foi estimada em \SI{279503,46}{\volt}, acima do \textit{pickup} temporizado de \SI{269057,45}{\volt} e abaixo do \textit{pickup} instantâneo de \SI{307494,23}{\volt}. O \textit{pickup} temporizado ocorreu em \SI{0,5152}{\second} e o \textit{trip} em \SI{0,6160}{\second}, com atraso de \SI{100,80}{\milli\second}. Essa condição é adequada para demonstrar a seletividade entre os dois patamares da função 59: a tensão viola o nível temporizado, mas não alcança o nível de atuação instantânea.
 
 \begin{figure}[H]
   \centering
   \caption{Resposta temporizada da função 59 para sobretensão de 15\%.}
   \label{fig:sobretensao-15-temporizada}
-  \includegraphics[width=0.92\textwidth]{figuras/sobretensao_15_temporizada.pdf}
+  \includegraphics[width=0.92\textwidth]{figuras/sobretensao_15_temporizada_limpo.png}
   \legend{Fonte: Autoria própria.}
 \end{figure}
 
-O log da Figura \ref{fig:log-sobretensao-59t} detalha essa sequência. A receptora registra pickup com tensão de \SI{279269,41}{\volt}, valor superior ao ajuste temporizado e inferior ao instantâneo. A mensagem de trip aparece apenas após a permanência da sobretensão, com tensão de \SI{279758,75}{\volt} e tempo acumulado de \SI{116,997}{\milli\second}. Assim, a proteção não atua simplesmente pela passagem momentânea pelo limiar, mas pela confirmação da condição durante o intervalo temporizado. A indicação física esperada para esse caso é a atuação temporizada do painel, ilustrada na Figura \ref{fig:reles-instantaneo-temporizado}.
+O \textit{log} da Figura \ref{fig:log-sobretensao-59t} detalha essa sequência. A receptora registra \textit{pickup} com tensão de \SI{279269,41}{\volt}, valor superior ao ajuste temporizado e inferior ao instantâneo. A mensagem de \textit{trip} aparece apenas após a permanência da sobretensão, com tensão de \SI{279758,75}{\volt} e tempo acumulado de \SI{116,997}{\milli\second}. Assim, a proteção não atua simplesmente pela passagem momentânea pelo limiar, mas pela confirmação da condição durante o intervalo temporizado. A indicação física esperada para esse caso é a atuação temporizada do painel, ilustrada na Figura \ref{fig:reles-instantaneo-temporizado}.
 
 \begin{figure}[H]
   \centering
@@ -252,17 +252,17 @@ O log da Figura \ref{fig:log-sobretensao-59t} detalha essa sequência. A recepto
   \legend{Fonte: Autoria própria.}
 \end{figure}
 
-No ensaio de 50\%, mostrado na Figura \ref{fig:sobretensao-50-instantanea}, a tensão estimada em regime de falta foi de \SI{342183,87}{\volt}, superando o pickup instantâneo de \SI{333125,16}{\volt}. No eixo do registro, a atuação instantânea foi identificada em aproximadamente \SI{0,5149}{\second}.
+No ensaio de 50\%, mostrado na Figura \ref{fig:sobretensao-50-instantanea}, a tensão estimada em regime de falta foi de \SI{342183,87}{\volt}, superando o \textit{pickup} instantâneo de \SI{333125,16}{\volt}. No eixo do registro, a atuação instantânea foi identificada em aproximadamente \SI{0,5149}{\second}.
 
 \begin{figure}[H]
   \centering
   \caption{Resposta instantânea da função 59 para sobretensão de 50\%.}
   \label{fig:sobretensao-50-instantanea}
-  \includegraphics[width=0.92\textwidth]{figuras/sobretensao_50_instantanea.pdf}
+  \includegraphics[width=0.92\textwidth]{figuras/sobretensao_50_instantanea_limpo.png}
   \legend{Fonte: Autoria própria.}
 \end{figure}
 
-Nesse caso, o terminal da Figura \ref{fig:log-sobretensao-59i} indica tensão de \SI{354988,41}{\volt} no instante de pickup, acima tanto do limiar temporizado quanto do limiar instantâneo. Por isso, o firmware emite \texttt{[OV59 INSTANT TRIP]} no mesmo timestamp e aciona o disjuntor com \texttt{source=59}. A comparação com o caso de 15\% evidencia que a mesma função muda de comportamento apenas em função do nível de severidade da sobretensão: atraso quando somente o pickup temporizado é excedido e atuação imediata quando o pickup instantâneo é ultrapassado. A saída física correspondente é a indicação instantânea da Figura \ref{fig:reles-instantaneo-temporizado}.
+Nesse caso, o terminal da Figura \ref{fig:log-sobretensao-59i} indica tensão de \SI{354988,41}{\volt} no instante de \textit{pickup}, acima tanto do limiar temporizado quanto do limiar instantâneo. Por isso, o \textit{firmware} emite \texttt{[OV59 INSTANT TRIP]} no mesmo \textit{timestamp} e aciona o disjuntor com \texttt{source=59}. A comparação com o caso de 15\% evidencia que a mesma função muda de comportamento apenas em função do nível de severidade da sobretensão: atraso quando somente o \textit{pickup} temporizado é excedido e atuação imediata quando o \textit{pickup} instantâneo é ultrapassado. A saída física correspondente é a indicação instantânea da Figura \ref{fig:reles-instantaneo-temporizado}.
 
 \begin{figure}[H]
   \centering
@@ -284,23 +284,23 @@ Nesse caso, o terminal da Figura \ref{fig:log-sobretensao-59i} indica tensão de
   \legend{Fonte: Autoria própria.}
 \end{figure}
 
-A comparação entre Simulink e ESP32 receptora apresentou NRMSE de \SI{8,591}{\percent} no caso temporizado de 15\% e \SI{7,235}{\percent} no caso instantâneo de 50\%. Esses valores refletem a combinação entre discretização, janela FDT e transitórios de borda, mas os patamares permaneceram coerentes com a classificação esperada dos limiares de 59.
+A comparação entre Simulink e ESP32 receptora apresentou NRMSE de \SI{8,591}{\percent} no caso temporizado de 15\% e \SI{7,235}{\percent} no caso instantâneo de 50\%. Esses valores refletem a combinação entre discretização, janela DFT e transitórios de borda, mas os patamares permaneceram coerentes com a classificação esperada dos limiares de 59.
 
 \subsection{Subtensão 27}
 
 Os ensaios de subtensão foram produzidos pela redução da tensão no gerador 1 em 0,15 pu, 0,30 pu e 0,50 pu. Assim, durante a falta, o sistema operou aproximadamente em 0,85 pu, 0,70 pu e 0,50 pu da tensão nominal, respectivamente. Para a exposição dos resultados, o caso de 30\% foi usado como exemplo temporizado e o caso de 50\% como exemplo instantâneo.
 
-Na Figura \ref{fig:subtensao-30-temporizada}, a tensão em regime de falta foi estimada em \SI{205036,41}{\volt}, abaixo do pickup temporizado de \SI{230623,85}{\volt} e acima do pickup instantâneo de \SI{153749,23}{\volt}. O pickup temporizado ocorreu em \SI{0,5073}{\second} e o trip em \SI{0,5911}{\second}, resultando em atraso de \SI{83,73}{\milli\second}. Como a tensão cai abaixo do limiar temporizado sem ultrapassar o critério instantâneo, o comportamento esperado é a atuação com retardo.
+Na Figura \ref{fig:subtensao-30-temporizada}, a tensão em regime de falta foi estimada em \SI{205036,41}{\volt}, abaixo do \textit{pickup} temporizado de \SI{230623,85}{\volt} e acima do \textit{pickup} instantâneo de \SI{153749,23}{\volt}. O \textit{pickup} temporizado ocorreu em \SI{0,5073}{\second} e o \textit{trip} em \SI{0,5911}{\second}, resultando em atraso de \SI{83,73}{\milli\second}. Como a tensão cai abaixo do limiar temporizado sem ultrapassar o critério instantâneo, o comportamento esperado é a atuação com retardo.
 
 \begin{figure}[H]
   \centering
   \caption{Resposta temporizada da função 27 para subtensão de 30\%.}
   \label{fig:subtensao-30-temporizada}
-  \includegraphics[width=0.92\textwidth]{figuras/subtensao_30_temporizada.pdf}
+  \includegraphics[width=0.92\textwidth]{figuras/subtensao_30_temporizada_limpo.png}
   \legend{Fonte: Autoria própria.}
 \end{figure}
 
-O terminal da Figura \ref{fig:log-subtensao-27t} registra essa atuação como queda sustentada de tensão. A primeira linha mostra pickup com \SI{209285,14}{\volt}, abaixo do limiar temporizado, mas ainda acima do limiar instantâneo. Em seguida, a proteção permanece sensibilizada até emitir \texttt{[UV27 TIMED TRIP]} com \SI{207745,44}{\volt} e tempo acumulado de \SI{116,993}{\milli\second}. O comando de disjuntor com \texttt{source=27} confirma que a abertura foi atribuída à função de subtensão temporizada. A saída física associada é a indicação temporizada do painel, apresentada na Figura \ref{fig:reles-instantaneo-temporizado}.
+O terminal da Figura \ref{fig:log-subtensao-27t} registra essa atuação como queda sustentada de tensão. A primeira linha mostra \textit{pickup} com \SI{209285,14}{\volt}, abaixo do limiar temporizado, mas ainda acima do limiar instantâneo. Em seguida, a proteção permanece sensibilizada até emitir \texttt{[UV27 TIMED TRIP]} com \SI{207745,44}{\volt} e tempo acumulado de \SI{116,993}{\milli\second}. O comando de disjuntor com \texttt{source=27} confirma que a abertura foi atribuída à função de subtensão temporizada. A saída física associada é a indicação temporizada do painel, apresentada na Figura \ref{fig:reles-instantaneo-temporizado}.
 
 \begin{figure}[H]
   \centering
@@ -322,17 +322,17 @@ O terminal da Figura \ref{fig:log-subtensao-27t} registra essa atuação como qu
   \legend{Fonte: Autoria própria.}
 \end{figure}
 
-No caso de subtensão de 50\%, apresentado na Figura \ref{fig:subtensao-50-instantanea}, a tensão em regime de falta foi de \SI{177100,22}{\volt}, inferior ao pickup instantâneo de \SI{204996,15}{\volt}. No eixo do registro, o trip instantâneo foi identificado em \SI{0,5082}{\second}, logo após o degrau de subtensão.
+No caso de subtensão de 50\%, apresentado na Figura \ref{fig:subtensao-50-instantanea}, a tensão em regime de falta foi de \SI{177100,22}{\volt}, inferior ao \textit{pickup} instantâneo de \SI{204996,15}{\volt}. No eixo do registro, o \textit{trip} instantâneo foi identificado em \SI{0,5082}{\second}, logo após o degrau de subtensão.
 
 \begin{figure}[H]
   \centering
   \caption{Resposta instantânea da função 27 para subtensão de 50\%.}
   \label{fig:subtensao-50-instantanea}
-  \includegraphics[width=0.92\textwidth]{figuras/subtensao_50_instantanea.pdf}
+  \includegraphics[width=0.92\textwidth]{figuras/subtensao_50_instantanea_limpo.png}
   \legend{Fonte: Autoria própria.}
 \end{figure}
 
-Como a função 27 atua por queda de magnitude, a interpretação dos limiares é inversa à da sobretensão: quanto menor a tensão, mais severa é a condição. O log da Figura \ref{fig:log-subtensao-27i} registra \SI{182068,92}{\volt} no instante de pickup, valor inferior ao limiar instantâneo configurado, e por isso o firmware emite \texttt{[UV27 INSTANT TRIP]} no mesmo timestamp. A abertura do disjuntor ocorre sem a etapa de contagem, reproduzindo o comportamento esperado para uma subtensão profunda. No painel, esse resultado corresponde à indicação instantânea mostrada na Figura \ref{fig:reles-instantaneo-temporizado}.
+Como a função 27 atua por queda de magnitude, a interpretação dos limiares é inversa à da sobretensão: quanto menor a tensão, mais severa é a condição. O \textit{log} da Figura \ref{fig:log-subtensao-27i} registra \SI{182068,92}{\volt} no instante de \textit{pickup}, valor inferior ao limiar instantâneo configurado, e por isso o \textit{firmware} emite \texttt{[UV27 INSTANT TRIP]} no mesmo \textit{timestamp}. A abertura do disjuntor ocorre sem a etapa de contagem, reproduzindo o comportamento esperado para uma subtensão profunda. No painel, esse resultado corresponde à indicação instantânea mostrada na Figura \ref{fig:reles-instantaneo-temporizado}.
 
 \begin{figure}[H]
   \centering
@@ -354,7 +354,7 @@ Como a função 27 atua por queda de magnitude, a interpretação dos limiares �
   \legend{Fonte: Autoria própria.}
 \end{figure}
 
-O erro FDT no ensaio temporizado de 30\% foi de \SI{9,400}{\percent} de NRMSE, enquanto no ensaio instantâneo de 50\% foi de \SI{9,308}{\percent}. O caso de 15\%, embora também tenha apresentado atuação temporizada, mostrou NRMSE maior, de \SI{30,127}{\percent}, influenciado por efeitos de borda e pelo alinhamento entre as janelas comparadas. Por isso, o caso de 30\% foi adotado como representação mais estável do comportamento temporizado da função 27.
+O erro DFT no ensaio temporizado de 30\% foi de \SI{9,400}{\percent} de NRMSE, enquanto no ensaio instantâneo de 50\% foi de \SI{9,308}{\percent}. O caso de 15\%, embora também tenha apresentado atuação temporizada, mostrou NRMSE maior, de \SI{30,127}{\percent}, influenciado por efeitos de borda e pelo alinhamento entre as janelas comparadas. Por isso, o caso de 30\% foi adotado como representação mais estável do comportamento temporizado da função 27.
 
 \subsection{Proteção de distância 21}
 
@@ -364,13 +364,13 @@ Na configuração adotada, a impedância da linha foi ajustada em \SI{52,1250}{\
 
 Embora a função 67 possa ser empregada como elemento supervisor de outras funções dentro da filosofia de proteção adotada, sua relevância é mais evidente na proteção de distância. Nesse caso, a direcionalidade do fluxo de potência da linha é parte importante da coordenação entre relés instalados em diferentes terminais de um sistema elétrico de potência, pois evita que uma falta reversa, mesmo com impedância aparente dentro da característica mho, produza uma abertura indevida no terminal analisado.
 
-No caso de 10\%, a falta foi aplicada a \SI{19}{\kilo\metre} do ponto de medição. A Figura \ref{fig:distancia-10-z1-fdt} mostra que a impedância aparente estimada pela ESP32 receptora cai para a região interna da zona 1 após o início da falta, acompanhando a referência calculada no Simulink. A atuação ocorreu pela zona 1 em \SI{0,533}{\second}, com permissão da supervisão 67, sem sensibilização da zona 2 e sem bloqueio direcional. A comparação da impedância por FDT apresentou NRMSE de \SI{12,121}{\percent}.
+No caso de 10\%, a falta foi aplicada a \SI{19}{\kilo\metre} do ponto de medição. A Figura \ref{fig:distancia-10-z1-fdt} mostra que a impedância aparente estimada pela ESP32 receptora cai para a região interna da zona 1 após o início da falta, acompanhando a referência calculada no Simulink. A atuação ocorreu pela zona 1 em \SI{0,533}{\second}, com permissão da supervisão 67, sem sensibilização da zona 2 e sem bloqueio direcional. A comparação da impedância por DFT apresentou NRMSE de \SI{12,121}{\percent}.
 
 \begin{figure}[H]
   \centering
   \caption{Resposta da proteção de distância para falta direta em 10\% da linha.}
   \label{fig:distancia-10-z1-fdt}
-  \includegraphics[width=0.92\textwidth]{figuras/distancia_10_z1_fdt.pdf}
+  \includegraphics[width=0.92\textwidth]{figuras/distancia_10_z1_fdt_limpo.png}
   \legend{Fonte: Autoria própria.}
 \end{figure}
 
@@ -380,11 +380,11 @@ O plano $R$--$X$ da Figura \ref{fig:distancia-10-z1-rx} confirma a mesma interpr
   \centering
   \caption{Trajetória no plano $R$--$X$ para a falta direta em 10\% da linha.}
   \label{fig:distancia-10-z1-rx}
-  \includegraphics[width=0.82\textwidth]{figuras/distancia_10_z1_rx.pdf}
+  \includegraphics[width=0.82\textwidth]{figuras/distancia_10_z1_rx_limpo.png}
   \legend{Fonte: Autoria própria.}
 \end{figure}
 
-O log da Figura \ref{fig:log-distancia-z1} mostra a atuação embarcada correspondente. A ESP32 receptora estimou $|Z|=\SI{5,2258}{\ohm}$, equivalente a aproximadamente 10,026\% da linha, com permissão direcional ativa. Como esse valor está dentro do alcance de zona 1, o firmware emitiu \texttt{[D21Z1 TRIP]} e, no mesmo timestamp, o comando de abertura com \texttt{source=21Z1}. Assim, a resposta foi instantânea, sem espera pela temporização da zona 2.
+O \textit{log} da Figura \ref{fig:log-distancia-z1} mostra a atuação embarcada correspondente. A ESP32 receptora estimou $|Z|=\SI{5,2258}{\ohm}$, equivalente a aproximadamente 10,026\% da linha, com permissão direcional ativa. Como esse valor está dentro do alcance de zona 1, o \textit{firmware} emitiu \texttt{[D21Z1 TRIP]} e, no mesmo \textit{timestamp}, o comando de abertura com \texttt{source=21Z1}. Assim, a resposta foi instantânea, sem espera pela temporização da zona 2.
 
 \begin{figure}[H]
   \centering
@@ -406,15 +406,15 @@ O log da Figura \ref{fig:log-distancia-z1} mostra a atuação embarcada correspo
   \legend{Fonte: Autoria própria.}
 \end{figure}
 
-Os demais casos diretos dentro do alcance de zona 1 confirmaram o mesmo padrão. Para faltas em 25\%, 50\% e 75\% da linha, os trips de zona 1 ocorreram em \SI{0,533}{\second}, \SI{0,549}{\second} e \SI{0,516}{\second}, respectivamente, sempre com \texttt{source=21Z1} e permissão direcional ativa. Portanto, a plataforma reproduziu a seletividade esperada para faltas internas à zona 1 supervisionadas pela função 67, sem necessidade de apresentar gráficos repetitivos para todos os percentuais.
+Os demais casos diretos dentro do alcance de zona 1 confirmaram o mesmo padrão. Para faltas em 25\%, 50\% e 75\% da linha, os \textit{trips} de zona 1 ocorreram em \SI{0,533}{\second}, \SI{0,549}{\second} e \SI{0,516}{\second}, respectivamente, sempre com \texttt{source=21Z1} e permissão direcional ativa. Portanto, a plataforma reproduziu a seletividade esperada para faltas internas à zona 1 supervisionadas pela função 67, sem necessidade de apresentar gráficos repetitivos para todos os percentuais.
 
-O caso de 90\%, por outro lado, representa uma falta fora do alcance de zona 1 e dentro do alcance de zona 2. A falta foi aplicada a \SI{171}{\kilo\metre} do ponto de medição. Na Figura \ref{fig:distancia-90-z2-fdt}, a impedância aparente permanece acima do limiar de zona 1, mas abaixo do alcance de zona 2 durante o período da falta. Nessa condição, a abertura foi comandada pela zona 2 em \SI{0,566}{\second}, sem trip de zona 1, com supervisão direcional permissiva, e a comparação da impedância por FDT apresentou NRMSE de \SI{13,057}{\percent}.
+O caso de 90\%, por outro lado, representa uma falta fora do alcance de zona 1 e dentro do alcance de zona 2. A falta foi aplicada a \SI{171}{\kilo\metre} do ponto de medição. Na Figura \ref{fig:distancia-90-z2-fdt}, a impedância aparente permanece acima do limiar de zona 1, mas abaixo do alcance de zona 2 durante o período da falta. Nessa condição, a abertura foi comandada pela zona 2 em \SI{0,566}{\second}, sem \textit{trip} de zona 1, com supervisão direcional permissiva, e a comparação da impedância por DFT apresentou NRMSE de \SI{13,057}{\percent}.
 
 \begin{figure}[H]
   \centering
   \caption{Resposta da proteção de distância para falta direta em 90\% da linha.}
   \label{fig:distancia-90-z2-fdt}
-  \includegraphics[width=0.92\textwidth]{figuras/distancia_90_z2_fdt.pdf}
+  \includegraphics[width=0.92\textwidth]{figuras/distancia_90_z2_fdt_limpo.png}
   \legend{Fonte: Autoria própria.}
 \end{figure}
 
@@ -424,11 +424,11 @@ No plano $R$--$X$, mostrado na Figura \ref{fig:distancia-90-z2-rx}, a trajetóri
   \centering
   \caption{Trajetória no plano $R$--$X$ para a falta direta em 90\% da linha.}
   \label{fig:distancia-90-z2-rx}
-  \includegraphics[width=0.82\textwidth]{figuras/distancia_90_z2_rx.pdf}
+  \includegraphics[width=0.82\textwidth]{figuras/distancia_90_z2_rx_limpo.png}
   \legend{Fonte: Autoria própria.}
 \end{figure}
 
-O terminal da Figura \ref{fig:log-distancia-z2} confirma a atuação temporizada. Primeiro, a proteção entra em pickup de zona 2 com $|Z|=\SI{46,9993}{\ohm}$, equivalente a 90,167\% da linha, já com contador iniciado. Em seguida, após permanência da condição por aproximadamente \SI{51,003}{\milli\second}, a ESP32 receptora emite \texttt{[D21Z2 TRIP]} e aciona o disjuntor com \texttt{source=21Z2}. O tempo medido é coerente com a temporização configurada de \SI{0,05}{\second}.
+O terminal da Figura \ref{fig:log-distancia-z2} confirma a atuação temporizada. Primeiro, a proteção entra em \textit{pickup} de zona 2 com $|Z|=\SI{46,9993}{\ohm}$, equivalente a 90,167\% da linha, já com contador iniciado. Em seguida, após permanência da condição por aproximadamente \SI{51,003}{\milli\second}, a ESP32 receptora emite \texttt{[D21Z2 TRIP]} e aciona o disjuntor com \texttt{source=21Z2}. O tempo medido é coerente com a temporização configurada de \SI{0,05}{\second}.
 
 \begin{figure}[H]
   \centering
@@ -451,13 +451,13 @@ O terminal da Figura \ref{fig:log-distancia-z2} confirma a atuação temporizada
   \legend{Fonte: Autoria própria.}
 \end{figure}
 
-O cenário reverso em 25\% foi executado com o gerador G2 em configuração forte, de modo a inverter o fluxo de potência no ponto de medição. A falta trifásica foi aplicada a \SI{47,5}{\kilo\metre} do terminal analisado, mantendo os demais parâmetros do sistema conforme a metodologia. A Figura \ref{fig:distancia-25-reverso-fdt} mostra que a impedância aparente cai para uma região compatível com a zona 1 durante a falta; entretanto, diferentemente dos casos diretos, o sinal de bloqueio da função 67 é ativado e os sinais de trip 21Z1 e 21Z2 permanecem inativos. A comparação da impedância por FDT, considerando a curva equivalente da ESP32 receptora, apresentou NRMSE de \SI{15,222}{\percent}.
+O cenário reverso em 25\% foi executado com o gerador G2 em configuração forte, de modo a inverter o fluxo de potência no ponto de medição. A falta trifásica foi aplicada a \SI{47,5}{\kilo\metre} do terminal analisado, mantendo os demais parâmetros do sistema conforme a metodologia. A Figura \ref{fig:distancia-25-reverso-fdt} mostra que a impedância aparente cai para uma região compatível com a zona 1 durante a falta; entretanto, diferentemente dos casos diretos, o sinal de bloqueio da função 67 é ativado e os sinais de \textit{trip} 21Z1 e 21Z2 permanecem inativos. A comparação da impedância por DFT, considerando a curva equivalente da ESP32 receptora, apresentou NRMSE de \SI{15,222}{\percent}.
 
 \begin{figure}[H]
   \centering
   \caption{Resposta da proteção de distância para falta reversa em 25\% da linha.}
   \label{fig:distancia-25-reverso-fdt}
-  \includegraphics[width=0.92\textwidth]{figuras/distancia_25_reverso_fdt.pdf}
+  \includegraphics[width=0.92\textwidth]{figuras/distancia_25_reverso_fdt_limpo.png}
   \legend{Fonte: Autoria própria.}
 \end{figure}
 
@@ -467,11 +467,11 @@ O plano $R$--$X$ da Figura \ref{fig:distancia-25-reverso-rx} complementa essa an
   \centering
   \caption{Trajetória no plano $R$--$X$ para a falta reversa em 25\% da linha.}
   \label{fig:distancia-25-reverso-rx}
-  \includegraphics[width=0.82\textwidth]{figuras/distancia_25_reverso_rx.pdf}
+  \includegraphics[width=0.82\textwidth]{figuras/distancia_25_reverso_rx_limpo.png}
   \legend{Fonte: Autoria própria.}
 \end{figure}
 
-O log da Figura \ref{fig:log-distancia-67-bloqueio} evidencia a decisão tomada pela ESP32 receptora. A impedância estimada foi de $|Z|=\SI{15,1945}{\ohm}$, equivalente a aproximadamente 27,150\% da linha, com a condição \texttt{Z1\_mho=1}. Contudo, a supervisão direcional foi configurada em \texttt{forward} e a avaliação indicou \texttt{forward=0} e \texttt{reverse=1}. Por isso, o firmware registrou \texttt{[D21 BLOCKED BY 67]} em vez de emitir \texttt{[D21Z1 TRIP]}, mantendo a atuação bloqueada.
+O \textit{log} da Figura \ref{fig:log-distancia-67-bloqueio} evidencia a decisão tomada pela ESP32 receptora. A impedância estimada foi de $|Z|=\SI{15,1945}{\ohm}$, equivalente a aproximadamente 27,150\% da linha, com a condição \texttt{Z1\_mho=1}. Contudo, a supervisão direcional foi configurada em \texttt{forward} e a avaliação indicou \texttt{forward=0} e \texttt{reverse=1}. Por isso, o \textit{firmware} registrou \texttt{[D21 BLOCKED BY 67]} em vez de emitir \texttt{[D21Z1 TRIP]}, mantendo a atuação bloqueada.
 
 \begin{figure}[H]
   \centering
@@ -501,7 +501,7 @@ O log da Figura \ref{fig:log-distancia-67-bloqueio} evidencia a decisão tomada 
   \label{tab:resumo-protecoes-resultados}
   \begin{tabular}{llrrrr}
     \toprule
-    Função & Caso & Pickup & Trip & Atraso medido & NRMSE FDT \\
+    Função & Caso & \textit{Pickup} & \textit{Trip} & Atraso medido & NRMSE DFT \\
     \midrule
     51 & Sobrecorrente 20\% & \SI{0,5151}{\second} & \SI{0,5989}{\second} & \SI{83,77}{\milli\second} & \SI{7,908}{\percent} \\
     50 & Sobrecorrente 50\% & \SI{0,5163}{\second} & \SI{0,5160}{\second} & instantâneo & \SI{6,636}{\percent} \\
@@ -519,7 +519,7 @@ O log da Figura \ref{fig:log-distancia-67-bloqueio} evidencia a decisão tomada 
 
 \section{Sinalização física das atuações}
 
-As saídas físicas do painel confirmam que as decisões das funções de proteção não ficaram restritas aos gráficos ou aos logs do receptor. Após o reconhecimento de pickup, temporização quando aplicável e trip, o firmware também atualiza os LEDs e relés correspondentes. A Figura \ref{fig:reles-instantaneo-temporizado} apresenta os padrões físicos associados às atuações instantâneas e temporizadas discutidas nos ensaios.
+As saídas físicas do painel confirmam que as decisões das funções de proteção não ficaram restritas aos gráficos ou aos \textit{logs} do receptor. Após o reconhecimento de \textit{pickup}, temporização quando aplicável e \textit{trip}, o \textit{firmware} também atualiza os LEDs e relés correspondentes. A Figura \ref{fig:reles-instantaneo-temporizado} apresenta os padrões físicos associados às atuações instantâneas e temporizadas discutidas nos ensaios.
 
 No padrão instantâneo da Figura \ref{fig:reles-instantaneo-temporizado}, enquadram-se as atuações de sobrecorrente 50, sobretensão 59 instantânea, subtensão 27 instantânea e distância 21 em zona 1 quando a supervisão 67 está permissiva. No padrão temporizado, enquadram-se as atuações de sobrecorrente 51, sobretensão 59 temporizada, subtensão 27 temporizada e distância 21 em zona 2, também condicionada à permissão direcional quando a supervisão 67 está habilitada.
 
@@ -539,7 +539,7 @@ No padrão instantâneo da Figura \ref{fig:reles-instantaneo-temporizado}, enqua
   \legend{Fonte: Autoria própria.}
 \end{figure}
 
-A Figura \ref{fig:reles-supervisao-67} registra os estados físicos relacionados à supervisão direcional 67. Esses estados são relevantes para os ensaios com permissivo ou bloqueio direcional, pois permitem distinguir visualmente uma atuação autorizada de uma condição bloqueada pela lógica de direção. Na proteção de distância, essa distinção é especialmente importante porque a característica mho pode indicar falta dentro da zona, mas a atuação final depende da permissão direcional quando a supervisão 67 está habilitada. Assim, as atuações 21/Z1 e 21/Z2 em sentido direto correspondem às indicações físicas de trip com 67 habilitada, enquanto o caso reverso em 25\% corresponde ao estado de bloqueio direcional.
+A Figura \ref{fig:reles-supervisao-67} registra os estados físicos relacionados à supervisão direcional 67. Esses estados são relevantes para os ensaios com permissivo ou bloqueio direcional, pois permitem distinguir visualmente uma atuação autorizada de uma condição bloqueada pela lógica de direção. Na proteção de distância, essa distinção é especialmente importante porque a característica mho pode indicar falta dentro da zona, mas a atuação final depende da permissão direcional quando a supervisão 67 está habilitada. Assim, as atuações 21/Z1 e 21/Z2 em sentido direto correspondem às indicações físicas de \textit{trip} com 67 habilitada, enquanto o caso reverso em 25\% corresponde ao estado de bloqueio direcional.
 
 \begin{figure}[H]
   \centering
@@ -564,14 +564,22 @@ A Figura \ref{fig:reles-supervisao-67} registra os estados físicos relacionados
 
 \section{Síntese didática dos resultados}
 
-Os resultados mostram que a plataforma permite acompanhar o ensaio em três níveis complementares. O primeiro é o nível de simulação, representado pelas curvas do Simulink e pelos parâmetros de cada cenário. O segundo é o nível embarcado, no qual a ESP32 receptora estima a componente fundamental, compara os limiares e emite eventos com timestamps. O terceiro é o nível físico, em que os LEDs e relés indicam a condição de trip, temporização, permissivo ou bloqueio.
+Os resultados mostram que a plataforma permite acompanhar o ensaio em três níveis complementares. O primeiro é o nível de simulação, representado pelas curvas do Simulink e pelos parâmetros de cada cenário. O segundo é o nível embarcado, no qual a ESP32 receptora estima a componente fundamental, compara os limiares e emite eventos com \textit{timestamps}. O terceiro é o nível físico, em que os LEDs e relés indicam a condição de \textit{trip}, temporização, permissivo ou bloqueio.
 
-Essa organização é útil em atividades didáticas porque torna visível a relação entre ajuste de proteção e atuação. Nos casos temporizados, o aluno pode observar o pickup, acompanhar a contagem do temporizador no log e verificar o acionamento final no painel. Nos casos instantâneos, a resposta ocorre no mesmo ciclo de decisão em que o limiar é ultrapassado. Quando a supervisão 67 é habilitada, o painel também permite demonstrar a diferença entre uma condição permitida e uma condição bloqueada.
+Essa organização é útil em atividades didáticas porque torna visível a relação entre ajuste de proteção e atuação. Nos casos temporizados, o aluno pode observar o \textit{pickup}, acompanhar a contagem do temporizador no \textit{log} e verificar o acionamento final no painel. Nos casos instantâneos, a resposta ocorre no mesmo ciclo de decisão em que o limiar é ultrapassado. Quando a supervisão 67 é habilitada, o painel também permite demonstrar a diferença entre uma condição permitida e uma condição bloqueada.
 
 \section{Discussão das limitações}
 
-A análise dos resultados deve considerar algumas limitações da bancada. A primeira é que os sinais reproduzidos passam por uma cadeia de baixa tensão composta por DAC, conexões e ADC interno da ESP32, sem condicionamento analógico dedicado. Por isso, a avaliação quantitativa inclui fatores de auto-calibração e erros FDT que incorporam ruído, quantização, offset e resposta não ideal do conversor.
+A análise dos resultados deve considerar algumas limitações da bancada. A primeira é que os sinais reproduzidos passam por uma cadeia de baixa tensão composta por DAC, conexões e ADC interno da ESP32, sem condicionamento analógico dedicado. Por isso, a avaliação quantitativa inclui fatores de auto-calibração e erros DFT que incorporam ruído, quantização, \textit{offset} e resposta não ideal do conversor.
 
-A segunda limitação é a interpretação temporal das atuações. Os gráficos usam o eixo do registro COMTRADE, enquanto os logs apresentam o tempo de execução do receptor. Assim, os timestamps de serviço são adequados para confirmar a ordem dos eventos, mas a comparação de tempos de pickup e trip deve considerar o alinhamento com o eixo temporal da simulação.
+A segunda limitação é a interpretação temporal das atuações. Os gráficos usam o eixo do registro COMTRADE, enquanto os \textit{logs} apresentam o tempo de execução do receptor. Assim, os \textit{timestamps} de serviço são adequados para confirmar a ordem dos eventos, mas a comparação de tempos de \textit{pickup} e \textit{trip} deve considerar o alinhamento com o eixo temporal da simulação.
 
 Por fim, os ensaios apresentados nesta versão do capítulo cobrem 50/51, 59, 27, os casos diretos da função 21 e o bloqueio direcional da função 21 pela supervisão 67. Portanto, o conjunto de resultados contempla tanto as atuações instantâneas e temporizadas quanto uma condição de não atuação deliberada, necessária para demonstrar seletividade em faltas reversas.
+
+\section{Conclusão}
+
+Os resultados obtidos confirmam que a plataforma desenvolvida reproduz, adquire e processa sinais compatíveis com a validação didática das funções de proteção implementadas. As funções 50, 51, 27, 59 e 21 apresentaram respostas coerentes com os ajustes definidos para cada cenário, distinguindo corretamente atuações instantâneas, atuações temporizadas e bloqueio direcional pela função 67. A comparação por DFT mostrou aderência suficiente entre as grandezas simuladas e as estimadas pela ESP32 receptora para sustentar a análise funcional dos ensaios.
+
+Também se verificou que os eventos seriais e a sinalização física do painel complementam os gráficos, permitindo acompanhar o percurso entre a falta simulada, a reprodução analógica, o cálculo embarcado e a decisão final de proteção. Dessa forma, o capítulo demonstrou que a bancada atende ao objetivo de tornar observável a lógica de atuação dos relés em diferentes condições operativas.
+
+As limitações identificadas, especialmente aquelas associadas à cadeia analógica de baixa tensão, ao alinhamento temporal e ao uso do ADC interno da ESP32, não invalidam os resultados, mas delimitam seu escopo. Assim, os ensaios devem ser interpretados como validação funcional e didática do protótipo, e não como caracterização metrológica equivalente à de equipamentos comerciais de proteção ou de teste.
