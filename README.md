@@ -1,4 +1,5 @@
-# 1_phase
+# Plataforma Didática Embarcada para Reprodução de Arquivos COMTRADE
+e Emulação de Relés de Proteção em Sistemas Elétricos de Potência
 
 Projeto de plataforma embarcada para geração e recepção de sinais COMTRADE em uma arquitetura com duas ESP32:
 
