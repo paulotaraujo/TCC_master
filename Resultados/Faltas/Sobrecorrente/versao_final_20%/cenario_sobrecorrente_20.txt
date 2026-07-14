@@ -1,6 +1,0 @@
-mesmos parametros do sistema mostrado na metodologia, com exceção que para simular os degraus de sobre corrente, os seguintes parametros foram modificados:
-
--todas as faltas acontecem a exatos 0,5 segundo do inicio da simulação no matlab e duram 0,5 segundos.
-
--as faltas de sobrecorrente sao obtidas aplicando o curto-circuito trifasico, em 0,5 segundos apos o inicio da simulação, a 19 km do ponto de medição, e mudando a impedancia 
-no ponto da falta para 600 Ohms, para um degrau de 10% da corrente nominal do sistema.
