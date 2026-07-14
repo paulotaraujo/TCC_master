@@ -4,13 +4,108 @@ Este capítulo apresenta a metodologia empregada no desenvolvimento e na valida�
 
 Embora o sistema elétrico simulado seja trifásico, a implementação física analisada neste trabalho é monofásica: um canal de tensão e um canal de corrente, correspondentes à fase selecionada no registro, são reproduzidos e adquiridos. Essa delimitação é compatível com o objetivo de demonstrar, em uma bancada de baixo custo, o encadeamento completo entre falta, oscilografia, grandezas fasoriais e atuação. Os detalhes de implementação, como pinagem, estruturas de dados, protocolo serial e organização interna dos programas, são apresentados no capítulo seguinte.
 
-\hl{A escolha por faltas trifásicas também está associada a essa delimitação. Por serem faltas simétricas, elas permitem analisar uma fase representativa sem perder a coerência do fenômeno fundamental, desde que preservadas as defasagens do sistema trifásico no ambiente de simulação. Assim, a plataforma pôde validar o fluxo completo de geração, conversão COMTRADE, reprodução analógica, aquisição, estimação por DFT e atuação das proteções usando apenas um par tensão-corrente. Essa decisão reduziu a complexidade inicial do protótipo e tornou viável sua implementação com os recursos disponíveis.}
+A escolha por faltas trifásicas também está associada a essa delimitação. Por serem faltas simétricas, elas permitem analisar uma fase representativa sem perder a coerência do fenômeno fundamental, desde que preservadas as defasagens do sistema trifásico no ambiente de simulação. Assim, a plataforma pôde validar o fluxo completo de geração, conversão COMTRADE, reprodução analógica, aquisição, estimação por DFT e atuação das proteções usando apenas um par tensão-corrente. Essa decisão reduziu a complexidade inicial do protótipo e tornou viável sua implementação com os recursos disponíveis.
 
 \section{Caracterização e delimitação da pesquisa}
 
 O trabalho possui natureza aplicada, abordagem experimental e finalidade didática. É aplicado porque propõe uma solução concreta para apoiar o ensino de proteção de sistemas elétricos; experimental porque integra simulação computacional, arquivos de oscilografia, sistemas embarcados, conversão digital-analógica, aquisição analógica e saídas digitais; e didático porque permite observar, em uma mesma plataforma, a relação entre o fenômeno elétrico simulado e a decisão produzida por um relé digital emulado.
 
 A plataforma não pretende substituir relés comerciais nem malas de teste certificadas. Seu propósito é oferecer um ambiente de baixo custo, reconfigurável e repetível para demonstração de conceitos e realização de ensaios acadêmicos. Por essa razão, a metodologia prioriza a rastreabilidade dos parâmetros, a repetibilidade do procedimento e a correspondência entre as grandezas do arquivo COMTRADE e aquelas interpretadas pela unidade receptora.
+
+Um aspecto central dessa delimitação é a diferença de custo e de escopo entre a plataforma proposta e as soluções normalmente empregadas em laboratórios profissionais de proteção. Malas de teste de relés, simuladores digitais em tempo real e bancadas com relés comerciais oferecem maior precisão, isolamento, potência de saída, sincronismo entre canais, suporte técnico e rastreabilidade metrológica. Entretanto, esses recursos estão associados a custos elevados, muitas vezes incompatíveis com a realidade de laboratórios didáticos. Assim, a proposta deste trabalho foi concebida como uma alternativa de experimentação em baixa tensão, voltada à compreensão do fluxo entre oscilografia, reprodução analógica, aquisição, estimação fasorial e decisão de proteção.
+
+As Figuras \ref{fig:bancada-didatica-custo}, \ref{fig:equipamento-omicron-cmc356}, \ref{fig:equipamento-opalrt} e \ref{fig:equipamento-sel-351} ilustram essa diferença de escala a partir de equipamentos reais e da bancada desenvolvida. A comparação visual evidencia que a plataforma proposta não reproduz a robustez física, a capacidade de potência ou o nível de certificação de uma arquitetura comercial; seu valor está na acessibilidade, na reconfiguração e na possibilidade de expor ao estudante as etapas internas do processamento.
+
+\begin{figure}[H]
+  \centering
+  \caption{Bancada didática desenvolvida.}
+  \label{fig:bancada-didatica-custo}
+  \includegraphics[width=0.31\textwidth]{figuras/bancada_board_crop.png}
+  \begin{center}
+    \footnotesize Fonte: Autoria própria.
+  \end{center}
+\end{figure}
+
+Para contextualizar essa diferença, foram consultados preços públicos de componentes utilizados na plataforma e de soluções comerciais de referência. Duas placas ESP32 de desenvolvimento, com preço unitário público da ordem de US\$ 10,00, totalizam aproximadamente US\$ 20,00 \cite{digikey_esp32_price_2026}. O conversor MCP4728 utilizado na geração analógica possui preço público de US\$ 7,50 \cite{adafruit_mcp4728_price_2026}. Assim, considerando apenas os principais componentes eletrônicos da bancada, o custo direto fica na ordem de dezenas de dólares, sem incluir computador, protoboard, cabos, resistores, LEDs e materiais auxiliares já disponíveis no laboratório.
+
+Em comparação, uma mala de testes OMICRON CMC 356 apresenta preço de referência anunciado de US\$ 53.800 \cite{axiom_omicron_cmc356_price_2026}, enquanto seu aluguel semanal aparece em centenas de libras esterlinas \cite{vpess_omicron_cmc356_hire_2026}. Equipamentos equivalentes, como Megger SMRT36 e Doble F6150, também são encontrados em faixas elevadas de compra ou aluguel \cite{testequipmentconnection_megger_smrt36_2026,brandis_doble_f6150_hire_2026}.
+
+\begin{figure}[H]
+  \centering
+  \caption{Mala de teste de relés OMICRON CMC 356.}
+  \label{fig:equipamento-omicron-cmc356}
+  \includegraphics[width=0.36\textwidth]{figuras/equipamento_omicron_cmc356_crop.png}
+  \begin{center}
+    \footnotesize Fonte: OMICRON \cite{omicron_cmc356_product_2026}.
+  \end{center}
+\end{figure}
+
+Sistemas de simulação em tempo real, como OPAL-RT, HYPERSIM ou RTDS, normalmente são comercializados sob cotação; mesmo assim, referências públicas indicam valores de entrada elevados \cite{opalrt_op4500_price_2013}.
+
+\begin{figure}[H]
+  \centering
+  \caption{Simulador em tempo real OPAL-RT.}
+  \label{fig:equipamento-opalrt}
+  \includegraphics[width=0.34\textwidth]{figuras/equipamento_opalrt_op4605xg2_crop.png}
+  \begin{center}
+    \footnotesize Fonte: OPAL-RT \cite{opalrt_op4605xg2_product_2026}.
+  \end{center}
+\end{figure}
+
+Relés comerciais, como o SEL-351, apresentam custo inicial da ordem de alguns milhares de dólares. Entretanto, esse valor representa apenas um dos componentes de uma bancada de testes, que normalmente também requer equipamentos para injeção de tensão e corrente, fonte auxiliar, cabeamento, interfaces de comunicação e softwares de parametrização. Dessa forma, o custo total da infraestrutura é significativamente superior ao do relé isoladamente \cite{sel321_product_2026}.
+
+\begin{figure}[H]
+  \centering
+  \caption{Relé de proteção SEL-351.}
+  \label{fig:equipamento-sel-351}
+  \includegraphics[width=0.34\textwidth]{figuras/equipamento-sel-351.png}
+  \begin{center}
+    \footnotesize Fonte: SEL \cite{sel321_product_2026}.
+  \end{center}
+\end{figure}
+
+\begin{table}[H]
+  \centering
+  \small
+  \caption{Comparação aproximada de custos entre a plataforma proposta e soluções comerciais.}
+  \label{tab:comparacao-custos}
+  \begin{tabular}{>{\raggedright\arraybackslash}p{3.4cm}
+                  >{\raggedright\arraybackslash}p{3.1cm}
+                  >{\raggedright\arraybackslash}p{5.7cm}}
+    \toprule
+    Solução & Valor de referência & Observação \\
+    \midrule
+
+    Plataforma proposta &
+    cerca de US\$ 27,50 &
+    Duas ESP32 e um MCP4728; não inclui itens auxiliares já disponíveis no laboratório. \\
+
+    Malas de teste comerciais &
+    US\$ 53.800; cerca de US\$ 48.662; £872/semana; AU\$ 660/dia &
+    OMICRON CMC 356, Megger SMRT36 e Doble F6150, em compra ou aluguel. \\
+
+    OPAL-RT/RTDS &
+    dezenas de milhares de dólares a valores superiores a R\$ 1 milhão &
+    Sistemas em tempo real dependem de cotação, configuração de I/O, licenças e suporte. \\
+
+    Relés comerciais SEL &
+    cerca de US\$ 3.580 &
+    Preço base do SEL-351. Uma bancada completa exige relés, fonte auxiliar, simulador, cabeamento e infraestrutura adicional. \\
+
+    \bottomrule
+  \end{tabular}
+  \legend{Fonte: Consulta pública a fornecedores, distribuidores e listagens comerciais
+  \cite{digikey_esp32_price_2026,
+        adafruit_mcp4728_price_2026,
+        axiom_omicron_cmc356_price_2026,
+        vpess_omicron_cmc356_hire_2026,
+        testequipmentconnection_megger_smrt36_2026,
+        brandis_doble_f6150_hire_2026,
+        opalrt_op4500_price_2013,
+        sel321_product_2026}.}
+\end{table}
+
+Dessa forma, a comparação de custo reforça a caracterização metodológica do trabalho: trata-se de uma plataforma de apoio ao ensino e à validação funcional preliminar, não de uma solução para ensaios normativos, comissionamento, calibração ou validação metrológica. As soluções comerciais permanecem necessárias quando se exige potência de saída, isolamento, sincronismo multicanal, certificação, suporte de fabricante e rastreabilidade de medição.
 
 \section{Arquitetura metodológica da plataforma}
 

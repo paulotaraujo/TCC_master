@@ -58,11 +58,11 @@ Na unidade geradora foi utilizada uma placa de desenvolvimento de 38 pinos basea
 
 Os dois módulos pertencem à família ESP32 e utilizam processador Xtensa LX6 de 32 bits com dois núcleos e frequência de até \SI{240}{\mega\hertz}, além de \SI{520}{\kibi\byte} de SRAM e interfaces UART, SPI e I\textsuperscript{2}C. O circuito integrado possui dois conversores SAR: o ADC1 dispõe de oito canais e o ADC2 de dez, totalizando até 18 entradas analógicas multiplexadas, com resolução configurável e valor nominal de 12 bits, correspondente a 4096 códigos. A quantidade efetivamente acessível depende dos GPIOs expostos pela placa de desenvolvimento. Neste projeto, a receptora emprega somente duas entradas do ADC1, GPIO35 para tensão e GPIO34 para corrente, ambas configuradas por \texttt{analogReadResolution(12)} e com atenuação \texttt{ADC\_11db}. O uso do ADC1 também mantém a aquisição independente dos canais do ADC2, compartilhados com o subsistema Wi-Fi do ESP32. O ESP32-WROOM-32D opera com alimentação do módulo entre \SIrange{3,0}{3,6}{\volt} e possui antena de placa integrada \cite{espressif_wroom32d,espressif_wroom32}.
 
-\hl{A utilização da ESP32, portanto, representou um compromisso entre custo, disponibilidade e desempenho. Para uma versão ainda acessível, poderiam ser avaliadas plataformas como Raspberry Pi Pico/RP2040, STM32 Nucleo ou Teensy, especialmente quando se deseja maior controle temporal ou interfaces analógicas externas. Para versões mais robustas, voltadas a ensaios com maior exigência de tempo real, sincronismo e número de canais, alternativas como microcontroladores STM32 de maior desempenho, DSPs da família TI C2000, FPGAs ou sistemas de aquisição dedicados poderiam ser consideradas. Essas alternativas, contudo, aumentariam o custo, a complexidade de desenvolvimento e a infraestrutura necessária, afastando parcialmente a proposta do foco didático de baixo custo.}
+A utilização da ESP32, portanto, representou um compromisso entre custo, disponibilidade e desempenho. Para uma versão ainda acessível, poderiam ser avaliadas plataformas como Raspberry Pi Pico/RP2040, STM32 Nucleo ou Teensy, especialmente quando se deseja maior controle temporal ou interfaces analógicas externas. Para versões mais robustas, voltadas a ensaios com maior exigência de tempo real, sincronismo e número de canais, alternativas como microcontroladores STM32 de maior desempenho, DSPs da família TI C2000, FPGAs ou sistemas de aquisição dedicados poderiam ser consideradas. Essas alternativas, contudo, aumentariam o custo, a complexidade de desenvolvimento e a infraestrutura necessária, afastando parcialmente a proposta do foco didático de baixo custo.
 
 O ESP32 dispõe nativamente de somente duas saídas DAC, associadas aos GPIO25 e GPIO26, com resolução de 8 bits, isto é, 256 códigos. Para a geração foi adotado o MCP4728, conversor digital-analógico externo de quatro canais e 12 bits, controlado por I\textsuperscript{2}C e dotado de memória não volátil. A escolha eleva a discretização para 4096 códigos --- 16 vezes mais níveis que o DAC interno --- e permite controlar quatro saídas por uma única interface digital, preservando dois canais para tensão e corrente e dois canais para expansão. Considerando a referência de \SI{3,3}{\volt}, o incremento ideal passa de aproximadamente \SI{12,9}{\milli\volt}, no DAC interno de 8 bits, para cerca de \SI{0,81}{\milli\volt} no MCP4728. Essa resolução mais fina reduz os degraus de quantização na reconstrução das oscilografias e justifica o conversor externo mesmo quando apenas dois canais são reproduzidos. Nesta plataforma, os canais A e B reproduzem, respectivamente, tensão e corrente, enquanto C e D permanecem no nível de repouso \cite{microchip_mcp4728}.
 
-\hl{A escolha do MCP4728 seguiu a mesma lógica adotada para a ESP32: disponibilidade, baixo custo, simplicidade de integração e compatibilidade com a proposta didática. O conversor oferece quatro saídas analógicas de 12 bits por interface I\textsuperscript{2}C, o que foi suficiente para a reprodução de tensão e corrente de uma fase, mantendo ainda dois canais disponíveis. Entretanto, essa escolha também limita a expansão direta para uma bancada trifásica completa. Para reproduzir simultaneamente três tensões e três correntes seriam necessários, no mínimo, seis canais analógicos de saída, além de uma cadeia de aquisição correspondente na unidade receptora. Em uma evolução do projeto, poderiam ser empregados DACs multicanais com maior taxa de atualização, conversores com interface SPI, módulos de aquisição e geração dedicados ou placas de aquisição de dados com sincronismo entre canais.}
+A escolha do MCP4728 seguiu a mesma lógica adotada para a ESP32: disponibilidade, baixo custo, simplicidade de integração e compatibilidade com a proposta didática. O conversor oferece quatro saídas analógicas de 12 bits por interface I\textsuperscript{2}C, o que foi suficiente para a reprodução de tensão e corrente de uma fase, mantendo ainda dois canais disponíveis. Entretanto, essa escolha também limita a expansão direta para uma bancada trifásica completa. Para reproduzir simultaneamente três tensões e três correntes seriam necessários, no mínimo, seis canais analógicos de saída, além de uma cadeia de aquisição correspondente na unidade receptora. Em uma evolução do projeto, poderiam ser empregados DACs multicanais com maior taxa de atualização, conversores com interface SPI, módulos de aquisição e geração dedicados ou placas de aquisição de dados com sincronismo entre canais.
 
 \begin{table}[H]
   \centering
@@ -446,6 +446,18 @@ em que $K_V$ e $K_I$ são lidos do JSON. Como a geradora utiliza amplitude útil
 
 O \textit{firmware} também estima um limite máximo de variação entre amostras a partir da amplitude nominal, da frequência e da taxa de amostragem. Saltos superiores a seis vezes a variação prevista são substituídos pelo valor anterior e o ciclo recebe uma marca de \textit{outlier}. Esse mecanismo evita que impulsos isolados dominem a DFT, mas deve ser acompanhado, pois uma filtragem excessiva também pode ocultar transitórios reais.
 
+\subsection{Influência da quantização e do offset na aquisição dos sinais}
+
+Durante o desenvolvimento da plataforma observou-se que a reconstrução das grandezas elétricas não dependia apenas da correta aplicação dos fatores de escala entre o DAC e o ADC. Em diversos ensaios verificou-se a presença de pequenas diferenças entre o valor médio esperado e o valor efetivamente adquirido pela unidade receptora, mesmo quando a reprodução permanecia em condição de pré-falta.
+
+Inicialmente, esse comportamento foi atribuído exclusivamente ao \textit{offset} introduzido pela cadeia analógica de aquisição. Entretanto, verificou-se que parte desse efeito estava associada ao próprio processo de quantização decorrente da resolução finita do conversor digital-analógico MCP4728 e do conversor analógico-digital interno da ESP32. Como ambos os dispositivos representam os sinais por níveis discretos, pequenas variações próximas ao nível médio podem produzir erros de arredondamento de alguns níveis de quantização (\textit{Least Significant Bit} -- LSB), deslocando ligeiramente a estimativa do componente contínuo.
+
+Embora esses erros sejam reduzidos quando comparados à amplitude nominal dos sinais, sua presença torna-se perceptível durante a estimação do valor médio, do valor eficaz e dos fasores fundamentais obtidos pela DFT. Em particular, pequenas diferenças no componente contínuo podem introduzir variações na magnitude estimada da tensão e da corrente, afetando indiretamente o cálculo da impedância aparente utilizada pela função ANSI~21.
+
+Para reduzir esse comportamento, foram adotadas diferentes estratégias durante a implementação. A unidade receptora realiza múltiplas conversões consecutivas do ADC para cada instante de amostragem, utilizando a média dessas leituras como valor representativo do sinal. Em seguida, um filtro de primeira ordem estima continuamente o nível médio das amostras, removendo o componente contínuo antes do processamento fasorial. Posteriormente, fatores de calibração são aplicados às escalas de tensão e corrente, compensando diferenças sistemáticas observadas entre os valores nominais presentes no arquivo \texttt{config.json} e aqueles efetivamente reconstruídos pela cadeia DAC--ADC.
+
+A experiência obtida durante os ensaios mostrou que a compensação do \textit{offset}, isoladamente, não era suficiente para eliminar todas as discrepâncias observadas. A consideração dos efeitos de quantização e a posterior calibração das escalas reduziram significativamente essas diferenças, proporcionando maior estabilidade às estimativas RMS e fasoriais utilizadas pelas funções de proteção implementadas.
+
 \subsection{Delimitação dos ciclos e controle de qualidade}
 
 Os ciclos são delimitados pelas passagens ascendentes da tensão por zero após a remoção do \textit{offset}. Uma histerese impede múltiplas detecções produzidas por ruído próximo ao cruzamento. Entre duas passagens, o \textit{firmware} armazena até 160 pares de amostras.
@@ -695,6 +707,155 @@ Na receptora, quando o laço principal está atrasado mais de quatro períodos, 
 O processador COMTRADE foi delimitado a registros binários e utiliza os dois primeiros canais analógicos como tensão e corrente. O \textit{parser} lê até 160 linhas do arquivo \texttt{.cfg} e a implementação não contempla todas as combinações previstas pela norma, múltiplas taxas de amostragem no mesmo registro nem reprodução trifásica completa. Arquivos fora desse subconjunto precisam ser convertidos e reorganizados antes do ensaio.
 
 Na cadeia analógica, o DAC e o ADC possuem resolução nominal de 12 bits, mas a resolução efetiva é afetada por ruído, não linearidade, variação da referência, \textit{offset} e montagem em protoboard. O deslocamento de \SI{1,65}{\volt} permite representar grandezas alternadas dentro da faixa unipolar, mas reduz a margem até os limites de saturação. A média de oito leituras, a estimação recursiva do \textit{offset} e os fatores de correção de escala atenuam parte da dispersão e do erro de ganho, sem substituir condicionamento analógico, isolamento e calibração metrológica. Por isso, a plataforma é adequada à demonstração didática e à comparação funcional das proteções, mas seus resultados não devem ser interpretados como equivalentes aos de um relé comercial ou de um sistema de aquisição certificado.
+
+\section{Testes de implementação e dificuldades encontradas}
+
+O desenvolvimento da plataforma não ocorreu de forma linear, sendo continuamente refinado à medida que novos ensaios experimentais eram realizados. Embora a arquitetura conceitual tenha sido definida desde o início do projeto, diversas decisões de implementação precisaram ser revistas após a observação de limitações impostas pela comunicação serial, pela capacidade de processamento da ESP32, pela disponibilidade de memória RAM, pela temporização da reprodução das amostras e pelas características dos conversores analógico-digitais empregados.
+
+Diferentemente de uma implementação puramente computacional, a plataforma proposta integra diferentes camadas de hardware e software, incluindo simulação em MATLAB/Simulink, registros COMTRADE, comunicação serial, processamento embarcado, conversão digital--analógica, aquisição analógica e algoritmos digitais de proteção. Dessa forma, pequenas limitações observadas em qualquer uma dessas etapas refletiam diretamente no desempenho do sistema completo.
+
+Assim, a arquitetura final apresentada neste trabalho é resultado de sucessivas etapas de experimentação, nas quais diferentes estratégias foram implementadas, avaliadas e, quando necessário, substituídas por soluções mais robustas. As subseções seguintes descrevem os principais desafios encontrados durante o desenvolvimento e as decisões de projeto que conduziram à arquitetura atualmente empregada.
+
+\begin{table}[H]
+  \centering
+  \small
+  \caption{Resumo da evolução da arquitetura proposta durante a implementação.}
+  \label{tab:evolucao-plataforma}
+  \begin{tabular}{p{3.2cm}p{5.1cm}p{5.2cm}}
+    \toprule
+    Aspecto &
+    Limitação observada &
+    Solução incorporada à arquitetura final \\
+    \midrule
+
+    Reprodução dos sinais &
+    A transmissão contínua das amostras pela interface serial provocava perdas de dados e deformações na forma de onda reproduzida. &
+    Transferência integral do registro COMTRADE para a memória da ESP32 e reprodução completamente local das formas de onda. \\
+
+    Inicialização da plataforma &
+    O curto intervalo de pré-falta existente no COMTRADE não era suficiente para estabilizar as estimativas de tensão e corrente. &
+    Implementação do modo de reprodução contínua da condição de pré-falta e posterior criação do arquivo \texttt{config.json}. \\
+
+    Gerenciamento de memória &
+    O armazenamento contínuo dos ciclos de pré-falta provocava elevado consumo de memória e degradação da reprodução temporal. &
+    Implementação de um buffer circular para reutilização contínua da memória durante a reprodução. \\
+
+    Taxa de amostragem &
+    Frequências elevadas aumentavam significativamente a carga computacional e o consumo de memória, comprometendo a temporização da reprodução. &
+    Definição experimental da frequência de 1000 amostras por segundo como compromisso entre fidelidade temporal e capacidade computacional da plataforma. \\
+
+    Aquisição analógica &
+    Características do DAC, do ADC e dos efeitos de quantização produziam desvios de offset e diferenças entre as grandezas reproduzidas e adquiridas. &
+    Implementação de compensação digital do componente contínuo, média de múltiplas conversões, calibração automática das escalas e utilização do arquivo \texttt{config.json}. \\
+
+    \bottomrule
+  \end{tabular}
+  \legend{Fonte: Autoria própria.}
+\end{table}
+
+\subsection{Evolução da estratégia de reprodução das formas de onda}
+
+A primeira versão da plataforma foi concebida utilizando o computador como responsável pela transmissão contínua das amostras do registro COMTRADE diretamente para a ESP32 geradora. Nessa arquitetura, cada amostra era enviada individualmente pela interface serial e imediatamente convertida em tensão analógica pelo conversor digital--analógico MCP4728, buscando reproduzir em tempo real a forma de onda originalmente presente no arquivo de oscilografia.
+
+Embora essa abordagem apresentasse implementação relativamente simples, os primeiros ensaios experimentais evidenciaram que a elevada taxa de transmissão necessária para reproduzir sinais contendo centenas ou milhares de amostras por segundo excedia a capacidade prática da cadeia de comunicação serial e do processamento embarcado. Como consequência, parte das amostras deixava de ser processada dentro do intervalo temporal previsto, ocasionando perdas durante a transmissão e comprometendo a continuidade da forma de onda reproduzida.
+
+As principais consequências observadas foram pequenas descontinuidades entre amostras consecutivas, alterações instantâneas da amplitude e perda das características senoidais do sinal original. Como os algoritmos de proteção implementados dependem diretamente da correta preservação das relações temporais entre as amostras, concluiu-se que essa arquitetura não apresentava robustez suficiente para aplicações de proteção digital.
+
+A partir desses resultados, optou-se por modificar completamente a estratégia de reprodução adotada pela unidade geradora. Em vez de transmitir continuamente todas as amostras durante o ensaio, passou-se a transferir inicialmente o registro COMTRADE completo para a memória da ESP32. Dessa forma, o processamento do arquivo, a interpretação das escalas, a geração dos quadros de reprodução e a temporização das amostras passaram a ser executados localmente pela própria unidade embarcada, reduzindo significativamente a dependência da comunicação serial durante a execução dos ensaios.
+
+Na arquitetura atualmente empregada, o computador atua apenas como elemento de configuração da plataforma, sendo responsável pela transferência dos arquivos COMTRADE, pelo envio dos comandos de operação e pelo recebimento das informações produzidas pela unidade receptora. Todo o processo de reprodução temporal das formas de onda ocorre de maneira autônoma na ESP32 geradora, proporcionando maior estabilidade durante a execução dos ensaios.
+
+\subsection{Reprodução contínua do estado de pré-falta}
+
+A transferência do registro COMTRADE completo para a memória da ESP32 eliminou os problemas associados à transmissão contínua das amostras pela interface serial. Entretanto, durante os primeiros ensaios experimentais observou-se uma nova limitação relacionada ao processo de inicialização da unidade receptora.
+
+Inicialmente, a determinação das escalas de tensão e corrente era realizada diretamente pela unidade receptora a partir dos primeiros ciclos reproduzidos pela unidade geradora. Dessa forma, antes que qualquer ensaio pudesse ser iniciado, era necessário que o receptor observasse alguns ciclos em regime permanente para estimar corretamente os valores de referência utilizados pelos algoritmos de processamento digital.
+
+Entretanto, os registros COMTRADE empregados durante os ensaios possuem duração relativamente reduzida, normalmente contendo apenas alguns segundos de aquisição. Como consequência, boa parte do intervalo disponível era consumida durante a estabilização das grandezas elétricas, reduzindo significativamente o tempo útil destinado à reprodução do evento de falta propriamente dito. Em alguns cenários, o processamento inicial sequer era concluído antes do término da reprodução do arquivo.
+
+Para contornar essa limitação foi desenvolvido um modo de reprodução contínua do estado de pré-falta. Nesse modo de operação, a unidade geradora permanece reproduzindo continuamente apenas os ciclos anteriores ao instante da falta, permitindo que a unidade receptora estabilize as estimativas de tensão, corrente, frequência, valor eficaz e componente contínuo antes da realização do ensaio. Somente após o recebimento do comando correspondente a unidade geradora interrompe a reprodução cíclica do estado de pré-falta e executa integralmente o registro COMTRADE contendo o evento elétrico de interesse.
+
+Essa estratégia apresentou duas vantagens importantes. A primeira consiste na possibilidade de iniciar todos os ensaios sempre a partir de uma condição estacionária bem definida, reduzindo diferenças entre execuções sucessivas. A segunda decorre da possibilidade de manter os algoritmos de processamento digital completamente estabilizados antes da ocorrência da falta, aproximando o comportamento da plataforma daquele observado em relés comerciais, que permanecem continuamente monitorando o sistema elétrico antes da ocorrência de qualquer distúrbio.
+
+\subsection{Automatização da configuração da plataforma}
+
+Embora o modo de reprodução contínua do estado de pré-falta tenha resolvido o problema de estabilização inicial das grandezas elétricas, o procedimento de configuração da plataforma ainda exigia que a unidade receptora determinasse experimentalmente diversas informações referentes às escalas de tensão e corrente para cada novo arquivo COMTRADE reproduzido. Como consequência, diferentes registros exigiam novos procedimentos de configuração antes da realização dos ensaios.
+
+Durante a evolução da plataforma observou-se que todas essas informações já estavam naturalmente disponíveis na unidade geradora durante o processamento local do arquivo COMTRADE. Afinal, a interpretação do arquivo exigia a leitura dos fatores de conversão, dos valores nominais das grandezas elétricas, da frequência nominal do sistema e das escalas utilizadas na reprodução analógica.
+
+Dessa forma, optou-se por centralizar esse processamento na unidade geradora. Após interpretar completamente o registro COMTRADE, a ESP32 passou a gerar automaticamente um arquivo de configuração, denominado \texttt{config.json}, contendo todas as informações necessárias para a inicialização da unidade receptora, incluindo frequência nominal, taxa de amostragem, fatores de escala de tensão e corrente, valores nominais das grandezas reproduzidas e demais parâmetros utilizados durante o processamento digital.
+
+Com essa modificação, a unidade receptora deixou de depender da determinação experimental dessas grandezas durante sua inicialização. Em vez disso, passou a receber previamente todas as informações necessárias para sua configuração, restando apenas a execução do procedimento de calibração automática responsável por compensar pequenas diferenças introduzidas pela cadeia analógica de reprodução e aquisição.
+
+Além de simplificar significativamente o processo de configuração da plataforma, essa abordagem tornou os ensaios mais reprodutíveis, uma vez que todas as informações empregadas pela unidade receptora passaram a ser derivadas diretamente do mesmo registro COMTRADE utilizado pela unidade geradora. Dessa forma, reduziu-se a possibilidade de inconsistências entre os parâmetros empregados pelas duas unidades embarcadas, aumentando a confiabilidade da plataforma durante a realização dos experimentos.
+
+\subsection{Gerenciamento da memória e reprodução contínua}
+
+A implementação do modo de reprodução contínua introduziu um novo desafio relacionado ao gerenciamento da memória disponível na ESP32. Nas primeiras versões do firmware, os ciclos correspondentes ao estado de pré-falta permaneciam continuamente armazenados em memória para permitir sua repetição durante todo o processo de inicialização da unidade receptora.
+
+Embora funcional, essa abordagem apresentava baixa eficiência no uso da memória RAM do microcontrolador. À medida que registros COMTRADE contendo maior número de amostras passaram a ser utilizados, observou-se aumento significativo da ocupação de memória, reduzindo os recursos disponíveis para as demais tarefas executadas pela unidade geradora.
+
+Durante os ensaios experimentais verificou-se que essa limitação provocava degradação progressiva da temporização da reprodução, incluindo perda de sincronismo entre amostras consecutivas, deformações na forma de onda analógica e, em alguns casos, interrupções da reprodução contínua. Embora esse comportamento esteja diretamente relacionado às limitações inerentes ao hardware empregado, tornou-se evidente a necessidade de modificar completamente a estratégia de armazenamento adotada até então.
+
+Como solução foi implementado um buffer circular para gerenciamento das amostras reproduzidas. Nessa arquitetura, novas amostras são continuamente inseridas no buffer enquanto aquelas já reproduzidas são imediatamente descartadas, permitindo a reutilização permanente do espaço de memória anteriormente ocupado. Dessa forma, o consumo de memória permaneceu praticamente constante durante toda a execução do ensaio, independentemente do tempo de reprodução do estado de pré-falta.
+
+Além da redução significativa do consumo de memória, a utilização do buffer circular contribuiu para aumentar a estabilidade temporal da reprodução, reduzindo perdas de sincronismo e permitindo a execução contínua dos ensaios sem degradação perceptível das formas de onda reproduzidas.
+
+\subsection{Definição da taxa de amostragem da plataforma}
+
+Outro aspecto investigado durante o desenvolvimento foi a influência da taxa de amostragem sobre a fidelidade temporal da reprodução das formas de onda. Em princípio, quanto maior a quantidade de amostras por segundo presente no registro COMTRADE, maior tende a ser a aproximação entre o sinal reproduzido pela plataforma e a forma de onda originalmente obtida durante a simulação ou aquisição do sistema elétrico.
+
+Entretanto, verificou-se experimentalmente que o aumento da frequência de amostragem produz efeitos diretos sobre praticamente todas as etapas da arquitetura embarcada. Taxas mais elevadas implicam aumento proporcional da quantidade de amostras armazenadas em memória, maior ocupação dos buffers utilizados pela reprodução contínua, maior volume de dados processados pelo microcontrolador e maior rigor na temporização necessária para reproduzir cada amostra exatamente no instante definido pelo registro COMTRADE.
+
+Durante os primeiros ensaios foram avaliadas diferentes frequências de amostragem superiores a 1000 amostras por segundo. Embora essas configurações proporcionassem representação mais detalhada da forma de onda, verificou-se que o aumento da carga computacional exigida pela plataforma comprometia progressivamente sua capacidade de manter a temporização originalmente especificada pelo arquivo COMTRADE.
+
+À medida que a taxa de amostragem aumentava, tornavam-se perceptíveis perdas de sincronismo entre amostras consecutivas, sobreposição de quadros de reprodução, degradação da temporização do buffer circular e deformações na forma de onda analógica produzida pelo conversor digital--analógico. Em situações mais críticas, parte das amostras deixava de ser reproduzida no instante correto, comprometendo a fidelidade temporal do sinal reconstruído.
+
+Esses resultados evidenciaram que o aumento indiscriminado da frequência de amostragem não resultava necessariamente em melhoria da qualidade final da reprodução. Embora o sinal passasse a possuir maior resolução temporal, a limitação dos recursos computacionais disponíveis fazia com que essa informação adicional não pudesse ser processada de maneira suficientemente determinística, produzindo efeito contrário ao desejado.
+
+Após sucessivos ensaios experimentais, adotou-se a frequência de 1000 amostras por segundo como compromisso entre fidelidade temporal, utilização da memória disponível, capacidade de processamento da ESP32 e estabilidade da reprodução. Nessa configuração verificou-se que as características fundamentais do sinal, incluindo amplitude, frequência, fase e conteúdo harmônico de interesse para a estimação RMS e fasorial, permaneciam preservadas, possibilitando a correta execução das funções ANSI implementadas sem comprometer a repetibilidade dos experimentos.
+
+\subsection{Compensação de offset e efeitos da quantização}
+
+Durante a validação da cadeia de reprodução e aquisição observou-se que pequenas diferenças entre o sinal reproduzido pela unidade geradora e aquele adquirido pela unidade receptora produziam desvios perceptíveis na estimação do componente contínuo, dos valores eficazes e, consequentemente, das grandezas fasoriais utilizadas pelas funções de proteção. A investigação desse comportamento indicou que essas diferenças estavam associadas à combinação dos efeitos de offset, às características dos conversores analógico-digitais empregados e ao próprio processo de quantização presente na cadeia DAC--ADC.
+
+Uma das primeiras estratégias investigadas consistiu na implementação de uma malha de realimentação utilizando o próprio sinal analógico produzido pela unidade geradora. A ideia era monitorar continuamente a tensão reproduzida e corrigir automaticamente pequenos desvios de offset, alinhando o sinal ao ponto de operação previamente definido antes de sua transmissão para a unidade receptora.
+
+Entretanto, verificou-se experimentalmente que essa abordagem não apresentava o comportamento esperado quando a unidade receptora era conectada ao sistema. Como o sinal utilizado pela malha de realimentação era simultaneamente aplicado à entrada analógica da ESP32 receptora, a própria carga introduzida pelo circuito de aquisição modificava as características elétricas observadas pela malha de controle. Em consequência, a realimentação deixava de representar fielmente o sinal efetivamente produzido pelo conversor digital--analógico, introduzindo oscilações adicionais e comprometendo a estabilidade do processo de compensação.
+
+Embora essa estratégia tenha demonstrado potencial para aplicações futuras envolvendo circuitos dedicados de condicionamento analógico, optou-se por não incorporá-la à arquitetura final da plataforma, concentrando os esforços na compensação realizada diretamente durante o processamento digital executado pela unidade receptora.
+
+A solução atualmente empregada combina diferentes mecanismos de correção. Inicialmente são realizadas múltiplas conversões consecutivas do conversor analógico--digital, utilizando-se a média dessas leituras para reduzir a influência da quantização e do ruído instantâneo. Em seguida, um estimador do componente contínuo acompanha continuamente pequenas variações do nível DC presente nos sinais adquiridos, permitindo sua compensação antes da estimação RMS e fasorial. Finalmente, um procedimento de calibração automática ajusta os fatores de escala de tensão e corrente utilizando como referência os parâmetros previamente calculados pela unidade geradora e disponibilizados por meio do arquivo \texttt{config.json}.
+
+Os ensaios realizados mostraram que essa abordagem apresentou desempenho significativamente superior ao obtido pela estratégia baseada em realimentação analógica. Além de eliminar problemas de estabilidade observados durante os primeiros experimentos, a compensação digital tornou a plataforma menos sensível às variações introduzidas pelas características individuais dos conversores analógico-digitais utilizados em cada unidade embarcada. Como consequência, verificou-se maior estabilidade das estimativas RMS e fasoriais empregadas pelas funções ANSI implementadas, aumentando a repetibilidade dos resultados obtidos durante os ensaios experimentais.
+
+\subsection{Validação da cadeia de aquisição e reprodução}
+
+Após a consolidação da arquitetura da unidade geradora, foram realizados ensaios destinados à validação completa da cadeia de reprodução e aquisição dos sinais. Essa etapa teve como principal objetivo verificar se as grandezas elétricas reconstruídas pela unidade receptora preservavam as características fundamentais presentes nos registros COMTRADE utilizados como referência, assegurando condições adequadas para a execução das funções de proteção.
+
+Inicialmente foram realizados ensaios utilizando sinais senoidais em regime permanente, permitindo avaliar individualmente o comportamento da reprodução analógica, da aquisição realizada pelo conversor analógico--digital, da estimação dos valores eficazes e da estabilidade do componente contínuo. Esses testes possibilitaram validar separadamente cada etapa do processamento antes da integração completa da plataforma.
+
+Na sequência, passaram a ser utilizados registros COMTRADE completos contendo diferentes cenários de operação e de falta obtidos a partir das simulações desenvolvidas no MATLAB/Simulink. A comparação entre as formas de onda originais e aquelas reconstruídas pela unidade receptora permitiu avaliar a influência da cadeia de reprodução sobre parâmetros como amplitude, frequência, sincronismo temporal e estabilidade das estimativas RMS e fasoriais.
+
+Os ensaios também permitiram validar o funcionamento conjunto do arquivo \texttt{config.json}, da reprodução contínua da condição de pré-falta e do procedimento de calibração automática executado pela unidade receptora. Verificou-se que essa integração reduziu significativamente o tempo necessário para preparação dos experimentos, além de aumentar a repetibilidade dos resultados obtidos entre diferentes execuções de um mesmo cenário de ensaio.
+
+De maneira geral, a validação da cadeia de aquisição demonstrou que a arquitetura desenvolvida foi capaz de reproduzir de forma consistente as grandezas elétricas presentes nos registros COMTRADE, fornecendo sinais suficientemente estáveis para o processamento digital e para a execução das funções de proteção implementadas.
+
+\subsection{Validação das funções de proteção}
+
+Após a validação da cadeia de aquisição e reprodução dos sinais, iniciou-se a etapa de verificação das funções de proteção implementadas na unidade receptora. Essa estratégia permitiu separar eventuais limitações decorrentes da aquisição das grandezas elétricas daquelas relacionadas à implementação dos algoritmos de proteção propriamente ditos.
+
+As funções ANSI 27, ANSI 59, ANSI 50 e ANSI 51 foram inicialmente avaliadas utilizando sinais senoidais gerados pela própria plataforma, possibilitando verificar individualmente os critérios de atuação instantânea, temporização, histerese e reinicialização dos temporizadores. Posteriormente, essas mesmas funções passaram a ser submetidas a registros COMTRADE contendo diferentes condições operativas e cenários de falta, permitindo validar seu comportamento diante de eventos elétricos representativos.
+
+Em seguida foram avaliadas as funções ANSI 21 e ANSI 67, cujo funcionamento depende diretamente da correta estimação fasorial das grandezas elétricas adquiridas. Durante essa etapa verificou-se que pequenas diferenças introduzidas na magnitude ou no ângulo dos fasores refletiam imediatamente na impedância aparente calculada e, consequentemente, na decisão de atuação da proteção de distância. Essa característica reforçou a importância das etapas anteriores de calibração, sincronização temporal e compensação de offset para a obtenção de resultados consistentes.
+
+Também foram realizados ensaios destinados à validação da lógica de integração entre as diferentes funções implementadas, incluindo a supervisão direcional da função ANSI 67, a temporização da Zona~2 da proteção de distância, a retenção do estado de \textit{trip}, a reinicialização das proteções e a sinalização local por meio dos LEDs e da interface serial. Esses ensaios permitiram verificar não apenas a atuação individual de cada algoritmo, mas também seu comportamento durante a operação conjunta da plataforma, reproduzindo condições mais próximas daquelas encontradas em aplicações reais.
+
+Os resultados obtidos demonstraram que a estratégia de validação incremental adotada durante o desenvolvimento contribuiu significativamente para aumentar a confiabilidade da plataforma. A verificação individual de cada componente, seguida da integração progressiva dos módulos de hardware e software, permitiu identificar e corrigir limitações ainda nas fases iniciais de desenvolvimento, reduzindo o impacto dessas inconsistências durante os ensaios finais de validação.
+
+Em síntese, os testes realizados ao longo do desenvolvimento demonstraram que a evolução da arquitetura da plataforma foi fortemente influenciada pelos resultados experimentais obtidos em cada etapa de implementação. Diversas soluções inicialmente consideradas adequadas mostraram-se insuficientes quando submetidas à operação em tempo real, exigindo sucessivos refinamentos tanto na arquitetura de hardware quanto na implementação do firmware embarcado.
+
+As modificações introduzidas ao longo desse processo resultaram em uma plataforma significativamente mais robusta, capaz de reproduzir registros COMTRADE de maneira estável, realizar a aquisição sincronizada das grandezas elétricas e executar algoritmos de proteção digital de forma consistente. As soluções apresentadas nesta seção constituem a base da arquitetura utilizada nos experimentos descritos no capítulo seguinte, no qual são apresentados os resultados obtidos durante a validação funcional da plataforma desenvolvida.
 
 \section{Conclusão}
 
