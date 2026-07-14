@@ -1,0 +1,52 @@
+Relatório de comparação - Sobretensão 30%
+Gerado em: 2026-06-27 23:11:28
+
+Arquivos usados:
+  MAT: faseA_fourier_sobretensao_30.mat
+  CSV: trimmed_sobretensao_30_embedded.csv
+  Figura: sobreposicao_fdt_sobretensao_15_trips_59.png
+  Figura PDF: sobreposicao_fdt_sobretensao_15_trips_59.pdf
+  Tabela de métricas: metricas_erro_tensao_sobretensao_15.csv
+
+Parâmetros gerais:
+  Tfinal = 2 s
+  Nref = 2001 amostras
+  Método de interpolação = pchip
+  Coluna de tempo CSV = host_t_s
+  Coluna de tensão FDT CSV = v1_mag
+  Converter MAT pico -> RMS = 1
+  Suavizar CSV = 1
+  Janela de média móvel CSV = 9 amostras
+  Alinhar CSV por amplitude temporal = 1
+  Janela RMS temporal CSV = 25 amostras
+
+Variáveis MAT usadas:
+  Tensão: Vin, canal 1
+
+Alinhamento temporal:
+  Degrau temporal CSV = 0.498240519 s
+  Degrau FDT CSV = 0.515972171 s
+  Deslocamento aplicado no FDT CSV = -0.017731652 s = -17.732 ms
+  Regra aplicada: t_csv_corrigido = t_csv + deslocamento
+
+Proteção 59:
+  Tensão nominal = 256248.438 V
+  Tensão em regime permanente da falta = 308557.374 V
+  Pickup 59 instantâneo = 358747.812 V
+  Pickup 59 temporizado = 281873.281 V
+  Primeiro pickup 59 instantâneo = NaN s
+  Primeiro trip 59 instantâneo = NaN s
+  Atraso trip 59 instantâneo após pickup = NaN s
+  Primeiro pickup 59 temporizado = 0.497872008 s
+  Primeiro trip 59 temporizado = 0.582268348 s
+  Atraso trip 59 temporizado após pickup = 0.084396340 s
+
+Resumo da comparação da tensão FDT usando Simulink como referência:
+  Tensão FDT CSV x MAT     | RMSE = 24373.5 | MAE = 5756.37 | Max = 258052 | Erro pico = 7.907030 %
+
+Erro percentual da tensão FDT entre Simulink e ESP32 receptora:
+  MAE                   = 5756.37 V
+  RMSE                  = 24373.5 V
+  MaxAbs                = 258052 V
+  Erro relativo ao pico = 7.907030 %
+  NRMSE                 = 7.907030 %

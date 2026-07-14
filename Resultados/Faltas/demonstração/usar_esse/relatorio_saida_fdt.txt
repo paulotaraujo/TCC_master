@@ -1,0 +1,34 @@
+CSV: coluna de tensao Fourier/FDT usada: v1_mag
+CSV: coluna de corrente Fourier/FDT usada: i1_mag
+CSV: amostras totais = 2001 | amostras usadas apos filtros = 116
+MAT: aplicado fator 1/sqrt(2) em tensao FDT e corrente FDT para converter pico -> RMS.
+
+Alinhamento automatico do CSV Fourier/FDT:
+  Deslocamento aplicado ao tempo do CSV: 0.001022395 s = 1.022 ms
+  Regra usada: t_csv_alinhado = t_csv + deslocamento
+
+Variaveis MAT usadas:
+  Tensao FDT  : Vin, canal 1
+  Corrente FDT: Iin, canal 1
+
+Resumo da comparacao FDT usando o Simulink como referencia:
+  FDT Tensao CSV x MAT     | RMSE = 30718 | MAE = 7743.42 | Max = 255978 | Erro pico = 11.085703 %
+  FDT Corrente CSV x MAT   | RMSE = 179.936 | MAE = 55.0063 | Max = 1499.63 | Erro pico = 6.007868 %
+
+============================================================
+Erro percentual FDT entre Simulink e ESP32 receptora
+Referencia: Simulink | Sinal comparado: ESP32 receptora
+============================================================
+Tensao FDT:
+  MAE                   = 7743.42 V
+  RMSE                  = 30718 V
+  Erro relativo ao pico = 11.085703 %
+  NRMSE                 = 11.085703 %
+
+Corrente FDT:
+  MAE                   = 55.0063 A
+  RMSE                  = 179.936 A
+  Erro relativo ao pico = 6.007868 %
+  NRMSE                 = 6.007868 %
+
+Tabela de erro salva em: figuras_fourier_fdt/metricas_erro_fdt_simulink_esp32.csv

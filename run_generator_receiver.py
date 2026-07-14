@@ -190,7 +190,7 @@ def _probe_rx_binary(label: str, port: str | None, baud: int, timeout_s: float) 
 
 def main() -> None:
     root = Path(__file__).resolve().parent
-    default_gen = root / "generator/pyhton/v_6/generate_signal_v6.py"
+    default_gen = root / "generator/python/embedded_generator/run_embedded_generator.py"
     default_rx = root / "receiver/python/v_1/read_from_generator_rms_robust.py"
 
     parser = argparse.ArgumentParser(
@@ -214,7 +214,7 @@ def main() -> None:
         "--no-prepare-config-first",
         dest="prepare_config_first",
         action="store_false",
-        help="Desativa pré-geração do receiver-config.json.",
+        help="Desativa a pré-geração do config.json.",
     )
     parser.add_argument(
         "--stop-on-first-exit",
@@ -243,7 +243,7 @@ def main() -> None:
         help="Timeout (s) para checagem READY/OCC de cada porta serial.",
     )
 
-    # Gerador (baseado no generate_signal_v6.py)
+    # Gerador (baseado no run_embedded_generator.py)
     parser.add_argument("--gen-cfg", required=True, help="Caminho do .cfg do COMTRADE")
     parser.add_argument("--gen-bdat", required=True, help="Caminho do .bdat do COMTRADE")
     parser.add_argument("--gen-port", default=None, help="Porta serial da ESP32 geradora")
@@ -315,7 +315,7 @@ def main() -> None:
     if args.gen_receiver_config:
         receiver_cfg = _resolve_existing_path(args.gen_receiver_config, [Path.cwd(), root_guess])
     else:
-        receiver_cfg = (Path.cwd() / f"{gen_cfg.stem}_receiver_config.json").resolve()
+        receiver_cfg = (Path.cwd() / "config.json").resolve()
     rx_config = _resolve_existing_path(args.rx_config, [Path.cwd(), root_guess]) if args.rx_config else receiver_cfg
 
     # Saída canônica única do CSV no root do projeto.
@@ -412,7 +412,7 @@ def main() -> None:
         prep_cmd = list(gen_cmd)
         if "--export-config-only" not in prep_cmd:
             prep_cmd.append("--export-config-only")
-        print("[CTRL] Pré-gerando receiver-config.json...")
+        print("[CTRL] Pré-gerando config.json...")
         prep = subprocess.run(prep_cmd, text=True)
         if prep.returncode != 0:
             raise SystemExit(f"Falha ao pré-gerar config do receptor (exit={prep.returncode})")

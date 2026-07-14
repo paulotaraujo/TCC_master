@@ -1,0 +1,52 @@
+Relatório de comparação - Sobrecorrente 50%
+Gerado em: 2026-06-27 21:31:56
+
+Arquivos usados:
+  MAT: faseA_fourier_sobrecorrente_50.mat
+  CSV: trimmed_sobrecorrente_50_embedded.csv
+  Figura: sobreposicao_fdt_sobrecorrente_50_trips_50_51.png
+  Figura PDF: sobreposicao_fdt_sobrecorrente_50_trips_50_51.pdf
+  Tabela de métricas: metricas_erro_corrente_sobrecorrente_50.csv
+
+Parâmetros gerais:
+  Tfinal = 2 s
+  Nref = 2001 amostras
+  Método de interpolação = pchip
+  Coluna de tempo CSV = host_t_s
+  Coluna de corrente FDT CSV = i1_mag
+  Converter MAT pico -> RMS = 1
+  Suavizar CSV = 1
+  Janela de média móvel CSV = 9 amostras
+  Alinhar CSV por amplitude temporal = 1
+  Janela RMS temporal CSV = 25 amostras
+
+Variáveis MAT usadas:
+  Corrente: Iin, canal 1
+
+Alinhamento temporal:
+  Degrau temporal CSV = 0.515851281 s
+  Degrau FDT CSV = 0.533824937 s
+  Deslocamento aplicado no FDT CSV = -0.017973656 s = -17.974 ms
+  Regra aplicada: t_csv_corrigido = t_csv + deslocamento
+
+Proteção 50/51:
+  Corrente nominal = 1298.81384 A
+  Corrente em regime permanente da falta = 1966.34927 A
+  Pickup 50 instantâneo = 1688.458 A
+  Pickup 51 temporizado = 1428.69523 A
+  Primeiro pickup 50 = 0.516342225 s
+  Primeiro trip 50 = 0.516026344 s
+  Atraso trip 50 apos pickup = -0.000315881 s
+  Primeiro pickup 51 = 0.512882754 s
+  Primeiro trip 51 = NaN s
+  Atraso trip 51 apos pickup = NaN s
+
+Resumo da comparação da corrente FDT usando Simulink como referência:
+  Corrente FDT CSV x MAT   | RMSE = 130.116 | MAE = 32.2057 | Max = 1336.54 | Erro pico = 6.635791 %
+
+Erro percentual da corrente FDT entre Simulink e ESP32 receptora:
+  MAE                   = 32.2057 A
+  RMSE                  = 130.116 A
+  MaxAbs                = 1336.54 A
+  Erro relativo ao pico = 6.635791 %
+  NRMSE                 = 6.635791 %

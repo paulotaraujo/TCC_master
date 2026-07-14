@@ -1,0 +1,5 @@
+mesmos parametros do sistema mostrado na metodologia, com exceção que para simular os degraus de sobre corrente, os seguintes parametros foram modificados:
+
+-todas as faltas acontecem a exatos 0,5 segundo do inicio da simulação no matlab e duram 0,5 segundos.
+
+-as faltas de sobretensao sao obtidas aplicando uma sobretensao de 0.15 pu ao valor nominal da tensao no gerador 1, em 0.5 segundos apos o inicio da simulação.

@@ -1,0 +1,2 @@
+Grandeza,MAE,RMSE,MaxAbs,Erro_relativo_pico_percent,NRMSE_percent,Tensao_nominal_V,Tensao_falta_permanente_V,Pickup_27_instantaneo_s,Trip_27_instantaneo_s,Atraso_trip_27_instantaneo_s,Pickup_27_temporizado_s,Trip_27_temporizado_s,Atraso_trip_27_temporizado_s
+Tensão FDT,5863.77996130433,24296.9382432735,258936.585788166,9.39966106728865,9.39966106728865,256248.71875,205036.411244825,NaN,NaN,NaN,0.507321273162294,0.591050492466927,0.0837292193046324

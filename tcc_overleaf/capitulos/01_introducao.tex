@@ -1,0 +1,56 @@
+\chapter{Introdução}
+
+Os sistemas elétricos de potência são estruturas fundamentais para o fornecimento de energia elétrica à sociedade moderna, abrangendo as etapas de geração, transmissão, distribuição e consumo. Para que esses sistemas operem de forma segura e confiável, é necessário empregar dispositivos capazes de identificar condições anormais de operação e atuar de maneira adequada para isolar trechos defeituosos. Nesse contexto, os sistemas de proteção exercem papel essencial, pois são responsáveis por detectar faltas, sobrecorrentes, variações de tensão e outras perturbações que possam comprometer a integridade dos equipamentos e a continuidade do fornecimento de energia \cite{anderson1999power,blackburn2006protective}.
+
+Entre os dispositivos utilizados na proteção de sistemas elétricos de potência, destacam-se os relés de proteção. Esses equipamentos recebem sinais de tensão e corrente do sistema, processam essas grandezas e tomam decisões de atuação com base em critérios previamente definidos. Com o avanço da tecnologia digital, os relés passaram a empregar algoritmos de processamento de sinais, estimação fasorial e lógicas de proteção configuráveis, permitindo maior flexibilidade, precisão e integração com sistemas de supervisão e análise de eventos \cite{phadke2009computer,horowitz2014power}.
+
+Apesar da importância desses conceitos para a formação do engenheiro eletricista, o ensino de proteção de sistemas elétricos de potência ainda é, em muitos casos, predominantemente teórico. A formação de futuros engenheiros de proteção demanda contato com fundamentos, ajustes, testes e análise de desempenho de relés, pois a área envolve não apenas conhecimento conceitual, mas também interpretação de eventos e tomada de decisão baseada em sinais reais ou simulados \cite{brahma2009education}. Entretanto, a utilização de equipamentos reais de proteção, malas de teste e simuladores especializados costuma ser limitada em ambientes acadêmicos devido ao custo elevado, à complexidade de operação e à necessidade de infraestrutura laboratorial específica. Como consequência, temas como atuação de relés, análise de oscilografias, ajustes de proteção, estimação de fasores e comportamento dos sinais durante faltas podem permanecer distantes da experiência prática dos estudantes.
+
+Diante dessa limitação, torna-se relevante o desenvolvimento de ferramentas didáticas acessíveis que permitam aproximar os conteúdos teóricos de uma experiência prática em bancada. Na educação em engenharia, atividades laboratoriais e estratégias de aprendizagem ativa são reconhecidas por favorecer a compreensão de fenômenos físicos, o desenvolvimento de habilidades experimentais e a conexão entre teoria e prática \cite{prince2004active,feisel2005laboratory}. No ensino de proteção de sistemas elétricos, plataformas laboratoriais têm sido propostas justamente para permitir que estudantes configurem relés, observem condições de falta e avaliem mecanismos de atuação de forma experimental \cite{ferris2013protectionlab,radhi2020plc}. Nesse contexto, o uso de microcontroladores de baixo custo, como o ESP32, associado a conversores digital-analógicos e a arquivos padronizados de oscilografia, possibilita a construção de uma plataforma experimental capaz de reproduzir sinais de tensão e corrente e avaliar algoritmos de proteção em condições controladas.
+
+Neste trabalho, propõe-se uma plataforma didática embarcada para reprodução de arquivos COMTRADE (\textit{Common Format for Transient Data Exchange}) e emulação de funções de relés de proteção aplicadas a sistemas elétricos de potência. O padrão COMTRADE é amplamente utilizado para armazenamento e intercâmbio de registros oscilográficos, permitindo representar sinais provenientes de simulações ou medições reais \cite{ieee_comtrade,iec_60255_24_2013}. No projeto desenvolvido, as oscilografias são obtidas a partir de simulações de faltas trifásicas realizadas no Simulink, convertidas para arquivos COMTRADE e posteriormente reproduzidas por uma ESP32 geradora com auxílio de um conversor digital-analógico MCP4728 \cite{espressif_esp32,microchip_mcp4728}.
+
+A plataforma é constituída basicamente por duas unidades ESP32. A primeira unidade armazena e interpreta o registro COMTRADE e reproduz um canal de tensão e um de corrente por meio do MCP4728. A segunda adquire esses dois sinais e executa os algoritmos de proteção. O caminho de tempo crítico --- formação e temporização dos quadros, aquisição, estimação fasorial e decisão das proteções --- permanece nas ESP32; os \textit{scripts} no computador transferem os arquivos, geram ou leem o \texttt{config.json}, enviam os ajustes e supervisionam a comunicação serial.
+
+A escolha da ESP32 foi motivada pelo caráter didático e acessível da proposta. Trata-se de uma plataforma de baixo custo, amplamente disponível em laboratórios acadêmicos, com comunidade ativa, ferramentas de desenvolvimento consolidadas e familiaridade prévia no ambiente da universidade. Essa escolha favoreceu a construção de um protótipo reconfigurável e economicamente viável. Por outro lado, a ESP32 também impõe limitações, especialmente quanto à previsibilidade temporal, à resolução efetiva do ADC interno, à memória disponível e ao processamento simultâneo de aquisição, estimação fasorial e lógica de proteção. Portanto, sua adoção deve ser entendida como uma decisão coerente com o objetivo didático do trabalho, e não como a solução mais robusta para uma bancada trifásica completa ou metrologicamente certificada.
+
+Do ponto de vista acadêmico, a principal contribuição deste trabalho está na construção de uma plataforma acessível, reconfigurável e orientada ao ensino, capaz de permitir que estudantes observem a relação entre uma falta simulada, a oscilografia correspondente, a reprodução física dos sinais e a resposta dos algoritmos de proteção. Dessa forma, busca-se complementar o ensino teórico de proteção de sistemas elétricos de potência com uma ferramenta prática, de baixo custo e compatível com a realidade de laboratórios didáticos, reforçando a importância de experiências laboratoriais no processo de formação em engenharia \cite{feisel2005laboratory,ferris2013protectionlab}.
+
+\section{Objetivos}
+
+\subsection{Objetivo geral}
+
+Desenvolver uma plataforma didática embarcada, baseada em microcontroladores ESP32, para reprodução de sinais provenientes de arquivos COMTRADE e emulação de funções de relés de proteção aplicadas a sistemas elétricos de potência.
+
+\subsection{Objetivos específicos}
+
+Para alcançar o objetivo geral, foram definidos os seguintes objetivos específicos:
+
+\begin{itemize}
+  \item realizar simulações de faltas trifásicas em um sistema elétrico de potência no ambiente MATLAB/Simulink;
+  \item exportar as amostras de tensão e corrente obtidas nas simulações para o \textit{workspace} do MATLAB;
+  \item converter as amostras simuladas para o padrão COMTRADE, gerando os arquivos \texttt{.cfg} e \texttt{.dat};
+  \item validar os arquivos COMTRADE quanto ao tipo de arquivo, número de canais, taxa de amostragem e compatibilidade com a plataforma desenvolvida;
+  \item desenvolver o sistema embarcado de geração dos sinais analógicos de tensão e corrente utilizando ESP32 e conversor digital-analógico MCP4728;
+  \item implementar a comunicação entre o computador e a ESP32 geradora para envio, organização e reprodução das amostras;
+  \item desenvolver o sistema embarcado de recepção dos sinais analógicos reproduzidos pela unidade geradora;
+  \item processar as amostras recebidas para extração de grandezas utilizadas pelos algoritmos de proteção;
+  \item implementar as funções de subtensão (27), sobretensão (59), sobrecorrente instantânea e temporizada (50/51), distância (21) e supervisão direcional (67);
+  \item permitir a configuração dos algoritmos de proteção por meio de comandos e parâmetros de ajuste, aproximando a operação do sistema da lógica de configuração de relés reais;
+  \item avaliar a resposta da plataforma diante das oscilografias de falta reproduzidas;
+  \item analisar a aplicabilidade do sistema como ferramenta didática para o ensino de proteção de sistemas elétricos de potência.
+\end{itemize}
+
+\section{Organização do trabalho}
+
+Este trabalho está organizado em sete capítulos e um apêndice. O Capítulo 1 apresenta a introdução, contextualizando o tema, a motivação do projeto, a proposta da plataforma desenvolvida e os objetivos do trabalho.
+
+O Capítulo 2 apresenta a fundamentação teórica necessária ao desenvolvimento do projeto, abordando conceitos relacionados a sistemas elétricos de potência, curtos-circuitos, relés de proteção, arquivos COMTRADE e processamento digital de sinais aplicado à proteção.
+
+O Capítulo 3 descreve a metodologia adotada, incluindo a geração das oscilografias no Simulink, a conversão das amostras para o padrão COMTRADE, a validação dos arquivos e a arquitetura geral da plataforma composta pelas unidades de geração e recepção.
+
+O Capítulo 4 apresenta a implementação do sistema, detalhando os principais componentes de \textit{hardware} e \textit{software}, os \textit{scripts} desenvolvidos, os \textit{firmwares} das ESP32, o protocolo de comunicação, a bufferização das amostras, a reprodução dos sinais e a estrutura dos algoritmos de proteção.
+
+O Capítulo 5 apresenta os resultados e discussões, contemplando a análise dos sinais reproduzidos e recebidos, a resposta das funções de proteção implementadas, as limitações observadas e a aplicabilidade didática da plataforma.
+
+O Capítulo 6 apresenta as considerações finais do trabalho, destacando as principais contribuições e as limitações do sistema desenvolvido. O Capítulo 7 reúne recomendações para trabalhos futuros. Por fim, o Apêndice A concentra trechos representativos de código e comandos de execução, enquanto a versão integral dos arquivos permanece disponível no repositório do projeto.
